@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b0d5a835-dbf9-4d9f-9406-19789f0e9e9b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>660 - Struts Duplicate Validation Forms</Title>
+    <Category>CWE: 102</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  102</h1>
+  <iframe height="500" src="/content/102" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 660
+Cwe : 102
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList validationXML = Find_Validation();
+CxList validationClasses = validationXML.FindByType(typeof(ClassDecl));
+
+foreach(CxList validationClass in validationClasses)
+{
+	CxList validationObjects = validationXML.GetByAncs(validationClass);
+	CxList forms = validationObjects.FindByName("FORM_VALIDATION.FORMSET.FORM.NAME");
+	CxList formAssignments = forms.GetFathers();
+	CxList formNames = validationObjects.FindByFathers(formAssignments).FindByType(typeof(StringLiteral));
+
+	foreach(CxList curForm1 in formNames)
+	{
+		CSharpGraph g1 = curForm1.data.GetByIndex(0) as CSharpGraph;
+		foreach(CxList curForm2 in formNames)
+		{
+			CSharpGraph g2 = curForm2.data.GetByIndex(0) as CSharpGraph;
+			if(g1.NodeId != g2.NodeId &amp;&amp; g1.FullName == g2.FullName)
+			{
+				result += All.FindById(g1.NodeId);
+			}
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

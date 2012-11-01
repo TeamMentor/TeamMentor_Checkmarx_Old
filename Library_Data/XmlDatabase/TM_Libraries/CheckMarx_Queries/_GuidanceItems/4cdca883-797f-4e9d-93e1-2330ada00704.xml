@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4cdca883-797f-4e9d-93e1-2330ada00704</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1202 - Buffer Overflow LowBound</Title>
+    <Category>CWE: 120</Category>
+    <Phase>CPP Buffer Overflow</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  120</h1>
+  <iframe height="500" src="/content/120" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1202
+Cwe : 120
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 15
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList arrayCreate = All.FindByType(typeof(ArrayCreateExpr));
+CxList indexerRef = All.FindByType(typeof(IndexerRef));
+CxList ref1 = All.GetParameters(All) + All.FindByType(typeof(UnknownReference));
+CxList bin = All.FindByType(typeof(BinaryExpr));
+CxList sanitize = bin + arrayCreate;
+CxList methods = Find_Methods();
+
+CxList arrReferences = All.FindAllReferences(arrayCreate.GetFathers());
+CxList a2 = ref1.DataInfluencedBy(arrReferences);
+arrReferences += indexerRef.FindAllReferences(a2 - arrReferences);
+
+CxList snprintf = All.NewCxList();//Find_All_snprintf();
+CxList inSnprintf = All.GetByAncs(snprintf) - snprintf;
+
+CxList strncpy = Find_All_strncpy();
+CxList inStrncpy = All.GetByAncs(strncpy) - strncpy;
+
+CxList strncat = Find_All_strncat();
+CxList inStrncat = All.GetByAncs(strncat) - strncat;
+
+CxList numParams = inSnprintf.GetParameters(snprintf, 1) + 
+	(inStrncpy + inStrncat).GetParameters(strncpy + strncat, 2);
+CxList integers = numParams.FindByType(typeof(IntegerLiteral)) 
+	+ numParams * numParams.InfluencedByAndNotSanitized(All.FindByType(typeof(IntegerLiteral)), sanitize);
+
+CxList problematicMethods = snprintf + strncpy + strncat;
+CxList inProblematicMethods = inSnprintf + inStrncpy + inStrncat;
+
+CxList arrReferences2 = arrReferences.GetParameters(problematicMethods, 0);
+
+foreach (CxList arrDef in arrayCreate)
+{
+	try
+	{
+		ArrayCreateExpr ace = arrDef.data.GetByIndex(0) as ArrayCreateExpr;
+		if ((ace != null) &amp;&amp; (ace.Sizes.Count &gt; 0))
+		{
+			IntegerLiteral defIndex = ace.Sizes[0] as IntegerLiteral;
+			if (defIndex != null)
+			{
+				CxList arrUseList = arrReferences.FindAllReferences(arrDef.GetFathers());
+				CxList snp = problematicMethods.FindByParameters(arrUseList);
+				CxList sizeProblematicMethods = integers.GetByAncs(problematicMethods.FindByParameters(arrUseList));
+				arrUseList += arrReferences2.FindAllReferences(a2.DataInfluencedBy(arrUseList));
+				arrUseList *= arrReferences2;
+				foreach (CxList arrUse in arrUseList)
+				{
+					CxList size = sizeProblematicMethods.GetByAncs(problematicMethods.FindByParameters(arrUse));
+					if (size.FindByType(typeof(IntegerLiteral)).Count == 0)
+					{
+						size = All.FindByType(typeof(IntegerLiteral)) * All.FindByType(typeof(IntegerLiteral)).InfluencingOnAndNotSanitized(size, sanitize);
+					}
+					if (size.Count &gt; 0)
+					{
+						IntegerLiteral useIndex = size.data.GetByIndex(0) as IntegerLiteral;
+						if (useIndex != null)
+						{
+							if ((arrUse * inSnprintf).Count &gt; 0)
+							{
+								if ((useIndex != null) &amp;&amp; (useIndex.Value &gt;= defIndex.Value))
+								{
+									result += arrDef.GetFathers().Concatenate(arrUse);
+								}
+							}
+							else if ((arrUse * (inStrncpy + inStrncat)).Count &gt; 0)
+							{
+								if ((useIndex != null) &amp;&amp; (useIndex.Value &gt; defIndex.Value))
+								{
+									result += arrDef.GetFathers().Concatenate(arrUse);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

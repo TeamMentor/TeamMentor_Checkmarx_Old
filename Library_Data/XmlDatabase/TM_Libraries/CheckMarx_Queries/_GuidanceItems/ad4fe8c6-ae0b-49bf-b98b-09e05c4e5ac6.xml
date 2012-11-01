@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ad4fe8c6-ae0b-49bf-b98b-09e05c4e5ac6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>599 - Sensitive Cookie in HTTPS Session Without Secure Attribute</Title>
+    <Category>CWE: 614</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  614</h1>
+  <iframe height="500" src="/content/614" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 599
+Cwe : 614
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find the setSecured(true)
+CxList setSecure = All.FindByMemberAccess("Cookie.setSecure");
+CxList securedParams = All.FindByShortName("true");
+CxList secured = setSecure.FindByParameters(securedParams);
+
+// Find the added cookies 
+CxList addCookie =
+	All.FindByMemberAccess("response.addCookie") +
+	All.FindByName("*response.addCookie") +
+	All.FindByName("*Response.addCokies");
+CxList cookies = All.GetParameters(addCookie).FindByType("Cookie");
+
+// Return the added cookies that are not secured
+result = cookies - cookies.DataInfluencedBy(secured);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

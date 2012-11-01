@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6c20ac1c-0469-4dba-b7db-a9cfd8646bd0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1034 - XSRF</Title>
+    <Category>CWE: 10503</Category>
+    <Phase>Apex Force com Serious Security Risk</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10503</h1>
+  <iframe height="500" src="/content/10503" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1034
+Cwe : 10503
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1003
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+CxList pageCalls = Find_VF_Pages() * methods;
+CxList apexFilesContent = Find_Apex_Files();
+
+CxList actions = pageCalls
+	- pageCalls.FindByShortName("get*")
+	- pageCalls.FindByShortName("set*")
+	- pageCalls.FindByName("JSContainer_*");
+
+// Remove actions with XSRF token
+actions -= Find_Anti_XSRF_Actions();
+
+// Find the actions in the apex files
+actions = apexFilesContent.FindDefinition(actions);
+
+CxList allInputs = Find_Interactive_Inputs();
+CxList actionsInputs = allInputs.GetByMethod(actions);
+
+CxList db = Find_DB_Active() * apexFilesContent;
+
+CxList xsrf = actionsInputs.InfluencingOnAndNotSanitized(db, Find_Test_Code() + Find_Anti_XSRF_Actions());
+
+// Add the initializers that automatically fire a delete
+CxList initializers = methods.GetByAncs(Find_VF_Pages().FindByName("*.apex.page.action"));
+CxList initDeletes = apexFilesContent.FindDefinition(initializers);
+CxList sObjectsInApex = Find_sObjects() * apexFilesContent;
+
+CxList xsrf2 = db.GetByAncs(initDeletes);
+
+xsrf2 -= xsrf2.DataInfluencingOn(xsrf2);
+foreach (CxList xsrf1 in xsrf2)
+{
+	CxList source = Find_VF_Pages().FindAllReferences(All.GetMethod(xsrf1));
+	CxList sourceMethod = source.GetAncOfType(typeof(MethodDecl)).FindByShortName("__*");
+	source -= source.GetByAncs(sourceMethod);
+	xsrf += source.ConcatenateAllSources(xsrf1);
+}
+result = xsrf;
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

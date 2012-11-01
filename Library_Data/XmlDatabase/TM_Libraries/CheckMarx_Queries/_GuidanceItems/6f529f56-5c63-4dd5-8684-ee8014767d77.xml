@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6f529f56-5c63-4dd5-8684-ee8014767d77</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>665 - Struts Thread Safety Violation In Action Class</Title>
+    <Category>CWE: 856</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  856</h1>
+  <iframe height="500" src="/content/856" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 665
+Cwe : 856
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //CxList cl = Find_Class_Decl();
+//cl = cl.InheritsFrom("Action");
+
+CxList cl = Find_Action_Classes();
+CxList fields = Find_Field_Decl();
+fields = fields.GetByAncs(cl);
+
+CxList staticFields =  fields.FindByFieldAttributes(Checkmarx.Dom.Modifiers.Static);
+result = fields - staticFields;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

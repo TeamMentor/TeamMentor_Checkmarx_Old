@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6f18cb63-9b2f-40c9-b13d-30e63f021455</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>165 - Log Forging</Title>
+    <Category>CWE: 117</Category>
+    <Phase>ASP Low Visibility</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  117</h1>
+  <iframe height="500" src="/content/117" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 165
+Cwe : 117
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 11
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // $ASP
+CxList Inputs = Find_Interactive_Inputs();
+CxList Log = Find_Log_Outputs();
+
+CxList sanitize = Find_Integers();
+
+result = Log.InfluencedByAndNotSanitized(Inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>da880b0c-7061-4b59-90b5-d50438d3fd84</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1692 - Incorrect Conversion between Numeric Types</Title>
+    <Category>CWE: 681</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  681</h1>
+  <iframe height="500" src="/content/681" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1692
+Cwe : 681
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all the pairs of types we want to test
+ArrayList vars = new ArrayList();
+ArrayList types = new ArrayList();
+vars.Add("short");	types.Add("byte");
+vars.Add("int");	types.Add("short");
+vars.Add("long");	types.Add("int");
+vars.Add("float");	types.Add("long");
+vars.Add("double");	types.Add("float");
+vars.Add("int");	types.Add("byte");
+vars.Add("long");	types.Add("short");
+vars.Add("float");	types.Add("int");
+vars.Add("double");	types.Add("long");
+vars.Add("long");	types.Add("byte");
+vars.Add("float");	types.Add("short");
+vars.Add("double");	types.Add("int");
+vars.Add("float");	types.Add("byte");
+vars.Add("double");	types.Add("short");
+vars.Add("double");	types.Add("byte");
+
+// Get the conditions (that will be a type of sanitizer)
+CxList conditions = All.GetByAncs(Find_Conditions());
+// All casting places in the code
+CxList inCast = All.GetByAncs(All.FindByType(typeof(CastExpr))) - Find_Dead_Code_Contents();
+
+// Look at all the types pairs that we want to compare 
+for (int i = 0; i </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

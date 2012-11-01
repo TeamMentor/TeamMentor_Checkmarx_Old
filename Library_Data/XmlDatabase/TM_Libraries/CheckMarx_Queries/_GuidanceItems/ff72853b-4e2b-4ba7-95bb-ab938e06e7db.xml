@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ff72853b-4e2b-4ba7-95bb-ab938e06e7db</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>600 - Improper Resource Shutdown or Release</Title>
+    <Category>CWE: 404</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  404</h1>
+  <iframe height="500" src="/content/404" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 600
+Cwe : 404
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList objectCreate = Find_Object_Create();
+
+CxList io =	
+	All.FindByType("*.BufferedReader") +
+	All.FindByType("*.CharArrayReader") +
+	All.FindByType("*.FileInputStream") +
+	All.FindByType("*.FileOutputStream") +
+	All.FindByType("*.FileReader") +
+	All.FindByType("*.FileWriter") +
+	All.FindByType("*.InputStreamReader") +
+	All.FindByType("*.LineNumberReader") +
+	All.FindByType("*.PipedReader") +
+	All.FindByType("*.StringReader") +
+	All.FindByType("BufferedReader") +
+	All.FindByType("Connection") +
+	All.FindByType("CharArrayReader") +
+	All.FindByType("FileInputStream") +
+	All.FindByType("FileOutputStream") +
+	All.FindByType("FileReader") +
+	All.FindByType("FileWriter") +
+	All.FindByType("InputStreamReader") +
+	All.FindByType("LineNumberReader") +
+	All.FindByType("PipedReader") +
+	All.FindByType("StringReader") +
+	objectCreate.FindByShortName("BufferedReader") +
+	objectCreate.FindByShortName("CharArrayReader") +
+	objectCreate.FindByShortName("FileInputStream") +
+	objectCreate.FindByShortName("FileOutputStream") +
+	objectCreate.FindByShortName("FileReader") +
+	objectCreate.FindByShortName("FileWriter") +
+	objectCreate.FindByShortName("InputStreamReader") +
+	objectCreate.FindByShortName("LineNumberReader") +
+	objectCreate.FindByShortName("PipedReader") +
+	objectCreate.FindByShortName("StringReader");
+
+CxList close = All.FindByShortName("*close*", false);
+close = 
+	close.GetTargetOfMembers() + 									// ex. file.close();
+	All.GetParameters(close.FindByShortName("close", false), 0);	// ex. close(file);
+close = All.FindDefinition(close);
+
+result = All.FindDefinition(io) - close;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

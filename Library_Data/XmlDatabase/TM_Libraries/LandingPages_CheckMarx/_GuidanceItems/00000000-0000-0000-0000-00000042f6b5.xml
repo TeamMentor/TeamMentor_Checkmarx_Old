@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000042f6b5</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Path Traversal</Title>
+    <Category />
+    <Phase />
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Path Traversal</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Some applications allow the user to choose what files to access. Some of these applications don't validate the selected file path sufficiently. This vulnerability allows an attacker to access files outside of the locations authorized by the application. Path traversal vulnerabilities typically affect web applications. To prevent this problem, canonicalize all file paths and name input, validate all input, and perform access control checks for any filesystem access.
+
+==Impact==
+
+Using path traversal an attacker is able to access files outside of the scope allowed by the application. The attacker may then access sensitive operating system files, application configuration files that include connection strings, application source code, and other sensitive data. The attacker will usually attempt to leverage the information gathered using path traversal to take full control of the application or the application server.
+
+==Countermeasures==
+
+Canonicalize all file path and name input:
+
+Validate all input: 
+
+Perform access control checks for any filesystem access:
+
+
+==Checklists==
+
+All file path and name input is canonicalized
+
+All input is validated:
+
+Access control checks are performed for all filesystem access:
+
+==Additional Resources==
+]]></Data>
+  </Content>
+</TeamMentor_Article>

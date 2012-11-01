@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000861d97</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Sensitive Cookie in HTTPS Session without Secure Attribute</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>Java</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Sensitive Cookie in HTTPS Session without Secure Attribute</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+When a Cookie has the Secure flag set, that cookie will not be sent over a non-encrypted connection. If the Secure attribute is not set on a sensitive cookie, the cookie may be sent in plaintext and an attacker may intercept it. If an attacker is able to intercept a session cookie, he can impersonate an authenticated user. This vulnerability affects web applications that use authentication. To prevent this problem, set Secure and HTTP-Only flags on all sensitive cookies and send session cookies over HTTPS. To check for this flaw, find all code that stores session cookies and make sure that it sets the Secure flag.
+
+==Impact==
+
+Sending a sensitive cookie in plaintext creates a risk that an eavesdropping attacker may intercept it. Once the attacker has intercepted a session cookie, he can use it to hijack the user's session. Hijacking the user's session allows the attacker to impersonate that user. If the attacker hijacks an administrator's session, the attacker may take full control of the application.
+
+==Countermeasures==
+
+Set Secure and HTTP-Only flags on all sensitive cookies:
+* [[9b7e6e63-c37c-403b-a2f5-60b1e1abbb0b|Set the Secure And HTTPOnly Flags on All Sensitive Cookies]]
+
+Send session cookies only over HTTPS:
+* [[6012e717-6ba6-4380-8ca8-2f0b7c69d717|Protect Session Cookies]]
+
+==Checklists==
+
+Secure and HTTP-Only flags are set on all sensitive cookies:
+* [[d8922a46-a943-4ae0-b8af-b88eb01d6997|The Secure And HTTPOnly Flags Are Set on All Sensitive Cookies]]
+
+Session cookies are sent only over HTTPS:
+* [[59132a30-2bae-45e9-9d85-8de26441be29|Session Cookies Are Protected]]
+
+==Additional Resources==
+
+* For more information about this vulnerability type, see http://minsky.gsi.dit.upm.es/semanticwiki/index.php/Sensitive_Cookie_in_HTTPS_Session_Without_%27Secure%27_Attribute]]></Data>
+  </Content>
+</TeamMentor_Article>

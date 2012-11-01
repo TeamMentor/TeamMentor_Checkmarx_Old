@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7c478f58-44a0-441f-9d6e-f3739d47159d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1838 - R12 09 Unary Minus Operator On Unsigned Type</Title>
+    <Category>CWE: 11026</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11026</h1>
+  <iframe height="500" src="/content/11026" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1838
+Cwe : 11026
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 12-9
+------------------------------
+This query searches for instances of the unary '-' applied to unsigned objects
+
+	The Example below shows code with vulnerability: 
+
+int8_t   mc2_1209_8a;
+uint8_t  mc2_1209_u8a;
+uint8_t  mc2_1209_u8b;
+
+mc2_1209_8a = -mc2_1209_u8a;                     
+mc2_1209_8a = -( mc2_1209_u8a + mc2_1209_u8b )
+
+*/
+
+// first we build a list of all unsigned typedefs
+CxList typedefDecls = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetFathers();
+CxList typedefUnsgnDecls = typedefDecls.FindByExtendedType("unsigned");
+ArrayList unsgnTypes = new ArrayList();
+foreach(CxList cur in typedefUnsgnDecls){
+	Declarator g = (Declarator) cur.data.GetByIndex(0);
+	if(g == null || g.Name == null) {
+		continue;
+	}
+	string typeName = g.Name;
+	if (!unsgnTypes.Contains(typeName)){
+		unsgnTypes.Add(typeName);
+		unsgnTypes.Add("*." + typeName);
+	}
+}
+
+// now build a list of all unsigned declarators
+
+// first get add all declarators of type that is a typedefs of signed
+CxList unsgnDecls = All.FindByType(typeof(Declarator)).FindByTypes((string[]) unsgnTypes.ToArray(typeof(string)));
+
+// then add all declarators of a signed type
+unsgnDecls += All.FindByType(typeof(Declarator)).FindByExtendedType("unsigned");
+unsgnDecls -= typedefDecls;
+CxList unsgnDeclUses = All.FindAllReferences(unsgnDecls).FindByType(typeof(UnknownReference));
+// remove all casted
+unsgnDeclUses -= unsgnDeclUses.GetByAncs(All.FindByType(typeof(CastExpr)));
+// add back correct casted only
+CxList castIntoTypes = All.FindByFathers(All.FindByType(typeof(CastExpr))).FindByType(typeof(TypeRef));
+foreach(CxList cur in castIntoTypes){
+	TypeRef g = (TypeRef) cur.data.GetByIndex(0);
+	if (g == null || g.FullName == null) {
+		continue;
+	}
+	string curName = g.FullName;
+	// if irrelevant type, remove it from list
+	if (!unsgnTypes.Contains(curName) &amp;&amp; !curName.Contains("unsigned")){
+		castIntoTypes -= cur;
+	}
+}
+// add correct casts to uses list
+unsgnDeclUses += All.GetByAncs(castIntoTypes.GetFathers()).FindByType(typeof(UnknownReference));
+
+// find expressions of unary type '-'
+CxList unaryMinusOps = All.NewCxList();
+CxList unaryExprs = All.FindByType(typeof(UnaryExpr));
+foreach (CxList cur in unaryExprs){
+	UnaryExpr g = (UnaryExpr) cur.data.GetByIndex(0);
+	if (g == null || g.Operator == null) {
+		continue;
+	}
+	UnaryOperator curOp = g.Operator;
+	if (curOp == UnaryOperator.UnaryNegation){
+		unaryMinusOps += cur;
+	}
+}
+
+result = unsgnDeclUses.GetByAncs(unaryMinusOps);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

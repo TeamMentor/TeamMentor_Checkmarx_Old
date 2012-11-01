@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0d89c13d-3728-4da9-a25f-03b7cd64a839</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>755 - Find Web Outputs Components</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 755
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 43
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Auto Genereted
+result =
+   // Telerik.Windows.Controls
+   All.FindByMemberAccess("extendedtextbox.text") + 
+   All.FindByMemberAccess("radmaskedtextbox.value") + 
+   All.FindByMemberAccess("watermarkedtextbox.text") + 
+   All.FindByMemberAccess("distinctvalueslist.selecteditem") + 
+   All.FindByMemberAccess("distinctvalueslist.selectedvalue") + 
+   All.FindByMemberAccess("radtreeviewitem.header") + 
+   All.FindByMemberAccess("cells.content") + 
+   All.FindByMemberAccess("gridviewcell.value") + 
+   All.FindByMemberAccess("gridviewcell.content") + 
+   All.FindByMemberAccess("gridviewcell.getvalue") + 
+   All.FindByMemberAccess("gridviewcell.setvalue") + 
+   All.FindByMemberAccess("gridviewcellbase.getvalue") + 
+   All.FindByMemberAccess("gridviewcellbase.setvalue") + 
+   All.FindByMemberAccess("gridviewheadercell.getvalue") + 
+   All.FindByMemberAccess("gridviewheadercell.setvalue") + 
+   // ComponentArt
+   All.FindByMemberAccess("maskedinput.text") + 
+   All.FindByMemberAccess("numberinput.value") +  // numbers only
+   All.FindByMemberAccess("gridcell.text") + 
+   All.FindByMemberAccess("gridcell.value") + 
+   All.FindByMemberAccess("treeviewnode.text") + 
+   All.FindByMemberAccess("treeviewnode.value") + 
+   All.FindByMemberAccess("treeviewnode.header") + 
+   All.FindByMemberAccess("calendar.formatdate") +  // Date only
+   All.FindByMemberAccess("editor.contenttext") + 
+   All.FindByMemberAccess("editor.contenthtml") + 
+   All.FindByMemberAccess("datagridcell.text") + 
+   All.FindByMemberAccess("datagridcell.value") + 
+   All.FindByMemberAccess("datagridcolumn.columnname") + 
+   All.FindByMemberAccess("datagridgroup.value") + 
+   All.FindByMemberAccess("datagridgroup.valuetext") + 
+   All.FindByMemberAccess("uploaditem.filename") + 
+   All.FindByMemberAccess("menuitem.text") + 
+   All.FindByMemberAccess("sitemaptablecell.text") + 
+   All.FindByMemberAccess("sitemapnode.text") + 
+   All.FindByMemberAccess("sitemapnode.value") + 
+   // Infragistics
+   All.FindByMemberAccess("groupbyareafieldlistbox.selecteditem") + 
+   All.FindByMemberAccess("groupbyareafieldlistbox.selectedvalue") + 
+   All.FindByMemberAccess("cellvaluepresenter.text") + 
+   All.FindByMemberAccess("cell.value") + 
+   All.FindByMemberAccess("cell.convertedvalue") + 
+   All.FindByMemberAccess("cellautomationpeer.value") + 
+   All.FindByMemberAccess("igcontrolbase.setvalue") + 
+   All.FindByMemberAccess("igcontrolbase.getvalue") + 
+   // FarPoint
+   All.FindByMemberAccess("cells.text") + 
+   All.FindByMemberAccess("cells.value") + 
+   All.FindByMemberAccess("cell.text") + 
+   All.FindByMemberAccess("fpboolean.checkstate") +  // Boolean
+   All.FindByMemberAccess("fpcalendar.currentdate") + 
+   All.FindByMemberAccess("fpcanvas.text") + 
+   All.FindByMemberAccess("fpclock.currenttime") + 
+   All.FindByMemberAccess("fpcurrency.text") + 
+   All.FindByMemberAccess("fpcurrency.value") + 
+   All.FindByMemberAccess("fpdatetime.text") + 
+   All.FindByMemberAccess("fpdatetime.value") + 
+   All.FindByMemberAccess("fpdouble.text") + 
+   All.FindByMemberAccess("fpdouble.value") + 
+   All.FindByMemberAccess("fpinteger.text") + 
+   All.FindByMemberAccess("fpinteger.value") + 
+   All.FindByMemberAccess("fpmask.text") + 
+   All.FindByMemberAccess("fpmask.value") + 
+   All.FindByMemberAccess("fppercent.text") + 
+   All.FindByMemberAccess("fppercent.value") + 
+   All.FindByMemberAccess("fpsuperedit.text") + 
+   All.FindByMemberAccess("fpsuperedit.value") + 
+   All.FindByMemberAccess("fptext.text") + 
+   All.FindByMemberAccess("fptext.value")
+  ;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

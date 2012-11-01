@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a56aa857-ced8-4533-9441-701a2e67879b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>100 - Find Integers</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 100
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 8
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // $ASP*
+
+CxList ints = All.FindByType("int") + All.FindByType("int16") + 
+			   All.FindByType("int32") + All.FindByType("int64") + 
+			   All.FindByType("long") + All.FindByType("decimal") + 
+			   All.FindByType("float") +  All.FindByType("double");
+
+CxList methods = Find_Methods();
+CxList converted = methods.FindByName("convert.toint16") +
+					methods.FindByName("convert.toint32") +
+					methods.FindByName("convert.toint64") +
+					methods.FindByName("convert.todecimal") +
+					methods.FindByName("convert.todouble") +
+					methods.FindByName("convert.touint16") +
+					methods.FindByName("convert.touint32") +
+					methods.FindByName("convert.touint64") + 
+
+					methods.FindByName("int.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("int16.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("int32.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("int64.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("long.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("decimal.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("double.parse", StringComparison.OrdinalIgnoreCase) + 
+					methods.FindByName("float.parse", StringComparison.OrdinalIgnoreCase) +
+
+					// VBScript conversion 
+					methods.FindByName("CBool", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CByte", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CCur", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CDec", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CDate", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CDbl", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CInt", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CLng", StringComparison.OrdinalIgnoreCase) +
+					methods.FindByName("CSng", StringComparison.OrdinalIgnoreCase);
+
+
+CxList byNames = All.FindByShortName("length", false) + 
+				methods.FindByShortName("*index*", false) + 
+				All.FindByMemberAccess("request.mapimagecoordinates") +
+				All.FindByMemberAccess("request.contentlength") +
+				All.FindByMemberAccess("request.totalbytes") + 
+				(All.FindByMemberAccess("request.mapimagecoordinates") +
+				All.FindByMemberAccess("request.contentlength") +
+				All.FindByMemberAccess("request.totalbytes")).GetTargetOfMembers() +
+			
+				// VBScript Len
+				All.FindByShortName("len", false);
+
+CxList binary = All.FindByType(typeof(BinaryExpr));
+CxList booleanConditions =
+	binary.FindByShortName("<_22_29_ _binary.findbyshortname28_22_="" _2b_="">") +
+	binary.FindByShortName("==") +
+	binary.FindByShortName("!=") +
+	binary.FindByShortName("") +
+	binary.FindByShortName("<_3d_22_29_ _binary.findbyshortname28_22_="" _2b_="">=") +
+	binary.FindByShortName("||") +
+	binary.FindByShortName("&amp;&amp;") +
+	All.FindByType(typeof(UnaryExpr)).FindByShortName("Not");
+
+CxList nonSanitizer = All.FindByType(typeof(AssignExpr)).GetByAncs(booleanConditions);
+booleanConditions -= nonSanitizer.GetAncOfType(typeof(BinaryExpr));
+
+/*
+CxList methodInts = All.FindByReturnType("int") + All.FindByReturnType("int16") + 
+					All.FindByReturnType("int32") + All.FindByReturnType("int64") + 
+					All.FindByReturnType("long") + All.FindByReturnType("decimal") + 
+					All.FindByReturnType("float") + All.FindByReturnType("double");
+
+methodInts = methods.FindAllReferences(methodInts);
+*/
+
+result = ints + converted + byNames + booleanConditions/* + methodInts*/;</_3d_22_29_></_22_29_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

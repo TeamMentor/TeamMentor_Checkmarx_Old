@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d58ef170-a6e2-401d-887c-7af5ccf78756</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>330 - Use After Free</Title>
+    <Category>CWE: 416</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  416</h1>
+  <iframe height="500" src="/content/416" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 330
+Cwe : 416
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methodInvoke = Find_Methods();
+CxList free = methodInvoke.FindByShortName("free", false) + 
+	methodInvoke.FindByShortName("delete");
+ 
+if(free.Count &gt; 100)//performance issue
+{
+	return result;	
+}
+
+CxList firstParam = All.GetByAncs(free) - free;
+
+//the memory allocation methods
+CxList malloc = methodInvoke.FindByShortName("malloc");
+CxList firstParamMalloc = All.GetParameters(malloc,0);
+malloc += firstParamMalloc;
+
+CxList realloc = methodInvoke.FindByShortName("realloc");
+CxList secondParamRealloc = All.GetParameters(realloc,1);
+realloc += secondParamRealloc;
+
+CxList calloc = methodInvoke.FindByShortName("calloc");
+CxList secondParamCalloc = All.GetParameters(calloc,1);
+calloc += secondParamCalloc;
+
+CxList allMemoryMethods = malloc + realloc + calloc;
+
+CxList equalsNull = All.FindByShortName("0") + All.FindByShortName("NULL");
+equalsNull = equalsNull.GetAncOfType(typeof(AssignExpr));
+equalsNull = equalsNull.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+//end of memory allocation methods
+CxList toCheck = methodInvoke + All.FindByType(typeof(MemberAccess)) + All.FindByType(typeof(UnknownReference))
+	- free - firstParam - equalsNull;
+firstParam -= All.GetByAncs(All.FindByType(typeof(IndexerRef))) + All.FindByType(typeof(UnaryExpr)).FindByShortName("Pointer");
+
+CxList secondMethods =  toCheck.InfluencedByAndNotSanitized(firstParam, allMemoryMethods);
+result = secondMethods;
+
+// Remove the cases of "free(x.a); use(x)"
+foreach(CxList secondMethod in secondMethods)
+{
+	CSharpGraph ch1 = secondMethod.data.GetByIndex(0) as CSharpGraph;
+	string second = ch1.FullName;
+	foreach(CxList firstMethod in firstParam)
+	{
+		CSharpGraph ch2 = firstMethod.data.GetByIndex(0) as CSharpGraph;
+		string first = ch2.FullName;
+		if(first.StartsWith(second + "."))
+			{		
+			result -= secondMethod;
+		}		
+	}	
+}
+
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

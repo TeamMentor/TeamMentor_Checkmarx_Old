@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>013923c8-a093-4acd-b030-91531c96e04b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1927 - R06 05 03 Change Lc In St And Cond</Title>
+    <Category>CWE: 10756</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10756</h1><iframe src='/content/10756' width="100%" height="500"></iframe><h1>Checkmarx Rule</h1>
+<div style='padding:10px'><pre>QueryId : 1927
+Cwe : 10756
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre></div><h3>Source</h3><div style='padding:10px'><pre> /* MISRA CPP RULE 6-5-3
+ ------------------------------
+ This query results in all loop counters that are modified within condition or statement
+
+ The Example below shows code with vulnerability: 
+
+  for( j=0; j<100 && bar(&j); j+=foo()) //non-compliant
+  {
+        j++;      //non-compliant
+        --j;      //non-compliant
+        bar(&j);  //non-compliant
+        j+=90;    //non-compliant
+        j=j*7;    //non-compliant
+        
+    }
+*/
+
+	CxList allFors = All.FindByType(typeof(IterationStmt));
+	CxList helper = allFors;
+	foreach(CxList allf in allFors)
+	{
+		IterationStmt i = allf.data.GetByIndex(0) as IterationStmt;
+		if(i != null)
+		{
+			IterationType it = i.IterationType;
+			if(!it.ToString().Equals("For"))
+			{
+				helper -= allf;
+			}
+		}
+	}
+	allFors = helper;
+
+	CxList postfix = All.FindByType(typeof(PostfixExpr)).GetByAncs(allFors);
+	CxList unrf = All.FindByType(typeof(UnknownReference)).GetByAncs(allFors);
+	CxList declarators = All.FindByType(typeof(Declarator)).GetByAncs(allFors);
+	CxList leftSide=All.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+foreach(CxList cur in allFors)
+{
+		
+	CxList init = All.NewCxList();
+	IterationStmt iterA = cur.data.GetByIndex(0) as IterationStmt;
+	StatementCollection initColl = iterA.Init;
+		
+	for(int i = 0; initColl != null && i < initColl.Count; i++)
+	{
+		if(initColl[i] != null)
+		{
+			init += All.FindById(initColl[i].NodeId);
+		}
+	}
+
+	CxList loopCounter = unrf.FindByFathers(init.FindByType(typeof(ExprStmt)));
+	
+	CxList unknownRef = unrf.GetByAncs(init);
+	CxList leftAsn = unknownRef * leftSide;
+	loopCounter += (leftAsn + declarators.GetByAncs(init));
+	
+	CxList allReferencesToLC = All.NewCxList();
+
+	//retrieve the test part of the for loop
+	CxList test = All.NewCxList();
+
+	Expression testExp = iterA.Test;
+	if(testExp != null)
+	{
+		test += All.FindById(testExp.NodeId);
+	}
+
+	//retrieve the increment part of the for loop
+	CxList increment = All.NewCxList();
+	StatementCollection incrementColl = iterA.Increment;
+	for(int i = 0; incrementColl != null && i < incrementColl.Count; i++)
+	{	
+		if(incrementColl[i] != null){
+			increment += All.FindById(incrementColl[i].NodeId);
+		}
+	}
+	
+	CxList testUn = unrf.GetByAncs(test);
+	CxList incrUn = unrf.GetByAncs(increment);
+	CxList additionalLC = incrUn.FindAllReferences(testUn) + testUn.FindAllReferences(incrUn);
+	loopCounter += additionalLC*testUn;
+	
+	CxList curExpr = unrf.GetByAncs(loopCounter.GetAncOfType(typeof(IterationStmt)));
+	allReferencesToLC += curExpr.FindAllReferences(loopCounter);
+	CxList lCinCondition = allReferencesToLC.GetByAncs(test);
+	
+	//bar(&j)
+	CxList asMethodParam = lCinCondition.GetByAncs(test).GetFathers().FindByName("Address");
+	CxList theMethod = asMethodParam.GetAncOfType(typeof(MethodInvokeExpr));
+	result += theMethod;
+	CxList allLCRefInsideStmt = allReferencesToLC 
+		- allReferencesToLC.GetByAncs(init) 
+		- allReferencesToLC.GetByAncs(test)
+		- allReferencesToLC.GetByAncs(increment);
+		
+	allLCRefInsideStmt = allLCRefInsideStmt - allLCRefInsideStmt.FindByType(typeof(Declarator));
+	CxList operation = allLCRefInsideStmt.GetFathers();
+		
+	CxList assignment = allLCRefInsideStmt * leftSide;
+		
+	assignment += allLCRefInsideStmt.FindByFathers(postfix.GetByAncs(operation).GetAncOfType(typeof(AssignExpr)));
+		
+	CxList change = postfix.FindByFathers(operation.FindByType(typeof(ExprStmt))) + //i++
+		operation.FindByType(typeof(UnaryExpr)).FindByName("Increment") + //++i
+		operation.FindByType(typeof(UnaryExpr)).FindByName("Decrement")  //--i		
+		+assignment;
+	
+	change += operation.FindByType(typeof(UnaryExpr)).FindByName("Address").GetAncOfType(typeof(MethodInvokeExpr));
+	result += change;
+
+}</pre></div>]]></Data>
+  </Content>
+</TeamMentor_Article>

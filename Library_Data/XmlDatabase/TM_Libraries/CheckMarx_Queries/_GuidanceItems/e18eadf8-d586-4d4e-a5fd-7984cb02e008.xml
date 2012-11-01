@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e18eadf8-d586-4d4e-a5fd-7984cb02e008</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2078 - Find Kohana Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2078
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //Kohana sanitizers:
+CxList methods = Find_Methods();
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList methodsParams = All.GetParameters(methods);
+
+CxList checkMethods = methods.FindByShortName("check");
+CxList references = All.FindAllReferences(checkMethods.GetTargetOfMembers());
+
+CxList getInst = 
+	All.FindByMemberAccess("Validation.factory") + 
+	All.FindByMemberAccess("Validate.factory");
+
+
+CxList createExp = All.FindByType(typeof(ObjectCreateExpr));
+getInst += createExp.FindByShortName("Validate") + createExp.FindByShortName("Validation");
+
+CxList instORM = All.FindByMemberAccess("ORM.factory");
+ 
+
+CxList isValidMethods = All.NewCxList();
+CxList ORMcheckMethod = All.NewCxList();
+
+//finds only the invokes of a check() validation methods
+foreach(CxList cur in checkMethods)
+{
+	CxList rf = cur.GetTargetOfMembers();		
+	CxList refer = references * rf;
+
+	//finds a validation check() method
+	if (((getInst * rf).Count &gt; 0) || (getInst.DataInfluencingOn(rf).Count &gt; 0)){
+		isValidMethods += cur;
+	}
+	
+	//finds an ORM check() method
+	if (((instORM * rf).Count &gt; 0) || (instORM.DataInfluencingOn(rf).Count &gt; 0)){
+		ORMcheckMethod += cur.GetTargetOfMembers();
+	}
+}
+
+result += ORMcheckMethod;
+
+//handling if-statement with only validation/validate check() method
+
+CxList ifStmt = (All.FindByType(typeof(IfStmt)));
+CxList exp = All.FindByType(typeof(Expression));
+CxList isValidMethodAsCond = isValidMethods.GetByAncs(exp.FindByFathers(ifStmt));
+CxList relevantIfStmt = isValidMethodAsCond.GetAncOfType(typeof(IfStmt));
+
+
+CxList isNOTValidMethodAsCond = isValidMethodAsCond.GetByAncs(All.FindByShortName("Not").FindByType(typeof(UnaryExpr)));
+
+CxList sanitizeIfStatement = All.GetByAncs(relevantIfStmt - isNOTValidMethodAsCond.GetAncOfType(typeof(IfStmt)));
+
+
+result += sanitizeIfStatement;
+
+	
+//Kohana_Database
+CxList directDbMethods = 
+	methods.FindByShortName("escape") + 
+	methods.FindByShortName("quote") + 
+	methods.FindByShortName("quote_column") +	
+	methods.FindByShortName("quote_identifier") +
+	methods.FindByShortName("quote_table");
+
+
+//handling bind() method executed by database related objects
+CxList bindFuncObjCreate = 
+	All.FindByMemberAccess("DB.delete") +
+	All.FindByMemberAccess("DB.expr") +
+	All.FindByMemberAccess("DB.insert") +
+	All.FindByMemberAccess("DB.query") + 
+	All.FindByMemberAccess("DB.select") +
+	All.FindByMemberAccess("DB.select_array") +
+	All.FindByMemberAccess("DB.update");
+	
+bindFuncObjCreate += 
+	createExp.FindByShortName("Database_Query") + 
+	createExp.FindByShortName("Database_Query_Builder") + 
+	createExp.FindByShortName("Database_Query_Builder_Delete") +
+	createExp.FindByShortName("Database_Query_Builder_Insert") +
+	createExp.FindByShortName("Database_Query_Builder_Join") +
+	createExp.FindByShortName("Database_Query_Builder_Select") +
+	createExp.FindByShortName("Database_Query_Builder_Update") +
+	createExp.FindByShortName("Database_Query_Builder_Where");
+
+//find only relevant bind or param methods which breaks sql commands	
+CxList bindFunc = 
+	(methods + memberAccess).FindByShortName("bind") + 
+	(methods + memberAccess).FindByShortName("parameters") + 
+	(methods + memberAccess).FindByShortName("param");
+				
+foreach(CxList cur in bindFunc)
+{
+	CxList rf = cur.GetTargetOfMembers();		
+	CxList refer = references * rf;
+	if (((bindFuncObjCreate * rf).Count &gt; 0) || (bindFuncObjCreate.DataInfluencingOn(rf).Count &gt; 0)){
+		directDbMethods += cur;
+	}
+}
+
+result += directDbMethods;
+//result = All * result;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

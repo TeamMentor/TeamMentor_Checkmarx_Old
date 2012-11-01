@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>cd7cb590-c915-4077-96fb-f602795eb03e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>219 - Buffer Overflow unbounded</Title>
+    <Category>CWE: 120</Category>
+    <Phase>CPP Buffer Overflow</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  120</h1>
+  <iframe height="500" src="/content/120" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 219
+Cwe : 120
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 15
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Buffer Overflow - unbounded
+//  ---------------------------
+//  Find all the places where an unbounded input string affects a bounded string
+///////////////////////////////////////////////////////////////////////
+
+// Find all unbounded input arrays
+CxList unboundedInputArrays = Find_Unbounded_Inputs();
+
+// Find all places where bounded arrays appear in the code
+CxList boundedArrays = All.FindByType(typeof(ArrayCreateExpr)).GetFathers();
+boundedArrays = All.FindAllReferences(boundedArrays);
+boundedArrays -= boundedArrays.GetByAncs(boundedArrays.FindByType(typeof(IndexerRef)));
+
+result = unboundedInputArrays.DataInfluencingOn(boundedArrays) + 
+	unboundedInputArrays.FindAllReferences(boundedArrays);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

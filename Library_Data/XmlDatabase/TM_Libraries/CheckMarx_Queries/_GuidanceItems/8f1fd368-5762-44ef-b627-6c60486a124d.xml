@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8f1fd368-5762-44ef-b627-6c60486a124d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>836 - HttpOnlyCookies XSS</Title>
+    <Category>CWE: 10706</Category>
+    <Phase>VbNet WebConfig</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10706</h1>
+  <iframe height="500" src="/content/10706" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 836
+Cwe : 10706
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 49
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList webConfig = Find_Web_Config();
+CxList value_false = webConfig.FindByName("false", false).FindByType(typeof(StringLiteral));
+
+CxList httpOnlCookies_exist = webConfig.FindByName("CONFIGURATION.SYSTEM.WEB.HTTPCOOKIES.HTTPONLYCOOKIES", false);
+CxList httpCookies_exist = webConfig.FindByName("CONFIGURATION.SYSTEM.WEB.HTTPCOOKIES", false);
+CxList httpCookies_childs = webConfig.FindByName("CONFIGURATION.SYSTEM.WEB.HTTPCOOKIES.*", false);
+CxList httpOnlCookieysFalse = value_false.DataInfluencingOn(httpOnlCookies_exist);
+CxList configuration = webConfig.FindByName("CONFIGURATION", false);
+
+if (httpOnlCookies_exist.Count == 0)
+{
+	if (httpCookies_exist.Count &gt; 0)
+	{
+		result = httpCookies_exist - httpCookies_exist.GetByAncs(httpCookies_childs);
+	}
+}
+else
+{
+	result = value_false * httpOnlCookieysFalse;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

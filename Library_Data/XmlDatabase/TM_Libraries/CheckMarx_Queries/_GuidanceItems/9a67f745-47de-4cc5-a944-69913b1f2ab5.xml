@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9a67f745-47de-4cc5-a944-69913b1f2ab5</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>246 - Find Memory Allocation</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 246
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Memory Allocation
+
+// Find all method calls
+CxList methods = Find_Methods();
+
+// Find memory allocation
+result = methods.FindByShortName("malloc")
+	+ methods.FindByShortName("realloc")
+	+ methods.FindByShortName("calloc")
+	+ methods.FindByShortName("strdup");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

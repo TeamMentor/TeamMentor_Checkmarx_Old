@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7576bfdf-6a77-4e4b-83ba-64f556553c63</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1656 - Public Static Final References Mutable Object</Title>
+    <Category>CWE: 607</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  607</h1>
+  <iframe height="500" src="/content/607" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1656
+Cwe : 607
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Get all constant (i.e. "final") objects
+CxList constants = All.FindByType(typeof(ConstantDecl));
+
+// Add to "final" also "public" and "static"
+CxList publicFinalStatic = constants.
+	FindByFieldAttributes(Modifiers.Public).
+	FindByFieldAttributes(Modifiers.Static);
+
+// Find all the references of the public final static
+CxList pfsRef = All.FindAllReferences(publicFinalStatic);
+// Leave only the ones under a return statement
+pfsRef = pfsRef.GetByAncs(All.FindByType(typeof(ReturnStmt)));
+// Remove members (such as date.getTime(), which are OK with us
+pfsRef -= pfsRef.GetMembersOfTarget().GetTargetOfMembers();
+
+// Now make sure we leave only the ones that are directly under the return value (no manipulation)
+CxList pfsInReturn = pfsRef.GetByAncs(pfsRef.GetFathers().FindByType(typeof(ReturnStmt)));
+
+
+// ...and return the result
+result = pfsInReturn;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

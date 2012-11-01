@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>89432bb3-1dfc-489f-bed9-618eb131b1d9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>328 - Setting Manipulation</Title>
+    <Category>CWE: 15</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  15</h1>
+  <iframe height="500" src="/content/15" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 328
+Cwe : 15
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList setMethods = Find_Methods().FindByShortName("set*");
+
+setMethods = setMethods.FindByShortName("setgroups") + 
+	setMethods.FindByShortName("sethostid") + 
+	setMethods.FindByShortName("sethostname") + 
+	setMethods.FindByShortName("setuid");
+
+result = Find_Interactive_Inputs().DataInfluencingOn(setMethods);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

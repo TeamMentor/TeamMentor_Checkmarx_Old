@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0cfea431-ac81-45be-8135-3813ee6a52ab</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1626 - Redirect Without Exit</Title>
+    <Category>CWE: 698</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  698</h1>
+  <iframe height="500" src="/content/698" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1626
+Cwe : 698
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+In this query we look for commands that follow a redirect commands.
+For every redirect command we will look at the containing block and make sure that the "redirect" is the last
+command in the block, by comparing Id's.
+There might be (very) extreme cases where we fail to find a result - for example when there is a redirect
+at the end of both "if" blocks (if and else), but there are additional commands after the if statement. For
+now we prefer this then a more complex algorithm and/or false positives.
+*/
+
+// Find all the relevant redirects
+CxList sendRedirect = 
+	All.FindByMemberAccess("HttpServletResponse.sendRedirect") +
+	All.FindByName("*response.sendRedirect") +  
+	All.FindByName("*Response.sendRedirect") +
+	All.FindByMemberAccess("HTTPUtilities.safeSendRedirect"); //ESAPI
+
+// Ignore singleline if 
+sendRedirect -= sendRedirect.FindByFathers(sendRedirect.GetFathers().FindByType(typeof(IfStmt)));
+sendRedirect -= sendRedirect.FindByFathers(sendRedirect.GetFathers().FindByType(typeof(IterationStmt)));
+
+// Find the blocks within which 
+CxList statementsList = sendRedirect.GetAncOfType(typeof(StatementCollection));
+// Get everything nder the bocks, except for expression statements (that might have a higher Id,
+// and break statements, that might still appear and not disturb us (in switch case, for example
+CxList underStatementsList = All.GetByAncs(statementsList) - statementsList;
+underStatementsList -= underStatementsList.FindByType(typeof(ExprStmt));
+underStatementsList -= underStatementsList.FindByType(typeof(BreakStmt));
+underStatementsList -= underStatementsList.GetByAncs(underStatementsList.FindByType(typeof(ReturnStmt)));
+
+// Pass on all statements and for each statement, calculate the Ids of the redirect and 
+foreach (CxList statements in statementsList)
+{
+	// Find the redirect under the statements (there might be more than one)
+	CxList redirect0 = sendRedirect.GetByAncs(statements);
+	CxList redirect = redirect0;
+	foreach (CxList r in redirect0)
+	{
+		if (r.GetAncOfType(typeof(StatementCollection)) != statements)
+		{
+			redirect -= r;
+		}
+	}
+
+	// If there are various redirects in the block - just take the first one
+	if (redirect.Count &gt; 1)
+	{
+		int minId = int.MaxValue;
+		foreach (CxList rt in redirect)
+		{
+			try
+			{
+				CSharpGraph g = rt.data.GetByIndex(0) as CSharpGraph;
+				int index = g.NodeId;
+				if (index  maxRedirectId)
+			{
+				maxRedirectId = index;
+				relevantRedirect = rt;
+			}
+		}
+		catch (Exception)
+		{
+			// in case of an exception in the CSharpGraph transformation
+		}
+	}
+	// Find the redirect that applies to the node we've found (biggest node Id)
+	relevantRedirect = relevantRedirect.GetAncOfType(typeof(MethodInvokeExpr));
+
+	// Look for a bigger node Id than the redirect, in the block statements out of the redirect
+	foreach (CxList us in underStatements)
+	{
+		try
+		{
+			CSharpGraph g = us.data.GetByIndex(0) as CSharpGraph;
+			int index = g.NodeId;
+			if (index &gt; maxRedirectId)
+			{
+				result += relevantRedirect.Concatenate(us);
+				break;
+			}
+		}
+		catch (Exception)
+		{
+			// in case of an exception in the CSharpGraph transformation
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

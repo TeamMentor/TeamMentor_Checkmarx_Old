@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9bcc85a5-f7b7-414f-b7c6-36282a9fbb63</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>159 - Improper Exception Handling</Title>
+    <Category>CWE: 248</Category>
+    <Phase>ASP Low Visibility</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  248</h1><iframe src='/content/248' width="100%" height="500"></iframe><h1>Checkmarx Rule</h1>
+<div style='padding:10px'><pre>QueryId : 159
+Cwe : 248
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 11
+Status : Original
+Type : Regular
+</pre></div><h3>Source</h3><div style='padding:10px'><pre> CxList Error_Prone_Code = null;
+
+if(param.Length == 0)//initialization
+{
+	Tag = new object[1];
+	Tag[0] = new ArrayList();
+	Error_Prone_Code = Find_DB() + Find_IO(); // <-- Original code
+}
+else
+{
+	if(Tag == null)
+	{
+		Tag = new object[1];
+		Tag[0] = new ArrayList();
+	}
+	
+	Error_Prone_Code = param[0] as CxList;
+	foreach(int NodeId in Error_Prone_Code.GetArrayOfNodeIds())
+	{
+		if(((ArrayList)Tag[0]).Contains(NodeId))
+		{
+			return Error_Prone_Code;
+		}
+		else
+		{
+			((ArrayList)Tag[0]).Add(NodeId);
+		}
+	}
+}
+
+CxList inTry = Error_Prone_Code.GetAncOfType(typeof(TryCatchFinallyStmt));
+CxList notInTry = Error_Prone_Code  - Error_Prone_Code.GetByAncs(inTry);
+CxList onError = Find_Methods().FindByShortName("on_error");
+
+CxList onErrorMethods = All.GetMethod(onError);
+notInTry -= All.GetByAncs(onErrorMethods);
+
+if(notInTry.Count > 0)
+{
+	CxList invokes = All.FindAllReferences(notInTry.GetAncOfType(typeof(MethodDecl))) - 
+			notInTry.GetAncOfType(typeof(MethodDecl));
+	
+	if(invokes.Count == 0 || Improper_Exception_Handling(invokes).Count > 0)
+	{
+		result += notInTry;
+	}	
+}</pre></div>]]></Data>
+  </Content>
+</TeamMentor_Article>

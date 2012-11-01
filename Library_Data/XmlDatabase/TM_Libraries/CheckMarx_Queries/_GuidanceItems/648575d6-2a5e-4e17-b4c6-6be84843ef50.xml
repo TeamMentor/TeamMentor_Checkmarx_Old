@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>648575d6-2a5e-4e17-b4c6-6be84843ef50</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1683 - Use of a One Way Hash without a Salt</Title>
+    <Category>CWE: 759</Category>
+    <Phase>Java Medium Threat</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  759</h1>
+  <iframe height="500" src="/content/759" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1683
+Cwe : 759
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 37
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all strings
+CxList strings = Find_Strings();
+// Get all the relevant digest algorithms
+CxList digestStrings = 
+	strings.FindByShortName("\"SHA*") + 
+	strings.FindByShortName("\"MD2*") +
+	strings.FindByShortName("\"MD5*");
+// All the digest commands
+CxList digest = All.FindByMemberAccess("MessageDigest.digest");
+// All the update commands (that are necessary as a salt, so they will be our sanitizer)
+CxList update = All.FindByMemberAccess("MessageDigest.update");
+update += update.GetTargetOfMembers();
+
+// And the result - any use of an algorithm without salt
+result = digest.InfluencedByAndNotSanitized(digestStrings, update);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

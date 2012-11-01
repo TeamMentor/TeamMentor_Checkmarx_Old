@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>613873df-2f99-4bd5-b0f6-7341fe55882d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1856 - R15 05 No Cases in Switch Statement</Title>
+    <Category>CWE: 11044</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11044</h1>
+  <iframe height="500" src="/content/11044" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1856
+Cwe : 11044
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 15-5
+------------------------------
+This query searches for switches not containing any (non default) cases
+
+	The Example below shows code with vulnerability: 
+
+void foo () 
+{
+    #pragma OPTIMIZE ON
+    int i = 1; // irrelevent comment
+    
+}
+
+*/
+
+CxList switches = All.FindByType(typeof(SwitchStmt));
+CxList cases = All.FindByType(typeof(Case));
+
+// go over switches, add switches with no case
+foreach (CxList sw in switches){
+	CxList sonCases = cases.FindByFathers(sw);
+	bool foundCase = false;
+	
+	// check to see if non default case exists
+	foreach (CxList curCase in sonCases){
+		Case myCase = curCase.data.GetByIndex(0) as Case;		
+		if (!myCase.IsDefault){
+			foundCase = true;
+		}
+	}
+	
+	if (!foundCase)
+		result += sw;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>47de8e36-ad71-4c55-bd46-6795f63850a7</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>697 - Find XmlHttp Open</Title>
+    <Category>CWE: 0</Category>
+    <Phase>JavaScript Vulnerabilities</Phase>
+    <Technology>JavaScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 697
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 41
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Alll = AllJs();
+result = Find_Member_Access("XMLHttpRequest.open");
+
+CxList httpRequest = Alll.FindByMemberAccess("window.createRequest");
+result += Find_Command_From_Http(httpRequest, "open");
+
+CxList createObj = Alll.FindByType(typeof(ObjectCreateExpr));
+httpRequest = createObj.FindByShortName("ActiveXObject");
+CxList xmlhttp = Alll.FindByShortName("*.XMLHTTP*");
+httpRequest = httpRequest.FindByParameters(xmlhttp);
+result += Find_Command_From_Http(httpRequest, "open");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

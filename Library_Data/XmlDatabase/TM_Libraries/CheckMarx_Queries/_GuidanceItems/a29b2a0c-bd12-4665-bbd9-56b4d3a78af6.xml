@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a29b2a0c-bd12-4665-bbd9-56b4d3a78af6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>334 - Wrong Memory Allocation</Title>
+    <Category>CWE: 131</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  131</h1>
+  <iframe height="500" src="/content/131" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 334
+Cwe : 131
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Wrong Memory Allocation
+//  -----------------------
+//  In this query we look for calls to malloc with sizeof, where there
+//  is no correct multiplication of the parameter by ist size.
+///////////////////////////////////////////////////////////////////////
+
+// Find all mallocs
+CxList mallocs = Find_Methods().FindByShortName("malloc");
+// Find the sizeof functions that are direct parameters of malloc (no sizeof*somthing)
+CxList sizeofInMalloc = Find_Methods().GetParameters(mallocs).FindByShortName("sizeof");
+
+// Get the sizeof's parameters
+CxList sizeofParams = All.GetParameters(sizeofInMalloc);
+
+// Filter all the primitives (sizeof(int) is OK) and the pointers (sizeof(*p) is
+// usually OK)
+sizeofParams -= sizeofParams.FindByShortName("bool");
+sizeofParams -= sizeofParams.FindByShortName("short");
+sizeofParams -= sizeofParams.FindByShortName("char");
+sizeofParams -= sizeofParams.FindByShortName("int");
+sizeofParams -= sizeofParams.FindByShortName("long");
+sizeofParams -= sizeofParams.FindByShortName("float");
+sizeofParams -= sizeofParams.FindByShortName("double");
+sizeofParams -= sizeofParams.FindByShortName("Pointer");
+
+// Filter any types
+CxList sparams = sizeofParams;
+foreach (CxList sop in sparams)
+{
+	CSharpGraph g = sop.data.GetByIndex(0) as CSharpGraph;
+	CxList types = All.FindByType(g.FullName) + 
+		All.FindByType(g.ShortName) - 
+		sizeofParams - 
+		All.FindByShortName(g.FullName) - 
+		All.FindByShortName(g.ShortName);
+	if (types.Count &gt; 0) 
+	{
+		sizeofParams -= sop;
+	}
+}
+
+// Find the relevant sizeof's methods
+result = sizeofParams.GetAncOfType(typeof(MethodInvokeExpr));
+
+// Add a nice path from the result to its relevant malloc
+result = mallocs.DataInfluencedBy(result);
+
+// Remove double-results, if one path is partial to another
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

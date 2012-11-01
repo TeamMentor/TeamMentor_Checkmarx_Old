@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0757fe83-127b-41ee-ade4-5693a7d11a27</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>503 - Call to Thread run</Title>
+    <Category>CWE: 572</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  572</h1>
+  <iframe height="500" src="/content/572" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 503
+Cwe : 572
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList superRun = All.FindByFathers(All.FindByType(typeof(BaseRef)).GetFathers()).FindByShortName("run");
+result = All.FindByMemberAccess("Thread.run") - superRun;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f98f325d-6ba9-48f4-8a55-cfa71e29d4ef</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>549 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 549
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = Find_Plain_Interactive_Inputs();
+
+result -= Find_Dead_Code_Contents();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

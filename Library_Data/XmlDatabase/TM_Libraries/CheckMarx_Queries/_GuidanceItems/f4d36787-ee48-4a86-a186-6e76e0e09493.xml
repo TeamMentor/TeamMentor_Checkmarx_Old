@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f4d36787-ee48-4a86-a186-6e76e0e09493</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>481 - Trust Boundary Violation</Title>
+    <Category>CWE: 501</Category>
+    <Phase>CSharp Medium Threat</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  501</h1>
+  <iframe height="500" src="/content/501" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 481
+Cwe : 501
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 28
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList setAttr = All.FindByMemberAccess("Session.Add");
+CxList sanitize = Find_Sanitize() + 
+	All.FindByShortName("Session");
+CxList input = Find_Inputs();
+
+result = setAttr.InfluencedByAndNotSanitized(input, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

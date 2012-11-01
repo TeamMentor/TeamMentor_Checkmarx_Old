@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>36a05541-5a46-40d2-8f4b-f4855876ddaf</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>229 - Find Builtin Types</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 229
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList types = 	All.FindByType("int") +
+	All.FindByType("long") + 
+	All.FindByType("short") + 
+	All.FindByType("float") +  
+	All.FindByType("double")+  
+	All.FindByType("char")+  
+	All.FindByType("bool");
+CxList typesDef = All.FindDefinition(types);
+typesDef -= typesDef.FindByRegex(@"\*");
+
+result = All.FindAllReferences(typesDef);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

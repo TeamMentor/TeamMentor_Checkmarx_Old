@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>cf371ea0-bf0b-49c5-ab19-8d999c0d7e34</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2117 - Find Smarty Read</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2117
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList smartyMethods = Find_Methods().FindByFileName("*.tpl");
+
+CxList smartyRead = 
+	smartyMethods.FindByShortName("fetch");
+
+result += smartyRead;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

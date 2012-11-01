@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ffb163ab-f924-4a61-ada3-a5a6f1111dfb</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1878 - R20 08 Using Signal Handling From Signal H</Title>
+    <Category>CWE: 11066</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11066</h1>
+  <iframe height="500" src="/content/11066" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1878
+Cwe : 11066
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 20-8
+------------------------------
+This query searches for usage of the signal handling facilities of <signal.h>
+
+	The Example below shows code with vulnerability: 
+
+#include <signal.h>           
+
+void mc2_2008 ( void )
+{
+int16_t mc2_2008_signal;
+mc2_2008_signal = SIGINT;
+}
+
+*/
+
+// Safety check for the violating h file
+// (it is also a violation in itself)
+CxList includes = All.FindByType(typeof(StringLiteral)).GetParameters(Find_Methods()
+	.FindByShortName("CX_INCL"));
+CxList hFile = includes.FindByShortName("signal.h");
+if (hFile.Count == 0)
+	return hFile;
+
+// The functions defined by signal.h
+result += All.FindByType(typeof(MethodInvokeExpr)).FindByShortName("signal") +
+			All.FindByType(typeof(MethodInvokeExpr)).FindByShortName("raise");
+
+// The macros defined by signal.h
+result += All.FindByShortName("SIG_DFL") +
+			All.FindByShortName("SIG_ERR") +
+			All.FindByShortName("SIG_IGN") +
+			All.FindByShortName("SIGABRT") +
+			All.FindByShortName("SIGFPE") +
+			All.FindByShortName("SIGILL") +
+			All.FindByShortName("SIGINT") +
+			All.FindByShortName("SIGSEGV") +
+			All.FindByShortName("SIGTERM");
+
+// Remove all locally defined instances
+CxList defs = All.FindDefinition(result);
+result -= result.FindAllReferences(defs);
+
+// the include
+result += hFile;
+
+// The types
+result += All.FindByType(typeof(TypeRef)).FindByShortName("sig_atomic_t");</signal.h></signal.h></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

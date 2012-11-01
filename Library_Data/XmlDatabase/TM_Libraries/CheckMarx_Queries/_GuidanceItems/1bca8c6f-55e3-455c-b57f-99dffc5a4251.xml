@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1bca8c6f-55e3-455c-b57f-99dffc5a4251</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1913 - R10 03 03 Redeclare Function as Pure</Title>
+    <Category>CWE: 10797</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10797</h1>
+  <iframe height="500" src="/content/10797" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1913
+Cwe : 10797
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 10-3-3
+ ------------------------------
+ This query searches for functions that were introduced as pure, then defined, then re-declared
+ as pure.
+ 
+ The Example below shows code with vulnerability: 
+
+      class Foo
+		{
+		public:
+			virtual void a() = 0;
+		};
+
+		class Boo : public Foo
+		{
+		public:
+		    virtual void a() { }
+		};
+
+		class Bar : public Boo
+		{
+		public:
+		    virtual void a() = 0; //Non-compliant
+		};
+
+*/
+
+//Find abstract functions.
+CxList absFuncs = All.FindByType(typeof(MethodDecl));
+CxList unChecked = absFuncs;
+absFuncs = absFuncs.FindByFieldAttributes(Modifiers.Abstract);
+
+CxList classes = All.FindByType(typeof(ClassDecl));
+classes = classes.GetClass(unChecked);
+CxList allParams = All.FindByType(typeof(ParamDecl));
+allParams = allParams.GetParameters(unChecked);
+CxList typerefs = All.FindByType(typeof(TypeRef));
+typerefs = typerefs.GetByAncs(allParams);
+
+foreach (CxList curr in absFuncs) {
+	
+	if ( (unChecked * curr).Count == 0 ){
+		continue;	
+	}
+	unChecked -= curr;
+	CxList sons = classes.InheritsFrom(classes.GetClass(curr));
+	//Get other functions with same name - divide into abstract and non-abstract.
+	CxList others = unChecked.FindByShortName(curr);
+
+	CxList currParams = allParams.GetParameters(curr);
+	CxList currTyperefs = typerefs.GetByAncs(currParams);
+	CxList overriden = All.NewCxList();
+	CxList overridenPure = All.NewCxList();
+	bool isOverride = true;
+	foreach(CxList other in others) 
+	{
+		CxList otherTypeRefs = allParams.GetParameters(other);
+		otherTypeRefs = typerefs.GetByAncs(otherTypeRefs);
+		//Check if otherMethod overrides currMethod.
+		if(sons.FindByShortName(classes.GetClass(other)).Count == 1 &amp;&amp;
+			currTyperefs.Count == otherTypeRefs.Count) 
+		{
+			for(int i = 0; i </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

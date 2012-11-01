@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b5988779-38ab-4eeb-8c3b-6489db93a72e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1010 - Multiple Forms In Visualforce Page</Title>
+    <Category>CWE: 10537</Category>
+    <Phase>Apex Force com Code Quality</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10537</h1>
+  <iframe height="500" src="/content/10537" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1010
+Cwe : 10537
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1001
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList formStart = Find_Methods().FindByShortName("__multiple_form__");
+
+System.Collections.ArrayList formsFileNames = new System.Collections.ArrayList();
+
+foreach (CxList form in formStart)
+{
+	if (form.data.Count &gt; 0)
+	{
+		CSharpGraph g = form.data.GetByIndex(0) as CSharpGraph;
+		if (g != null)
+		{
+			string fileName = g.LinePragma.FileName;
+			if (!formsFileNames.Contains(fileName))
+			{
+				formsFileNames.Add(fileName);
+			}
+			else
+			{
+				result += formStart.FindByFileName(fileName);
+			}
+		}
+	}
+}
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

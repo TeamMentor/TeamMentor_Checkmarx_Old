@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ed6faaa3-6883-4b03-b7a5-ac1c3ed07fbe</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1081 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VB6</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1081
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1005
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = All.FindByName("*.text");
+
+CxList textFields = All.FindByRegex(@"(?<_3d_begin28_5c_s29_2b_vb5c_.textbox28_5c_s29_2b_29_.2b_22_29_3b_ combofields="" cxlist=""></_3d_begin28_5c_s29_2b_vb5c_.textbox28_5c_s29_2b_29_.2b_22_29_3b_><_3d_begin28_5c_s29_2b_vb5c_.combobox28_5c_s29_2b_29_.2b_22_29_3b_ listfields="" cxlist=""></_3d_begin28_5c_s29_2b_vb5c_.combobox28_5c_s29_2b_29_.2b_22_29_3b_><_3d_begin28_5c_s29_2b_vb5c_.listbox28_5c_s29_2b_29_.2b_22_29_3b_ result="" combofields="" _2b_=""></_3d_begin28_5c_s29_2b_vb5c_.listbox28_5c_s29_2b_29_.2b_22_29_3b_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

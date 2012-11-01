@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>80888295-7232-4d77-8c26-789340ce07f5</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>225 - String Termination cin</Title>
+    <Category>CWE: 170</Category>
+    <Phase>CPP Buffer Overflow</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  170</h1>
+  <iframe height="500" src="/content/170" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 225
+Cwe : 170
+IsExecutable : false
+IsEncrypted : false
+Severity : 3
+PackageId : 15
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	String Termination Error - cin
+//  ------------------------------
+//  Find all cin inputs to char arrays that have no cin.width sanitation.
+///////////////////////////////////////////////////////////////////////
+
+// Find assignments from cin (inputs)
+CxList assignExpr = All.FindByType(typeof(AssignExpr));
+CxList cin = All.FindByShortName("cin");
+cin = cin.GetByAncs(assignExpr);
+
+// Find all char assignments
+CxList charOnly = All.FindByType("char");
+CxList cinGetsChar = charOnly.GetFathers() * cin.GetFathers();
+CxList cinChar = cin.GetByAncs(cinGetsChar);	
+
+// Find all array creations
+CxList arrays = All.FindByType(typeof(ArrayCreateExpr)); // array creation
+CxList arraysFathers = arrays.GetFathers();
+arrays = All.FindByFathers(arraysFathers.FindByType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+	+ arraysFathers.FindByType(typeof(Declarator));
+//arrays = All.DataInfluencedBy(arrays); // the variable created
+arrays = All.FindAllReferences(arrays); // all the arrays' references
+
+CxList cinGetsArray = arrays.GetFathers() * cin.GetFathers(); // find only cin inputs
+CxList cinArrays = cin.GetByAncs(cinGetsArray); // get the arrays themselves
+
+// Result should contain all inputs to char arrays
+result = cinArrays*cinChar;
+
+// Find sanitizer
+CxList cinWidth = All.FindByName("*cin.width");
+
+cinWidth = cinWidth.GetTargetOfMembers().FindByShortName("cin");
+
+// Remove sanitizers
+result -= result.DataInfluencedBy(cinWidth);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

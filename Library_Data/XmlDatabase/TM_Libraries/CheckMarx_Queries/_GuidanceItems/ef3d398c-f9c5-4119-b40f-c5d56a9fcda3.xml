@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ef3d398c-f9c5-4119-b40f-c5d56a9fcda3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2061 - Use Of Hardcoded Password</Title>
+    <Category>CWE: 259</Category>
+    <Phase>Perl Medium Threat</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  259</h1>
+  <iframe height="500" src="/content/259" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2061
+Cwe : 259
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1295
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList emptyString = Find_Empty_Strings();
+CxList NULL = All.FindByName("null");
+CxList psw = Find_Passwords();
+
+// dbi password
+CxList dbi_conn = Find_Methods().FindByMemberAccess("DBI","connect") + Find_Methods().FindByMemberAccess("DBI","connect_cached");
+psw += All.GetParameters(dbi_conn, 3);
+
+// oracle password
+CxList oracle_conn = Find_Methods().FindByShortName("ora_login");
+psw += All.GetParameters(oracle_conn, 3);
+
+// mysql password
+CxList mysql_conn = Find_Methods().FindByMemberAccess("Mysql", "connect");
+psw += All.GetParameters(mysql_conn, 2);
+	
+// Lists preperation
+CxList psw_in_lSide = psw.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList strLiterals = Find_Strings() - emptyString - NULL;
+// 	(when the hardcoded string includes a space or dot we believe it is not a password string)
+strLiterals -= strLiterals.FindByName("* *");
+strLiterals -= strLiterals.FindByName("*.*");
+CxList lit_in_rSide = strLiterals.FindByAssignmentSide(CxList.AssignmentSide.Right);
+
+// Find password in an initialization operation
+CxList eq = All.FindByShortName("==");
+eq += All.FindByShortName("eq");
+eq += All.FindByShortName("ne");
+eq += All.FindByShortName("!=");
+eq = eq.GetAncOfType(typeof(BinaryExpr));
+
+CxList equalsPassword = eq.InfluencedBy(psw);
+equalsPassword = strLiterals.InfluencingOn(equalsPassword);
+
+// Find password in as assignment
+CxList assignPassword = psw_in_lSide.GetAncOfType(typeof(AssignExpr));
+assignPassword = lit_in_rSide.GetByAncs(assignPassword);
+
+//// Add hardcoded password in post login
+//CxList methods = Find_Methods();
+//CxList strings = Find_Strings();
+//CxList loginStrings = strings.FindByShortName("*/login*");
+//CxList httpStrings = strings.FindByShortName("*http:*");
+//CxList post = methods.FindByShortName("post");
+//CxList postParam = All.GetParameters(post, 0);
+//CxList postLoginParam = postParam.DataInfluencedBy(loginStrings) + postParam * loginStrings;
+//post = post.FindByParameters(postLoginParam);
+//CxList postPassword = post.FindByRegex(@"password\s*=&gt;\s*'\w");
+
+assignPassword += All.FindByRegex(@"password\s*=&gt;\s*'\w");
+
+result = assignPassword;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

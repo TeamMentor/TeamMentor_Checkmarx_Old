@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4f2694b5-6af2-4598-9050-1db71c2e120c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>307 - Insecure Temporary File</Title>
+    <Category>CWE: 377</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  377</h1>
+  <iframe height="500" src="/content/377" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 307
+Cwe : 377
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+result = methods.FindByShortName("_mktemp")
+	+ methods.FindByShortName("_tempnam")
+	+ methods.FindByShortName("_tmpfile")
+	+ methods.FindByShortName("_tmpnam")
+	+ methods.FindByShortName("_ttempnam")
+	+ methods.FindByShortName("_ttmpnam")
+	+ methods.FindByShortName("_wtempnam")
+	+ methods.FindByShortName("_wtmpnam")
+	+ methods.FindByShortName("GetTempFileName")
+	+ methods.FindByShortName("mkstemp")
+	+ methods.FindByShortName("mktemp")
+	+ methods.FindByShortName("tempnam")
+	+ methods.FindByShortName("tmpfile")
+	+ methods.FindByShortName("tmpnam")
+	+ methods.FindByShortName("tmpnam_r");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

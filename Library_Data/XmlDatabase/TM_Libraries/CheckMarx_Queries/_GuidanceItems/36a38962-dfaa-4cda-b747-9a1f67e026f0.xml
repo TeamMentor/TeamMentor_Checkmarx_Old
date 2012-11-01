@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>36a38962-dfaa-4cda-b747-9a1f67e026f0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>43 - Find XSS Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 43
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 3
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList VF_encode = methods.FindByShortName("*encode*") - methods.FindByShortName("*unencode*");
+
+result = Find_XSS_Replace() + Find_Integers() + All.GetByAncs(VF_encode) + Find_Id_Sanitizers();
+
+// getters
+CxList getters = (Find_VF_Pages() * Find_Methods()).FindByShortName("get*");
+getters -= getters.FindByShortName("*__c");
+
+getters -= getters.GetTargetOfMembers();
+
+result += getters 
+	- getters.FindAllReferences(Find_Apex_Files().FindDefinition(getters))
+	- (getters.GetTargetOfMembers() * Find_sObjects().GetMembersOfTarget()).GetMembersOfTarget()
+	- (getters.GetTargetOfMembers() * Find_sObjects()).GetMembersOfTarget();
+
+// renderAs pdf
+CxList pages = Find_VF_Pages();
+CxList renderedAsPDF = pages.FindByShortName("cx_renderaspdf__on", false);
+renderedAsPDF = renderedAsPDF.DataInfluencedBy(Find_Strings().FindByShortName("'pdf'"))
+	- renderedAsPDF.DataInfluencedBy(Find_Strings().FindByShortName("'html'"));
+CxList PDFContainer = All.GetClass(renderedAsPDF);
+result += pages.GetByAncs(PDFContainer);
+
+// getUrl does some encoding by default
+CxList getUrl = methods.FindByShortName("geturl");
+
+// replace 1st parameter and alike
+CxList repl = methods.FindByMemberAccess("string.replace") + 
+	methods.FindByMemberAccess("string.replaceall") +
+	methods.FindByMemberAccess("string.split");
+result += All.GetParameters(repl, 0);
+
+result += getUrl - getUrl.FindAllReferences(All.FindDefinition(getUrl));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

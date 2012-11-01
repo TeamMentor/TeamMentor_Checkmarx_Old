@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>75aa6d5a-d9fe-4144-9a34-f7245632d55f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1519 - Improper Transaction Handling</Title>
+    <Category>CWE: 460</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  460</h1>
+  <iframe height="500" src="/content/460" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1519
+Cwe : 460
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList notStrings = All - Find_Strings();
+notStrings -= notStrings.FindByType(typeof(MethodDecl));
+CxList Commit = notStrings.FindByShortName("*commit*", false);
+Commit -= Commit.FindByType(typeof(Param));
+Commit -= Commit.FindByType(typeof(UnknownReference));
+CxList Rollback = notStrings.FindByShortName("*rollback*", false);
+Rollback -= Rollback.FindByType(typeof(Param));
+Rollback -= Rollback.FindByType(typeof(UnknownReference));
+
+CxList TryBlock = Commit.GetAncOfType(typeof(TryCatchFinallyStmt));
+
+result = Commit - Commit.GetByAncs(TryBlock);
+
+foreach(CxList cml in TryBlock)
+{
+	TryCatchFinallyStmt TryGraph = cml.data.GetByIndex(0) as TryCatchFinallyStmt;
+
+	CxList curTry = All.FindById(TryGraph.Try.NodeId);
+	
+	CxList curCatch = new CxList();
+	if(TryGraph.CatchClauses != null &amp;&amp; TryGraph.CatchClauses.Count &gt; 0)
+	{
+		curCatch = All.FindById(TryGraph.CatchClauses[0].NodeId);
+	}
+	
+	CxList CommitInTry = Commit.GetByAncs(curTry);
+	CxList RollbackInCatch = Rollback.GetByAncs(curCatch);
+
+
+	if( (RollbackInCatch.GetAncOfType(typeof(TryCatchFinallyStmt)) * 
+		CommitInTry.GetAncOfType(typeof(TryCatchFinallyStmt))).Count == 0)
+	{
+		result += cml;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

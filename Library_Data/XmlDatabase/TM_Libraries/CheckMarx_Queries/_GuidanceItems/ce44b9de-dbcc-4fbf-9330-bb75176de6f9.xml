@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ce44b9de-dbcc-4fbf-9330-bb75176de6f9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1614 - Comparing instead of Assigning</Title>
+    <Category>CWE: 482</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  482</h1>
+  <iframe height="500" src="/content/482" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1614
+Cwe : 482
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList assign = All.FindByType(typeof(AssignExpr));
+CxList condition = Find_Conditions();
+
+CxList compare = All.FindByShortName("==");
+compare -= condition;
+compare -= compare.GetByAncs(All.FindByType(typeof(Param)));
+
+CxList compareFather = compare.GetFathers();
+CxList statementsWithCompare = 
+	compareFather.FindByType(typeof(StatementCollection)) +
+	compareFather.FindByType(typeof(CatchCollection));
+
+result = compare * compare.GetFathers() + // No sense of comparing the compare result, must be a mistake
+	compare.FindByFathers(statementsWithCompare); // No sense of having a compare in a collection</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

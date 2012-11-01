@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7750d2a5-5427-4a70-b2e9-337524aeed5b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>304 - Use Of Hardcoded Password</Title>
+    <Category>CWE: 259</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  259</h1>
+  <iframe height="500" src="/content/259" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 304
+Cwe : 259
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList psw  = Find_Passwords();
+
+CxList psw_in_lSide = psw.FindByAssignmentSide(CxList.AssignmentSide.Left);
+CxList psw_in_lSide_decl = psw_in_lSide.FindByType(typeof(Declarator));
+
+CxList strLiterals = Find_Strings();
+CxList lit_in_rSide = strLiterals.FindByAssignmentSide(CxList.AssignmentSide.Right);
+
+//when the hardcoded string includes a space or dot we believe 
+//it is not a password string
+lit_in_rSide -= lit_in_rSide.FindByName("* *");
+lit_in_rSide -= lit_in_rSide.FindByName("*.*");
+
+//empty string is OK
+lit_in_rSide -= Find_Empty_Strings();
+
+// Password in declaration
+CxList PasswordInDecl = psw_in_lSide_decl.FindByInitialization(lit_in_rSide);
+
+CxList methods = Find_Methods();
+CxList strcmp = methods.FindByShortName("strcmp")
+	+ methods.FindByShortName("strncmp")
+	+ methods.FindByShortName("bcmp");
+CxList strcmpParam1 = All.GetParameters(strcmp, 0);
+CxList strcmpParam2 = All.GetParameters(strcmp, 1);
+
+	//strcmp(password, "myPass")
+	//strcnmp(password, "myPass", length)
+	//bcmp(password, "myPass", cnt)
+CxList hPassInStrcmp = All.FindByParameters(strcmpParam1 * psw) * All.FindByParameters(strcmpParam2 * strLiterals);
+
+	//strcmp("myPass", password)
+	//strcnmp("myPass", password, length)
+	//bcmp("myPass", password, cnt)
+hPassInStrcmp += All.FindByParameters(strcmpParam2 * psw) * All.FindByParameters(strcmpParam1 * strLiterals);
+
+// Find password in an "Equals" operation
+CxList eq = All.FindByMemberAccess("String.Equals");
+eq *= psw.GetMembersOfTarget();
+CxList equalsPassword = strLiterals.GetByAncs(eq);
+
+eq = All.FindByMemberAccess("String.Equals");
+eq *= strLiterals.GetMembersOfTarget();
+equalsPassword += psw.GetByAncs(eq);
+
+// Password in simple assignment
+CxList assignPassword = psw_in_lSide.GetAncOfType(typeof(AssignExpr));
+assignPassword = lit_in_rSide.GetByAncs(assignPassword);
+
+result = PasswordInDecl	+ hPassInStrcmp + equalsPassword + assignPassword;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

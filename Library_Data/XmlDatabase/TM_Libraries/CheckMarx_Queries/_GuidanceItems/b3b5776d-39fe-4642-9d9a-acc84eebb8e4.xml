@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b3b5776d-39fe-4642-9d9a-acc84eebb8e4</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>464 - Cross Site History Manipulation</Title>
+    <Category>CWE: 203</Category>
+    <Phase>CSharp Medium Threat</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  203</h1>
+  <iframe height="500" src="/content/203" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 464
+Cwe : 203
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 28
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList redirect = methods.FindByMemberAccess("HttpResponse.Redirect") +
+	methods.FindByName("*Response.Redirect");
+
+CxList rand = All.FindByMemberAccess("Random.Next*", false);
+redirect -= redirect.DataInfluencedBy(rand);
+
+CxList cs = All.FindByFileName("*.cs");
+CxList ifStmt = cs.FindByType(typeof(IfStmt));
+CxList caseStmt = cs.FindByType(typeof(Case));
+
+result = redirect.GetByAncs(ifStmt).GetAncOfType(typeof(IfStmt)) + 
+	redirect.GetByAncs(caseStmt).GetAncOfType(typeof(Case));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

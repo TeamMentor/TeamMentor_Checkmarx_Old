@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a184f6b0-1d32-4444-b3e9-80cf476133ed</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1959 - Find Plain Read NonDB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1959
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods =
+	All.FindByMemberAccess("AudioInputStream.read*") +
+	All.FindByMemberAccess("BufferedInputStream.read*") +
+	All.FindByMemberAccess("BufferedReader.read*") +
+	All.FindByMemberAccess("ByteArrayInputStream.read*") +
+	All.FindByMemberAccess("CharArrayReader.read*") +
+	All.FindByMemberAccess("DataInputStream.read*") +
+	All.FindByMemberAccess("FileInputStream.read*") +
+	All.FindByMemberAccess("FileReader.read*") +
+	All.FindByMemberAccess("FilterInputStream.read*") +
+	All.FindByMemberAccess("InputStream.read*") +
+	All.FindByMemberAccess("InputStreamReader.read*") +
+	All.FindByMemberAccess("LineNumberReader.read*") +
+	All.FindByMemberAccess("ObjectInputStream.read*") +
+	All.FindByMemberAccess("PipedInputStream.read*") +
+	All.FindByMemberAccess("PipedReader.read*") +
+	All.FindByMemberAccess("SequenceInputStream.read*") +
+	All.FindByMemberAccess("ServletInputStream.read*") +
+	All.FindByMemberAccess("StringBufferInputStream.read*") +
+	All.FindByMemberAccess("StringReader.read*");
+
+CxList parameters = All.GetParameters(methods, 0);
+parameters -= Find_Integers();
+parameters -= Find_Integers().GetFathers();
+parameters -= parameters.FindByType(typeof(Param));
+
+// remove the methods that have parameters, because we are using the parameters
+// (if there was no parameter for the method, then it stays)
+//methods -= methods.FindByParameters(parameters); 
+
+methods += // add methods that their parameters are not inputs
+	All.FindByMemberAccess("System.getProperty") + 
+	All.FindByMemberAccess("System.getProperties") + 
+	All.FindByMemberAccess("SAXReader.read*");
+
+if(!All.isWebApplication)
+{
+	methods += All.FindByName("System.getenv");
+	methods += All.FindByMemberAccess("Properties.getProperty");
+}
+
+result = methods + parameters - Find_Interactive_Inputs();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c70cdbc6-3e24-412e-910b-5b7ffcfc5b5c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1837 - R12 07 Bitwise Operator On Signed Type</Title>
+    <Category>CWE: 11025</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11025</h1>
+  <iframe height="500" src="/content/11025" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1837
+Cwe : 11025
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 12-7
+------------------------------
+This query searches for bitwise operators (~, <_2c_></_2c_><_3d_2c_>&gt;, &gt;&gt;=, &amp;, &amp;=, ^, ^=, |, |=) 
+used on an operand with underlying signed type 
+
+	The Example below shows code with vulnerability: 
+
+int16_t mc2_1207_a;
+int16_t mc2_1207_b;
+int16_t mc2_1207_c;
+
+mc2_1207_c = ~mc2_1207_a;
+mc2_1207_c = mc2_1207_a <_22_2c_ _22_="">&gt;", "&amp;", "^", "|"}
+CxList bitwiseOperators = binaryExprs.GetByBinaryOperator(BinaryOperator.BitwiseOr) +
+	binaryExprs.GetByBinaryOperator(BinaryOperator.BitwiseAnd) +
+	binaryExprs.GetByBinaryOperator(BinaryOperator.BitwiseXor) +
+	binaryExprs.GetByBinaryOperator(BinaryOperator.ShiftLeft) +
+	binaryExprs.GetByBinaryOperator(BinaryOperator.ShiftRight);
+// find expressions of type: {"~"}
+foreach (CxList cur in unaryExprs){
+	UnaryExpr g = (UnaryExpr) cur.data.GetByIndex(0);
+	if(g == null || g.Operator == null) {
+		continue;
+	}
+	UnaryOperator curOp = g.Operator;
+	if (curOp == UnaryOperator.OnesComplement){
+		bitwiseOperators += cur;
+	}
+}
+// find expressions of type: {"<_3d_22_2c_ _22_="">&gt;=", "&amp;=", "^=", "|="}
+foreach (CxList cur in assignExprs){
+	AssignExpr g = (AssignExpr) cur.data.GetByIndex(0);
+	if(g == null || g.Operator == null) {
+		continue;
+	}
+	AssignOperator curOp = g.Operator;
+	if ((curOp == AssignOperator.LeftShiftAssign) ||
+		(curOp == AssignOperator.RightShiftAssign) ||
+		(curOp == AssignOperator.BitwiseAndAssign) ||
+		(curOp == AssignOperator.BitwiseOrAssign) ||
+	(curOp == AssignOperator.ExclusiveOrAssign)){
+		bitwiseOperators += cur;
+	}
+}
+
+result = sgnDeclUses.GetByAncs(bitwiseOperators);</_3d_22_2c_></_22_2c_></_3d_2c_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

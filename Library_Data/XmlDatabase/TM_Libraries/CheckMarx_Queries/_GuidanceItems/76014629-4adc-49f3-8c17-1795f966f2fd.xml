@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>76014629-4adc-49f3-8c17-1795f966f2fd</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>379 - Find DB Methods</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 379
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 24
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+methods -= Find_DB();
+methods -= Find_SQL_Sanitize();
+CxList filtered = 
+	methods.FindByShortName("Add*") +
+	methods.FindByShortName("Append") +
+	methods.FindByShortName("Close") +
+	methods.FindByShortName("Contains") +
+	methods.FindByShortName("Equals") +
+	methods.FindByShortName("Exists") +
+	methods.FindByShortName("GetName") +
+	methods.FindByShortName("GetString") +
+	methods.FindByShortName("GetType") +
+	methods.FindByShortName("IndexOf") +
+	methods.FindByShortName("LastIndexOf") +
+	methods.FindByShortName("Length") +
+	methods.FindByShortName("prepare*") +
+	methods.FindByShortName("PrepareStatement") +
+	methods.FindByShortName("Read*") +
+	methods.FindByShortName("Replace") +
+	methods.FindByShortName("Set*") +
+	methods.FindByShortName("Size") +
+	methods.FindByShortName("Substring") +
+	methods.FindByShortName("ToArray") +
+	methods.FindByShortName("ToInt") +
+	methods.FindByShortName("ToLower") +
+	methods.FindByShortName("ToString") +
+	methods.FindByShortName("ToUpper") +
+	methods.FindByShortName("Write") +
+	methods.FindByShortName("WriteLine");
+
+methods -= filtered;
+
+foreach(CxList method in methods)
+{	
+	CxList targetOfMembers = method.GetTargetOfMembers();
+	if((targetOfMembers != null) &amp;&amp;
+		(targetOfMembers.Count &gt; 0) &amp;&amp;
+		(method.GetFathers().GetAncOfType(typeof(MethodInvokeExpr)).Count == 0))
+	{
+		result += method;	
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

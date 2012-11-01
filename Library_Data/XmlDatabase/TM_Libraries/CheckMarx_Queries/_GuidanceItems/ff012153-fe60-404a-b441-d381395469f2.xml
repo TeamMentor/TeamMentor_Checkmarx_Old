@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ff012153-fe60-404a-b441-d381395469f2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>861 - Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 861
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = AllVbs().FindByType(typeof(MethodInvokeExpr));
+
+CxList binary = AllVbs().FindByType(typeof(BinaryExpr));
+CxList booleanConditions =
+	binary.FindByShortName("<_22_29_ _binary.findbyshortname28_22_="" _2b_="">") +
+	binary.FindByShortName("==") +
+	binary.FindByShortName("!=") +
+	binary.FindByShortName("") +
+	binary.FindByShortName("<_3d_22_29_ _binary.findbyshortname28_22_="" _2b_="">=") +
+	binary.FindByShortName("||") +
+	binary.FindByShortName("&amp;&amp;") +
+	AllVbs().FindByType(typeof(UnaryExpr)).FindByShortName("!");
+
+CxList repl = methods.FindByShortName("replace", false);
+repl = All.GetParameters(repl, 1);
+
+result = methods.FindByShortName("escape") +
+	methods.FindByShortName("*encode*") - methods.FindByShortName("*unencode*") +
+	methods.FindByShortName("count") +
+	methods.FindByShortName("indexof") +
+	methods.FindByShortName("parseint") +
+	methods.FindByShortName("parsefloat") +
+	methods.FindByShortName("number") +
+	methods.FindByShortName("length") +
+	methods.FindByShortName("len") +
+	booleanConditions;</_3d_22_29_></_22_29_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

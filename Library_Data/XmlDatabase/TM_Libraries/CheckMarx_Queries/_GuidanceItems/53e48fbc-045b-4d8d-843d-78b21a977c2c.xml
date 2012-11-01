@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>53e48fbc-045b-4d8d-843d-78b21a977c2c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1671 - Cleartext Submission of Sensitive Information</Title>
+    <Category>CWE: 319</Category>
+    <Phase>Java Medium Threat</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  319</h1>
+  <iframe height="500" src="/content/319" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1671
+Cwe : 319
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 37
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // We get all sensitive data. 
+CxList personal_info = 
+	All.FindByShortName("*password*", false) + 
+	All.FindByShortName("*psw*", false) + 
+	All.FindByShortName("*pwd*", false) + 
+	All.FindByShortName("*pass*", false) + 
+	All.FindByShortName("*pass*", false) + 
+	All.FindByShortName("*Credit*", false) + 
+	All.FindByShortName("*Account*", false) + 
+	All.FindByShortName("*SSN*", false) +
+	All.FindByShortName("*SocialSecurity*", false);
+
+// We remove strings, since they might contain: "Enter password".
+// A potential problem  is that the might also contain: "password is....", but then it's hardcoded, 
+// and not really sensitive information.
+personal_info -= Find_Strings();
+
+// We deal with 2 types of risky outputs - HttpServletResponse and Socket
+CxList outputs = Find_Outputs();
+
+// 1. HttpServletResponse must checked by HttpServletRequest.isSecure() if it is secured
+CxList response = All.FindByType("HttpServletResponse");
+CxList outputsResponse = outputs.DataInfluencedBy(response);
+CxList isSecure = 
+	Find_Conditions().FindByMemberAccess("HttpServletRequest.isSecure") +
+	Find_Conditions().FindByMemberAccess("HTTPUtilties.isSecureChannel");
+CxList secureIf = isSecure.GetFathers();
+outputsResponse -= outputsResponse.GetByAncs(secureIf);
+
+// 2. Socket is always insecure (should be SSLSocket to be secured)
+CxList socket = All.FindByType("Socket");
+CxList outputsSocket = outputs.DataInfluencedBy(socket);
+
+outputs = outputsResponse + outputsSocket;
+
+// Anyhing that passes through the DB now has info from the DB and not the sensitive data
+CxList sanitize = Find_DB() + Find_Dead_Code_Contents();
+
+
+result = outputs.InfluencedByAndNotSanitized(personal_info, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

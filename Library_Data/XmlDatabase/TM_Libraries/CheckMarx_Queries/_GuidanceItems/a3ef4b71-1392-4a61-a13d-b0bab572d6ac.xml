@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a3ef4b71-1392-4a61-a13d-b0bab572d6ac</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>233 - Find DB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 233
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+result = methods.FindByMemberAccess("Statement.execute*") + //occi
+	methods.FindByMemberAccess("SACommand.Execute*") + //sqlapi
+	methods.FindByMemberAccess("_CommandPtr.Execute*") + //adodb
+	methods.FindByMemberAccess("Command.Execute*") + //adodb
+	methods.FindByMemberAccess("Connection.Execute*") + //adodb
+	methods.FindByMemberAccess("_RecordsetPtr.Open*") + //adodb
+	methods.FindByMemberAccess("Recordset.Open*");//adodb
+
+result +=
+	methods.FindByMemberAccess("CDaoRecordset.Open") +
+	methods.FindByMemberAccess("CDaoQueryDef.Execute") +
+	methods.FindByMemberAccess("Statement.execute") +
+	methods.FindByShortName("OCIStmtExecute") +
+	methods.FindByShortName("SQLExecute") +
+	All.GetParameters(methods.FindByShortName("SQLExecDirect"), 1) + // odbc
+	All.GetParameters(methods.FindByShortName("SQLPutData"), 1);
+
+result += 
+	methods.FindByMemberAccess("IDataAdapter.Update") +
+	methods.FindByMemberAccess("IDataAdapter.Fill") +
+	methods.FindByMemberAccess("IDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("IDbDataAdapter.Update") +
+	methods.FindByMemberAccess("IDbDataAdapter.Fill") +
+	methods.FindByMemberAccess("IDbDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("DbDataAdapter.Update") +
+	methods.FindByMemberAccess("DbDataAdapter.Fill") +
+	methods.FindByMemberAccess("DbDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("SqlDataAdapter.Update") +
+	methods.FindByMemberAccess("SqlDataAdapter.Fill") +
+	methods.FindByMemberAccess("SqlDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("SqlCeDataAdapter.Update") +
+	methods.FindByMemberAccess("SqlCeDataAdapter.Fill") +
+	methods.FindByMemberAccess("SqlCeDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("OdbcDataAdapter.Update") +
+	methods.FindByMemberAccess("OdbcDataAdapter.Fill") +
+	methods.FindByMemberAccess("OdbcDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("OleDbDataAdapter.Update") +
+	methods.FindByMemberAccess("OleDbDataAdapter.Fill") +
+	methods.FindByMemberAccess("OleDbDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("OracleDataAdapter.Update") +
+	methods.FindByMemberAccess("OracleDataAdapter.Fill") +
+	methods.FindByMemberAccess("OracleDataAdapter.FillSchema") +
+
+	methods.FindByMemberAccess("SqlDataSource.Select") +
+	methods.FindByMemberAccess("SqlDataSource.Update") +
+	methods.FindByMemberAccess("SqlDataSource.Insert") +
+	methods.FindByMemberAccess("SqlDataSource.Delete") +
+
+	methods.FindByMemberAccess("AccessDataSource.Select") +
+	methods.FindByMemberAccess("AccessDataSource.Update") +
+	methods.FindByMemberAccess("AccessDataSource.Insert") +
+	methods.FindByMemberAccess("AccessDataSource.Delete") +
+
+	methods.FindByMemberAccess("IDbCommand.ExecuteReader") +
+	methods.FindByMemberAccess("IDbCommand.ExecuteScalar") +
+	methods.FindByMemberAccess("IDbCommand.ExecuteNonQuery") +
+
+	methods.FindByMemberAccess("OdbcCommand.ExecuteReader") +
+	methods.FindByMemberAccess("OdbcCommand.ExecuteScalar") +
+	methods.FindByMemberAccess("OdbcCommand.ExecuteNonQuery") +
+
+	methods.FindByMemberAccess("OleDbCommand.ExecuteReader") +
+	methods.FindByMemberAccess("OleDbDataReader.ExecuteReader") +
+	methods.FindByMemberAccess("OleDbCommand.ExecuteScalar") +
+	methods.FindByMemberAccess("OleDbCommand.ExecuteNonQuery") +
+
+	methods.FindByMemberAccess("OracleCommand.ExecuteReader") +
+	methods.FindByMemberAccess("OracleCommand.ExecuteScalar") +
+	methods.FindByMemberAccess("OracleCommand.ExecuteNonQuery") +
+	methods.FindByMemberAccess("OracleCommand.ExecuteOracleNonQuery") +
+	methods.FindByMemberAccess("OracleCommand.ExecuteOracleScalar") +
+
+	methods.FindByMemberAccess("SqlCommand.ExecuteReader") +
+	methods.FindByMemberAccess("SqlCommand.ExecuteScalar") +
+	methods.FindByMemberAccess("SqlCommand.ExecuteNonQuery") +
+	methods.FindByMemberAccess("SqlCommand.ExecuteXmlReader") +
+	methods.FindByMemberAccess("SqlCommand.BeginExecuteReader") +
+	methods.FindByMemberAccess("SqlCommand.BeginExecuteNonQuery") +
+	methods.FindByMemberAccess("SqlCommand.BeginExecuteXmlReader") + 
+
+	methods.FindByMemberAccess("SqlCeCommand.ExecuteReader") +
+	methods.FindByMemberAccess("SqlCeCommand.ExecuteResultSet") +
+	methods.FindByMemberAccess("SqlCeCommand.ExecuteScalar") +
+	methods.FindByMemberAccess("SqlCeCommand.ExecuteNonQuery") +
+	methods.FindByMemberAccess("SqlCeCommand.ExecuteXmlReader") +
+	methods.FindByMemberAccess("SqlCeCommand.BeginExecuteReader") +
+	methods.FindByMemberAccess("SqlCeCommand.BeginExecuteNonQuery") +
+	methods.FindByMemberAccess("SqlCeCommand.BeginExecuteXmlReader") + 
+
+	methods.FindByMemberAccess("UpdateCommand.Execute*") + 
+	methods.FindByMemberAccess("InsertCommand.Execute*") + 
+	methods.FindByMemberAccess("DeleteCommand.Execute*") + 
+	methods.FindByMemberAccess("SelectCommand.Execute*") +
+
+	methods.FindByMemberAccess("SqlPipe.ExecuteAndSend") +
+
+	methods.FindByMemberAccess("DB2Command.Execute*") + 
+
+	methods.FindByMemberAccess("QSqlQuery.exec") +
+	methods.FindByMemberAccess("QSqlQuery.execBatch") +
+	
+	methods.FindByMemberAccess("mysqlpp.Query", "store*") +
+	methods.FindByMemberAccess("mysqlpp.Query", "exec*") +
+	methods.FindByMemberAccess("mysqlpp.Query", "for_each*") +
+	methods.FindByMemberAccess("mysqlpp.Query", "use*") +
+	methods.FindByMemberAccess("mysqlpp.DBDriver", "execute");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

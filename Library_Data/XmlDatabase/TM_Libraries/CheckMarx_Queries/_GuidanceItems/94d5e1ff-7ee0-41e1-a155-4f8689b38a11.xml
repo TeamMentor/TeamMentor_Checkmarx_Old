@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>94d5e1ff-7ee0-41e1-a155-4f8689b38a11</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1999 - Find Integers</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1999
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1292
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList allMethods = Find_Methods() + All.FindByType(typeof(MemberAccess));
+
+CxList numberSanitizer = 
+	allMethods.FindByShortName("*length*", false) + 
+	allMethods.FindByShortName("*position*", false) +
+	allMethods.FindByShortName("*size*", false) + 
+	allMethods.FindByShortName("_count", false) + 
+	allMethods.FindByShortName("average", false) + 
+	allMethods.FindByShortName("cmp") +
+	allMethods.FindByShortName("cos") +
+	allMethods.FindByShortName("count", false) + 
+	allMethods.FindByShortName("doubleval", false) +
+	allMethods.FindByShortName("eq") +
+	allMethods.FindByShortName("ge") +
+	allMethods.FindByShortName("gmtime") +
+	allMethods.FindByShortName("gt") +
+	allMethods.FindByShortName("hex") +
+	allMethods.FindByShortName("index", false) + 
+	allMethods.FindByShortName("int", false) + 
+	allMethods.FindByShortName("isalnum") +
+	allMethods.FindByShortName("isalpha") +
+	allMethods.FindByShortName("isdigit") +
+	allMethods.FindByShortName("isgraph") +
+	allMethods.FindByShortName("islower") +
+	allMethods.FindByShortName("isprint") +
+	allMethods.FindByShortName("ispunct") +
+	allMethods.FindByShortName("isspace") +
+	allMethods.FindByShortName("isupper") +
+	allMethods.FindByShortName("isxdigit") +
+	allMethods.FindByShortName("le") +
+	allMethods.FindByShortName("localtime") +
+	allMethods.FindByShortName("log") +
+	allMethods.FindByShortName("lt") +
+	allMethods.FindByShortName("maximum", false) + 
+	allMethods.FindByShortName("minimum", false) + 
+	allMethods.FindByShortName("ne") + 
+	allMethods.FindByShortName("oct") + 
+	allMethods.FindByShortName("ord") +
+	allMethods.FindByShortName("round", false) + 
+	allMethods.FindByShortName("sin") +
+	allMethods.FindByShortName("strcoll") +
+	allMethods.FindByShortName("strftime") +
+	allMethods.FindByShortName("strxfrm") +
+	allMethods.FindByShortName("sum", false) + 
+	allMethods.FindByShortName("time") +
+	allMethods.FindByShortName("times");
+
+
+result = numberSanitizer;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000030eec8</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>XPath Injection</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>XPath Injection</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+XPath injection is a type of vulnerabilities that allows attackers to execute arbitrary queries on XML databases. XPath injection vulnerabilities are similar to SQL injection vulnerabilities, but target XML databases instead of SQL databases. XPath injection vulnerabilities are often more dangerous than SQL injection attacks, because permissions are not enforced and the malicious queries can access every part of the XML documents. XPath injection applies to any application that uses XPath to query XML documents. To prevent this vulnerability, validate all input and use parameterized APIs if possible. To check for this vulnerability, find all code that uses XPath queries and make sure it does not include unvalidated user input.
+
+==Impact==
+
+XPath injection attacks may allow retrieving, manipulating, or destroying data stored in XML documents. The exact impact depends on the type of XML data that is exposed via XPath injection. If authentication data is exposed via XPath injection, the attacker is able to take over any user account. By taking over the administrator's account, the attacker is able to take full control of the application.
+
+==Countermeasures==
+
+Validate all input:
+
+Use parameterized APIs:
+
+==Checklists==
+
+All input is validated:
+
+Parameterized APIs are used:
+
+==Additional Resources==
+
+* For more information about XPath injection, see https://www.owasp.org/index.php/XPATH_Injection]]></Data>
+  </Content>
+</TeamMentor_Article>

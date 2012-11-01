@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ae712597-98e5-4cb0-a8ed-f00fe41e6880</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1645 - Information Exposure Through Debug Log</Title>
+    <Category>CWE: 534</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  534</h1>
+  <iframe height="500" src="/content/534" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1645
+Cwe : 534
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList deadCode = Find_Dead_Code_Contents();
+
+CxList getSession = 
+	All.FindByMemberAccess("HttpServletRequest.getSession") +
+	All.FindByName("*response.getSession") +  
+	All.FindByName("*Response.getSession");
+
+CxList inputs = 
+	getSession.GetMembersOfTarget().FindByShortName("getId") +
+	All.FindByMemberAccess("HttpSession.getId");
+
+CxList outputs = Find_Log_Outputs();
+
+CxList sanitize = Find_Integers() + deadCode;
+
+
+result = outputs.InfluencedByAndNotSanitized(inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

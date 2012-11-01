@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6deeb59e-8b7b-428b-b110-3c9ae33ac73f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>22 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 22
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 3
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList fd = All.FindByType(typeof(FieldDecl)) + All.FindByType(typeof(ConstantDecl));
+CxList md = All.FindByType(typeof(MethodDecl));
+CxList methods = Find_Methods();
+
+// Find web services inputs
+CxList apexInputs = All.GetParameters(md.FindByFieldAttributes(Modifiers.WebService)) + 
+	fd.FindByFieldAttributes(Modifiers.WebService);
+// Find references inputs
+apexInputs += All.FindByMemberAccess("pagereference.getparameters").GetMembersOfTarget().FindByShortName("get") + 
+	All.FindByMemberAccess("pagereference.geturl") + 				
+	All.FindByMemberAccess("currentpage.getparameters").GetMembersOfTarget().FindByShortName("get") + 
+	All.FindByMemberAccess("currentPage.geturl");
+
+CxList potentialInputs = methods.FindByShortName("pagereference")
+	+ methods.FindByShortName("currentpagereference")
+	+ methods.FindByShortName("currentpage")
+	+ methods.FindByShortName("getcurrentpage");
+potentialInputs = potentialInputs.GetMembersOfTarget();
+
+apexInputs += potentialInputs.FindByShortName("headers") + 
+	potentialInputs.FindByShortName("parameters").GetMembersOfTarget().FindByShortName("get") +
+	potentialInputs.FindByShortName("url");
+
+apexInputs += potentialInputs.FindByShortName("getparameters").GetMembersOfTarget().FindByShortName("get") + 
+	potentialInputs.FindByShortName("geturl");
+
+//CxList potentialC = Find_Apex_Files().FindByType(typeof(UnknownReference)) +
+//	Find_Apex_Files().GetMembersOfTarget();
+//potentialC -= Find_Apex_Files().FindByAssignmentSide(CxList.AssignmentSide.Left);
+//apexInputs += potentialC.FindByShortName("*__c", false);
+
+CxList getparameters = All.FindByMemberAccess("currentpage.getparameters");
+apexInputs += getparameters - All.GetTargetOfMembers();
+
+//Find VF inputs - referecnces
+potentialInputs = All.FindByShortName("$pagereference")
+	+ All.FindByShortName("$currentpagereference")
+	+ All.FindByShortName("$currentpage");
+potentialInputs = potentialInputs.GetMembersOfTarget();
+
+CxList VF_Inputs = potentialInputs.FindByShortName("headers") + 
+	potentialInputs.FindByShortName("parameters").GetMembersOfTarget() + 
+	potentialInputs.FindByShortName("url") + 
+	All.FindByMemberAccess("$request.*");
+
+// VF inputs - $$i
+potentialInputs = Find_VF_I();
+CxList relevantVFData = Find_VF_Pages();
+relevantVFData = 
+	relevantVFData.FindByType(typeof(MethodInvokeExpr))
+	+ relevantVFData.FindByType(typeof(UnknownReference));
+relevantVFData -= relevantVFData.FindByShortName("cxprotection_*");
+relevantVFData -= relevantVFData.FindByName("cx_*");
+relevantVFData -= relevantVFData.FindByShortName("$*");
+relevantVFData -= relevantVFData.FindByShortName("onclick__*");
+relevantVFData -= relevantVFData.FindByShortName("onkeydown__*");
+relevantVFData -= relevantVFData.FindByShortName("onselect__*");
+CxList input = relevantVFData*relevantVFData.DataInfluencingOn(potentialInputs);
+
+input -= input.DataInfluencingOn(input);
+VF_Inputs += input;
+CxList decl = All.FindDefinition(input) * md;
+VF_Inputs += All.GetParameters(decl);
+
+CxList VFref = Find_Apex_Files().FindAllReferences(All.GetParameters(decl.FindByShortName("set*")));
+VFref = All.GetByAncs(VFref.GetFathers().FindByType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+VFref -= VFref.GetTargetOfMembers();
+
+CxList VFref1 = All.FindAllReferences(VFref) - VFref;
+//VFref1 -= VFref1.DataInfluencedBy(apexInputs + VFref1);
+VFref += VFref1;
+//VFref = All.FindAllReferences(VFref);
+
+CxList ret = Find_Apex_Files().FindByType(typeof(ReturnStmt)).GetByAncs(md.FindByShortName("get*"));
+ret = VFref.GetByAncs(ret);
+ret -= ret.GetTargetOfMembers();
+VF_Inputs += ret;
+CxList assign = All.GetByAncs(All.FindByType(typeof(AssignExpr)));
+VFref -= assign.GetByAncs(assign.FindByAssignmentSide(CxList.AssignmentSide.Left));
+CxList exceptions = VFref.GetMembersOfTarget().FindByType(typeof(MethodInvokeExpr));
+exceptions = exceptions.FindByShortName("add", false) + 
+	exceptions.FindByShortName("clear", false) + 
+	exceptions.FindByShortName("remove", false);
+VFref -= exceptions.GetTargetOfMembers();
+VF_Inputs += VFref;
+
+// Sum up all inputs
+result = apexInputs + VF_Inputs;
+result -= Find_Id();
+result -= Not_Interactive_Inputs();
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

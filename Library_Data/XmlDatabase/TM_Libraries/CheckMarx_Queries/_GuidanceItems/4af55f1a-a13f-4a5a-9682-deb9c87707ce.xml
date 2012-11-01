@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4af55f1a-a13f-4a5a-9682-deb9c87707ce</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1277 - Find Encode</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1277
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+result = methods.FindByShortName("*encode*", false) - 
+	methods.FindByShortName("*encoder*", false) -
+	methods.FindByShortName("*utf7_encode", false) -
+	methods.FindByShortName("utf8_encode", false) -
+	methods.FindByShortName("bson_encode", false);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

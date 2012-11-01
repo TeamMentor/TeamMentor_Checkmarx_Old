@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1e305aa8-36b2-4889-8b29-e4adb60f46a9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2045 - Unprotected Transport of Credentials</Title>
+    <Category>CWE: 523</Category>
+    <Phase>Perl Medium Threat</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  523</h1>
+  <iframe height="500" src="/content/523" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2045
+Cwe : 523
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1295
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //// Find login operations using http instead of https
+
+// Find all methods and strings
+CxList methods = Find_Methods();
+CxList strings = Find_Strings();
+
+// Find login strings and http strings
+CxList loginStrings = strings.FindByShortName("*/login*");
+CxList httpStrings = strings.FindByShortName("*http:*");
+
+// Find the "post" and its first parameter (where "http" and "login" are used)
+CxList post = methods.FindByShortName("post");
+CxList postParam = All.GetParameters(post, 0);
+
+// Find all logins with http - either directly as a parameter, or affecting the parameter
+CxList postLoginParam = postParam.DataInfluencedBy(loginStrings) + postParam * loginStrings;
+postLoginParam = postLoginParam.DataInfluencedBy(httpStrings) + postLoginParam * httpStrings;
+
+
+// Show the results as a flow from the parameter to post
+result = postLoginParam.DataInfluencingOn(post);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

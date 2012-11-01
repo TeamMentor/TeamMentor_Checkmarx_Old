@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d4c70c4b-41eb-48f1-845e-1e4bc2893482</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>618 - Data Leak Between Sessions</Title>
+    <Category>CWE: 488</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  488</h1>
+  <iframe height="500" src="/content/488" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 618
+Cwe : 488
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList classes = Find_Class_Decl();
+
+// Find all classes that are HTTP Servlets
+CxList servletClasses = All.NewCxList();
+CxList singleLevel = classes.InheritsFrom("HttpServlet");
+int levelCount = singleLevel.Count;
+int counter = 0;
+while (levelCount &gt; 0 &amp;&amp; counter++  0 &amp;&amp; counter++ 0)
+	{
+		result += servlet;
+	};
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

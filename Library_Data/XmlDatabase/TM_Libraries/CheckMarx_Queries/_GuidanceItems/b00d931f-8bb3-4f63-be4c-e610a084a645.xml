@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b00d931f-8bb3-4f63-be4c-e610a084a645</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>852 - Find Member Access</Title>
+    <Category>CWE: 0</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 852
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length &gt; 0)
+{
+	string parameters = param[0] as string;
+	string param1 = parameters.Substring(0, parameters.IndexOf('.'));
+	string param2 = parameters.Substring(parameters.IndexOf('.') + 1);
+
+	CxList createObj = AllVbs().FindByType(typeof(ObjectCreateExpr));
+	CxList param1Create = createObj.FindByShortName(param1);
+	result += Find_Command_From_Http(param1Create, param2);
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

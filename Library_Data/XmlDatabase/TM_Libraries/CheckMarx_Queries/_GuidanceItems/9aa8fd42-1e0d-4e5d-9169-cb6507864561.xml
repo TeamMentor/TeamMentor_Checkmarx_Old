@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9aa8fd42-1e0d-4e5d-9169-cb6507864561</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1637 - Integer  Inputflow</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1637
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* Find integer overflow and underflow based on the inputs only (and random). When calling the Integer_Oveflow
+   and Integer_Underflow we use this query, and add to it also the result for Integer.MIN_VALUE or 
+   Integer.MAX_VALUE (as needed).
+*/
+
+// All inputs + maxInt value + random values (with no parameters)
+CxList inputs = Find_Inputs();
+CxList random = All.FindByMemberAccess("Random.NextLong", false);
+random += Get_ESAPI().FindByMemberAccess("Randomizer.getRandomLong"); // ESAPI
+random += Get_ESAPI().FindByMemberAccess("Randomizer.getRandomFloat"); // ESAPI
+CxList randomWithParams = random.FindByParameters(All.GetParameters(random, 0));
+// Leave only random with n params, otherwise it is bounded by the parameter value
+inputs += random - randomWithParams;
+
+result = Integer__Flow(inputs);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

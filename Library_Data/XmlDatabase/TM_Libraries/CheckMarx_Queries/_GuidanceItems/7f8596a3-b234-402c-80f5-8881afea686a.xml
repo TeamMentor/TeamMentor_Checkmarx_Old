@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7f8596a3-b234-402c-80f5-8881afea686a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1565 - MemoryFree on StackVariable</Title>
+    <Category>CWE: 633</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  633</h1>
+  <iframe height="500" src="/content/633" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1565
+Cwe : 633
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // MemoryFree_on_StackVariable
+// ---------------------------
+// The purpose of the query is to find situation of explicitly deallocate stack memory
+// Freeing a stack buffer will result in unexpected program behavior
+//
+// For example, the code below should be recognized as vulnerability
+//			void clean_up1 (){   
+//				char tmp[256];   
+//				do_something();
+//				free(tmp);    
+//				return;
+//		    }
+
+// On other hand the code below has a normal behavior
+//		    void clean_up2 (){   
+//			    char * buffer;
+// 			    buffer = (char*) malloc(1024);
+//		        free(buffer);    
+//              return;
+//          }
+
+
+CxList varsDecl = All.FindByType(typeof(Declarator));
+
+// The approach :All.GetByAncs(All.FindByType(typeof(FieldDecl))) tooks al childs of FiledDeck that is global variables
+// and remove it from the Decl list
+varsDecl = varsDecl - All.GetByAncs(All.FindByType(typeof(FieldDecl)));
+
+CxList methods = Find_Methods();
+CxList releaseMethods = methods.FindByShortName("free");
+CxList allockMethods = Find_Memory_Allocation();
+
+// VarsInReleaseMethods list will include all variables of UnknownReference type that appear
+// in free(v) method
+// In example code query title it is "tmp" and "buffer"
+CxList VarsInReleaseMethods = All.GetParameters(releaseMethods, 0).FindByType(typeof(UnknownReference));
+
+// varsDecl will include  local variable declrator of variables appears in free() method
+varsDecl = varsDecl.FindDefinition(VarsInReleaseMethods);
+
+CxList allLocalVariablesUsining = All.FindAllReferences(varsDecl).FindByType(typeof(UnknownReference));
+VarsInReleaseMethods = allLocalVariablesUsining.GetParameters(releaseMethods, 0);
+
+// In fact, the local variables that proggramer performs free operation is suspected to be a vulnerability
+// except the fact, that varible is influenced by malloc() operation, like:
+// 				buffer = (char*) malloc(1024);
+// In this case free(buffer) is correct operation
+VarsInReleaseMethods -= VarsInReleaseMethods.FindAllReferences(allLocalVariablesUsining.DataInfluencedBy(allockMethods));
+
+// In block below the special customer cases will be handles
+// Customer can use different frameworks of memory management, 
+// so the customer oriented changes will be performed below
+// 1) In case customer uses safe_memset(buffer) and free (buffer) after it - it is normal behavior
+VarsInReleaseMethods -= VarsInReleaseMethods.FindAllReferences(allLocalVariablesUsining.GetParameters(methods.FindByShortName("safe_memset"), 0));
+
+result = VarsInReleaseMethods;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

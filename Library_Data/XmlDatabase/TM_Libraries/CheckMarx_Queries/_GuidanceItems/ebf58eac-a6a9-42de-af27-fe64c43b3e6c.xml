@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ebf58eac-a6a9-42de-af27-fe64c43b3e6c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1625 - Public Static Field Not Marked Final</Title>
+    <Category>CWE: 500</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  500</h1>
+  <iframe height="500" src="/content/500" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1625
+Cwe : 500
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList fields = All.FindByType(typeof(FieldDecl)); // i.e. not final (otherwise it would be ConstantDecl)
+// Find thepublic static fields. No need to check for not-final, since "final-fields" are actually ConstantDscl.
+CxList staticFields = fields.FindByFieldAttributes(Modifiers.Static);
+CxList publicStaticFields = staticFields.FindByFieldAttributes(Modifiers.Public);
+
+result = publicStaticFields;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

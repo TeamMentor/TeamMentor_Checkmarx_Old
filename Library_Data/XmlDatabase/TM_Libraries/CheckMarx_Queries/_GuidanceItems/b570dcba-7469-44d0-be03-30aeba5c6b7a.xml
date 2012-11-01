@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b570dcba-7469-44d0-be03-30aeba5c6b7a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1642 - Exposure of System Data</Title>
+    <Category>CWE: 497</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  497</h1>
+  <iframe height="500" src="/content/497" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1642
+Cwe : 497
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList deadCode = Find_Dead_Code_Contents();
+
+CxList getWriter = 
+	All.FindByMemberAccess("HttpServletResponse.getWriter") +
+	All.FindByName("*response.getWriter") +  
+	All.FindByName("*Response.getWriter");
+
+getWriter -= getWriter.GetMembersOfTarget().GetTargetOfMembers();
+
+CxList getFromSystem = All.FindByMemberAccess("System.getenv");
+
+CxList inputs = getWriter + getFromSystem;
+
+CxList outputs = Find_Interactive_Outputs();
+outputs = outputs.FindByShortName("print*") + outputs.FindByShortName("write*");
+
+CxList sanitize = Find_Integers() + deadCode;
+
+
+result = outputs.InfluencedByAndNotSanitized(inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

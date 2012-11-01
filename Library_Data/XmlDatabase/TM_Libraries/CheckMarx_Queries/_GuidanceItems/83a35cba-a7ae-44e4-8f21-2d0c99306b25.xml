@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>83a35cba-a7ae-44e4-8f21-2d0c99306b25</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1935 - R09 06 02 bool Unsigned Signed Bit Field</Title>
+    <Category>CWE: 10809</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10809</h1>
+  <iframe height="500" src="/content/10809" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1935
+Cwe : 10809
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA CPP RULE 9-6-2
+------------------------------
+This query searches for bit fields of type other than  bool and signed/unsigned integral type.
+Bit fields of type wchar_t are also non compliant.
+
+	The Example below shows code with vulnerability: 
+
+		struct a
+    	{
+             int a:1; //non-compliant
+			 double c:2; //non compliant;
+             wchar_t w:1; //non-compliant;
+
+        }
+
+*/
+
+// first we build a list of all int typedefs
+
+CxList temp = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetFathers();
+CxList typedefIntDecls = temp.FindByType("int") + temp.FindByType("char") + temp.FindByType("short") + temp.FindByType("long");
+CxList typedefSgnIntDecls = typedefIntDecls.FindByExtendedType("unsigned") 
+	+ typedefIntDecls.FindByExtendedType("signed");
+ArrayList intTypes = new ArrayList();
+ArrayList sgnIntTypes = new ArrayList();
+intTypes.Add("");
+intTypes.Add("*.");
+intTypes.Add("int");
+intTypes.Add("*.int");
+intTypes.Add("char");
+intTypes.Add("*.char");
+intTypes.Add("short");
+intTypes.Add("*.short");
+intTypes.Add("long");
+intTypes.Add("*.long");
+foreach(CxList cur in typedefIntDecls){
+	string typeName = ((Declarator) cur.data.GetByIndex(0)).Name;
+	if(typeName != null)
+	{
+		if (!intTypes.Contains(typeName))
+		{
+			intTypes.Add(typeName);
+			intTypes.Add("*." + typeName);
+		}
+	}
+}
+foreach(CxList cur in typedefSgnIntDecls){
+	string typeName = ((Declarator) cur.data.GetByIndex(0)).Name;
+	if (typeName!=null &amp;&amp; !sgnIntTypes.Contains(typeName)){
+		sgnIntTypes.Add(typeName);
+		sgnIntTypes.Add("*." + typeName);
+	}
+}
+
+// now build a list of all signed/unsigned int declarators
+
+CxList dcltr = All.FindByType(typeof(Declarator));
+// first add all declarators of type that is a typedefs of signed/unsigned int
+CxList sgnIntDecls = dcltr.FindByTypes((string[]) sgnIntTypes.ToArray(typeof(string))) - typedefSgnIntDecls;
+
+// then add all declarators of type unsigned/signed of a typedefed int
+CxList intDecls = dcltr.FindByTypes((string[]) intTypes.ToArray(typeof(string))) - typedefIntDecls;
+
+sgnIntDecls += intDecls.FindByExtendedType("unsigned") + intDecls.FindByExtendedType("signed");
+
+sgnIntDecls+= dcltr.FindByType("bool");
+
+// find all potential non signed/unsigned int bitfields
+CxList potentialBitFields = dcltr
+	+ All.FindByType(typeof(EnumMemberDecl)).GetFathers().GetFathers();
+potentialBitFields -= typedefIntDecls;
+potentialBitFields -= sgnIntDecls;
+
+result = potentialBitFields.FindByRegex(@"[\}|\w]+?\s*?:\s*?\d+?\s*?;", false, false,false);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

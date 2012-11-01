@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1b15107b-da08-483e-a952-7d01127dbb83</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1841 - R12 13 Using Of Incremental And Decrimental Operators</Title>
+    <Category>CWE: 11029</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11029</h1>
+  <iframe height="500" src="/content/11029" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1841
+Cwe : 11029
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 12-13
+------------------------------
+This query searches for uses of the ++ or -- operators mixed with other operators
+	The Example below shows code with vulnerability: 
+
+use_uint16 ( mc2_1213_c++ );
+
+while (i-- &gt; 0){
+...
+}
+
+*/
+
+
+CxList ir = All.FindByType(typeof(IndexerRef));
+CxList be = All.FindByType(typeof(BinaryExpr));
+CxList ae = All.FindByType(typeof(AssignExpr));
+CxList prefix = All.FindByType(typeof(UnaryExpr)).FindByShortName("Increment") +
+	All.FindByType(typeof(UnaryExpr)).FindByShortName("Decrement");
+
+CxList postfix = All.FindByType(typeof(PostfixExpr));
+CxList postFathers = postfix.GetFathers();
+CxList preFathers = prefix.GetFathers();
+postFathers = postFathers * (ir + be + ae);
+preFathers = preFathers * (ir + be + ae);
+result += preFathers + postFathers;
+CxList secondDegree = postfix.GetFathers() - (postFathers + All.FindByType(typeof(ExprStmt)));
+secondDegree += prefix.GetFathers() - (preFathers + All.FindByType(typeof(ExprStmt)));
+result += secondDegree.GetFathers() * (ir + be + ae);
+result -= (result.GetByBinaryOperator(BinaryOperator.BooleanAnd) +
+	result.GetByBinaryOperator(BinaryOperator.BooleanOr) +
+	result.GetByBinaryOperator(BinaryOperator.BitwiseOr) +
+	result.GetByBinaryOperator(BinaryOperator.BitwiseAnd) +
+	result.GetByBinaryOperator(BinaryOperator.BitwiseXor));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

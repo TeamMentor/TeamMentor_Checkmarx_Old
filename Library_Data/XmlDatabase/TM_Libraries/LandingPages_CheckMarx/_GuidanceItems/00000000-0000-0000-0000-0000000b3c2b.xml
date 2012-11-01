@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000000b3c2b</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Information Leak through Persistent Cookies</Title>
+    <Category />
+    <Phase />
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Information Leak through Persistent Cookies</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Cookies are used by web applications to store data on the browser. Cookies may be marked as persistent and stored for an extended period of time. An attacker may gain access to the drive that stores the cookies and recover the sensitive data from them. The exact impact depends on the nature of the sensitive data in the cookies. This vulnerability applies to web applications that use cookies. To prevent this vulnerability, don't store sensitive data in persistent cookies. To check for this vulnerability, find all code that stores cookies and check what kind of data is stored in the cookies.
+
+==Impact==
+
+The exact impact of this vulnerability depends on the sensitive data stored in the cookies. Usually this is session data that keeps a user authenticated to an application. In that case, the attacker is able to impersonate the authenticated user. Being able to impersonate an authenticated user allows the attacker to carry out any actions that are available to that user within the application. That might be enough for the attacker or he may use that access to leverage additional vulnerabilities for additional privileges.
+
+==Countermeasures==
+
+Don't store sensitive data in persistent cookies:
+
+
+==Checklists==
+
+Sensitive data is not stored in persistent cookies:
+
+==Additional Resources==
+
+
+http://cwe.mitre.org/data/definitions/539.html
+
+http://minsky.gsi.dit.upm.es/semanticwiki/index.php/Information_Leak_Through_Persistent_Cookies]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5521129e-2912-47b7-9ff1-806c10669f08</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2048 - XSRF</Title>
+    <Category>CWE: 352</Category>
+    <Phase>Perl Medium Threat</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  352</h1>
+  <iframe height="500" src="/content/352" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2048
+Cwe : 352
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1295
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList db = Find_DB();
+CxList strings = Find_Strings();
+
+// Find requests
+CxList webInputs = Find_Interactive_Inputs();
+webInputs -= webInputs.FindByName("*cookie*", false);
+
+// Find a sanitizer for XSRF (clear_csrf_id, validate_token)
+CxList clearXSRF = All.FindByShortName("clear_csrf_id") + All.FindByShortName("validate_token");
+clearXSRF = clearXSRF.GetTargetOfMembers();
+CxList xsrfMethods = All.GetMethod(clearXSRF);
+CxList xsrfMethodsContents = All.GetByAncs(xsrfMethods);
+clearXSRF = xsrfMethodsContents.FindAllReferences(clearXSRF);
+clearXSRF = xsrfMethodsContents.GetByAncs(clearXSRF.GetFathers());
+
+// Find db update/delete/insert
+CxList write = strings.FindByName("*update*", false) +
+	strings.FindByName("*delete*", false) +
+	strings.FindByName("*insert*", false);
+
+CxList dbWrite = db.DataInfluencedBy(write);
+// add (heuristically) all methods to the relevant DB update etc.
+CxList dbAndMethods = db;// +Find_Methods();
+dbWrite += dbAndMethods.FindByShortName("update*");
+dbWrite += dbAndMethods.FindByShortName("delete*");
+dbWrite += dbAndMethods.FindByShortName("insert*");
+
+// Add update of member
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList dbWrite2 = 
+	memberAccess.FindByShortName("update*", false) +
+	memberAccess.FindByShortName("delete*", false) +
+	memberAccess.FindByShortName("insert*", false);
+
+CxList ref1 = All.FindAllReferences(dbWrite2.GetTargetOfMembers());
+CxList ref2 = ref1.GetMembersOfTarget();
+CxList parameters = All.GetParameters(ref2);
+
+result = (dbWrite + parameters).InfluencedByAndNotSanitized(webInputs, clearXSRF);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

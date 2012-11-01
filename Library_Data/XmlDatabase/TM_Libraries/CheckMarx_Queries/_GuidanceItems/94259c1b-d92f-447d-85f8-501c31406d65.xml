@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>94259c1b-d92f-447d-85f8-501c31406d65</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>187 - Reflected XSS Specific Clients</Title>
+    <Category>CWE: 79</Category>
+    <Phase>ASP Medium Threat</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  79</h1>
+  <iframe height="500" src="/content/79" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 187
+Cwe : 79
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 12
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Interactive_Inputs();
+CxList outputs = Find_Interactive_Outputs()-Find_XSS_Outputs();
+
+CxList sanitized = Find_XSS_Sanitize();
+
+result = All.FindXSS(inputs, outputs, sanitized);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

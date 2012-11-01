@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e37f1800-9be0-478d-855b-6ab83abc2d81</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>297 - Arithmenic Operation On Boolean</Title>
+    <Category>CWE: 398</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  398</h1>
+  <iframe height="500" src="/content/398" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 297
+Cwe : 398
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Arithmetic Operation On Boolean
+//  -------------------------------
+//  Find all the arithmetic operations on boolean, excluding boolean
+//  operations (or, and, equality, not)
+///////////////////////////////////////////////////////////////////////
+
+// Find all booleans
+CxList bools = Find_Builtin_Types().FindByType("bool");
+
+// Look for unauthorized unary operations
+CxList unary = bools.GetAncOfType(typeof(UnaryExpr));
+unary -= unary.FindByShortName("Not");
+unary -= unary.FindByShortName("Address");
+unary -= unary.FindByShortName("Pointer");
+
+// Look for unauthorized binary operations
+CxList binary = bools.GetAncOfType(typeof(BinaryExpr));
+binary -= binary.FindByShortName("||");
+binary -= binary.FindByShortName("&amp;&amp;");
+binary -= binary.FindByShortName("==");
+binary -= binary.FindByShortName("!=");
+
+// Remove also Shift right and left (I/O) - that have no short name
+foreach (CxList bin in binary)
+{
+	BinaryExpr b = bin.data.GetByIndex(0) as BinaryExpr;
+	if ((b.Operator == BinaryOperator.ShiftRight)
+		|| (b.Operator == BinaryOperator.ShiftLeft))
+	{
+		binary -= bin;
+	}
+}
+
+// Return the unauthorized operations
+result = binary + unary;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

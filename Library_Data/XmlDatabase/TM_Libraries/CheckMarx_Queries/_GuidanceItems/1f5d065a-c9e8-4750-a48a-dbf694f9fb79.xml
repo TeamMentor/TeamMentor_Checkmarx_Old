@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1f5d065a-c9e8-4750-a48a-dbf694f9fb79</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1308 - Find XSS Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1308
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList outputs =	
+	All.FindByMemberAccess("AdRotator.ID") + 
+	All.FindByMemberAccess("AdRotator.Target") + 
+	All.FindByMemberAccess("applet.ID") + 
+	All.FindByMemberAccess("applet.InnerHtml") + 
+	All.FindByMemberAccess("applet.TagName") + 
+	All.FindByMemberAccess("AttributeCollection.Add") + 
+	All.FindByMemberAccess("AttributeCollection.Item") + 
+	All.FindByMemberAccess("body.ID") + 
+	All.FindByMemberAccess("body.InnerHtml") + 
+	All.FindByMemberAccess("body.TagName") + 
+	All.FindByMemberAccess("BulletedList.ID") + 
+	All.FindByMemberAccess("Button.ID") + 
+	All.FindByMemberAccess("Calendar.Caption") + 
+	All.FindByMemberAccess("Calendar.ID") + 
+	All.FindByMemberAccess("Calendar.NextMonthText") + 
+	All.FindByMemberAccess("Calendar.PrevMonthText") + 
+	All.FindByMemberAccess("CheckBox.ID") + 
+	All.FindByMemberAccess("CheckBox.Text") + 
+	All.FindByMemberAccess("CheckBoxList.ID") + 
+	All.FindByMemberAccess("CheckBoxList1.Items") + 
+	All.FindByMemberAccess("ClientScriptManager.RegisterStartupScript") + 
+	All.FindByMemberAccess("Control.ID") + 
+	All.FindByMemberAccess("div.ID") + 
+	All.FindByMemberAccess("div.InnerHtml") + 
+	All.FindByMemberAccess("DropDownList.ID") + 
+	All.FindByMemberAccess("embed.ID") + 
+	All.FindByMemberAccess("embed.InnerHtml") + 
+	All.FindByMemberAccess("embed.TagName") + 
+	All.FindByMemberAccess("FileUpload.ID") + 
+	All.FindByMemberAccess("hidden.ID") + 
+	All.FindByMemberAccess("HiddenField.ID") + 
+	All.FindByMemberAccess("hr.ID") + 
+	All.FindByMemberAccess("hr.InnerHtml") + 
+	All.FindByMemberAccess("html.ID") + 
+	All.FindByMemberAccess("html.InnerHtml") + 
+	All.FindByMemberAccess("html.TagName") + 
+	All.FindByMemberAccess("HtmlContainerControl.InnerHtml") + 
+	All.FindByMemberAccess("HtmlContainerControl.InnerText") + 
+	All.FindByMemberAccess("HtmlInputControl.Value") + 
+	All.FindByMemberAccess("HtmlInputFile.ID") + 
+	All.FindByMemberAccess("HtmlInputPassword.ID") + 
+	All.FindByMemberAccess("HtmlInputText.ID") +
+	All.FindByMemberAccess("HtmlSelect.ID") + 
+	All.FindByMemberAccess("HtmlTextArea.ID") + 
+	All.FindByMemberAccess("HtmlTextWriter.Write") + 
+	All.FindByMemberAccess("HttpResponse.*") + 
+	All.FindByMemberAccess("HyperLink.ID") + 
+	All.FindByMemberAccess("HyperLink.NavigateUrl") + 
+	All.FindByMemberAccess("HyperLink.Target") + 
+	All.FindByMemberAccess("HyperLink.Text") + 
+	All.FindByMemberAccess("iframe.ID") + 
+	All.FindByMemberAccess("iframe.InnerHtml") + 
+	All.FindByMemberAccess("iframe.TagName") + 
+	All.FindByMemberAccess("Image.ID") + 
+	All.FindByMemberAccess("Image.ImageUrl") + 
+	All.FindByMemberAccess("ImageButton.ID") + 
+	All.FindByMemberAccess("ImageMap.ID") + 
+	All.FindByMemberAccess("img.ID") + 
+	All.FindByMemberAccess("img.Src") + 
+	All.FindByMemberAccess("input.ID") + 
+	All.FindByMemberAccess("label.ID") + 
+	All.FindByMemberAccess("label.Text") + 
+	All.FindByMemberAccess("Label.Text") + 
+	All.FindByMemberAccess("LinkButton.ID") + 
+	All.FindByMemberAccess("LinkButton.Text") + 
+	All.FindByMemberAccess("ListBox.ID") + 
+	All.FindByMemberAccess("Literal.ID") + 
+	All.FindByMemberAccess("Literal.Text") + 
+	All.FindByMemberAccess("Localize.Text") + 
+	All.FindByMemberAccess("meta.ID") +
+	//All.FindByMemberAccess("Page.RegisterClientScriptBlock") + 
+	//All.FindByMemberAccess("Page.RegisterStartupScript") + 
+	All.FindByMemberAccess("Panel.GroupingText") + 
+	All.FindByMemberAccess("Panel.ID") + 
+	All.FindByMemberAccess("password.ID") +
+	All.FindByMemberAccess("RadioButton.GroupName") + 
+	All.FindByMemberAccess("RadioButton.ID") + 
+	All.FindByMemberAccess("RadioButton.Text") + 
+	All.FindByMemberAccess("RadioButtonList.ID") + 
+	All.FindByMemberAccess("RadioButtonList.Items") + 
+	All.FindByMemberAccess("Response.Write") +
+	All.FindByMemberAccess("select.ID") + 
+	All.FindByMemberAccess("Table.Caption") + 
+	All.FindByMemberAccess("Table.ID") + 
+	All.FindByMemberAccess("table.ID") + 
+	All.FindByMemberAccess("TableCell.Text") + 
+	All.FindByMemberAccess("text.ID") +
+	All.FindByMemberAccess("textarea.ID") + 
+	All.FindByMemberAccess("TextBox.ID") + 
+	All.FindByMemberAccess("Wizard.HeaderText") + 
+	All.FindByMemberAccess("Wizard.ID") + 
+	
+	Find_Web_Outputs_Components();
+
+CxList fathersWithoutAssignment = outputs.GetFathers() - 
+	outputs.GetFathers().FindByType(typeof(AssignExpr));
+
+result = outputs.FindByAssignmentSide(CxList.AssignmentSide.Left) + 
+	outputs.FindByFathers(fathersWithoutAssignment) + 
+	All.FindByName("Page.Response") +
+	All.FindByName("Page.Response.BinaryWrite") +
+	All.FindByName("Page.Response.Write") + 
+	All.FindByName("Page.Response.WriteFile") +
+	All.FindByName("Response") +
+	All.FindByName("Response.BinaryWrite") + 
+	All.FindByName("Response.Write") + 
+	All.FindByName("Response.WriteFile");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

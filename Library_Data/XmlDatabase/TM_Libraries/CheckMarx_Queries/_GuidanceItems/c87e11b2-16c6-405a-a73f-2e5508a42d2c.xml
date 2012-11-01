@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c87e11b2-16c6-405a-a73f-2e5508a42d2c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1668 - Use of Hard coded Security Constants</Title>
+    <Category>CWE: 547</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  547</h1>
+  <iframe height="500" src="/content/547" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1668
+Cwe : 547
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all vulnerable commands - currently only buffRead
+CxList buffRead = All.FindByMemberAccess("BufferedReader.read*");
+// The second parameter is the vulnerable one
+CxList buffReadParam2 = All.GetParameters(buffRead, 2);
+// Al integeres
+CxList numbers = All.FindByType(typeof(IntegerLiteral));
+
+// All binary expressions
+CxList bin = All.FindByType(typeof(BinaryExpr));
+// ... +,-,*,/ do not have short names, but ==, &amp;&amp;, != etc. do have, which makes life a little simpler
+bin = bin.FindByShortName("");
+
+// Remove final and binary expreeion (only direct assignment of a number is relevant)
+CxList sanitize = 
+	All.FindByType(typeof(Declarator)).FindByRegex(@"\Wfinal\W") + 
+	Find_Dead_Code_Contents() +
+	bin;
+
+
+/// Every problematic parameter influenced (directly) by an ardcoded integer
+result = buffReadParam2 * numbers + buffReadParam2.InfluencedByAndNotSanitized(numbers, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

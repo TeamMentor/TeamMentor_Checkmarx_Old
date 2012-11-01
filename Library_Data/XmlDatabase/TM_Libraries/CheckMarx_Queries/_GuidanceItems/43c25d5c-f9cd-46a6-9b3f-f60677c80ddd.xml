@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>43c25d5c-f9cd-46a6-9b3f-f60677c80ddd</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>360 - Magic Numbers</Title>
+    <Category>CWE: 10017</Category>
+    <Phase>CSharp Best Coding Practice</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10017</h1>
+  <iframe height="500" src="/content/10017" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 360
+Cwe : 10017
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 23
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+
+
+
+CxList decls = (All.FindByType("int") + All.FindByType("float") +  
+	All.FindByType("double") + All.FindByType("long") +  
+	All.FindByType("decimal")).FindByType(typeof(Declarator));
+
+decls = All.GetByAncs(decls) - All.GetByAncs(All.FindByType(typeof(ConstantDecl)));
+decls = decls.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList lits = 	All.FindByType(typeof(IntegerLiteral)) - All.FindByShortName("0") - 
+	All.FindByShortName("1") - All.FindByShortName("-1");
+
+decls = decls.DataInfluencedBy(lits);
+
+foreach(CxList curdecl in decls)
+{
+	Declarator d = curdecl.data.GetByIndex(0) as Declarator;
+	if ((d != null) &amp;&amp; (d.InitExpression is IntegerLiteral))
+	{
+		result += curdecl;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

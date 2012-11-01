@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e05052c4-7cb5-49dd-8654-d895fcf4916c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>125 - Find WS Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 125
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 8
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all custom attributes
+CxList custAttr = All.FindByType(typeof(CustomAttribute));
+
+CxList WebAttr = custAttr.FindByName("*webmethod"); 		// Web Services
+CxList WcfAttr = custAttr.FindByName("*operationcontract");	// WCF
+
+CxList inMethod = (WcfAttr + WebAttr).GetFathers().GetFathers().FindByType(typeof(MethodDecl));
+
+result = All.FindByFathers(All.FindByFathers(inMethod)).FindByType(typeof(ParamDecl));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

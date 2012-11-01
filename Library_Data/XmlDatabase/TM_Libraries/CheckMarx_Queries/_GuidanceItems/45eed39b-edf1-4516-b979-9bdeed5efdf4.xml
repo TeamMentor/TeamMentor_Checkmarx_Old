@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>45eed39b-edf1-4516-b979-9bdeed5efdf4</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2066 - Not Checking Regular Expressions Results</Title>
+    <Category>CWE: 252</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  252</h1>
+  <iframe height="500" src="/content/252" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2066
+Cwe : 252
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList regex = Find_Regex().GetAncOfType(typeof(BinaryExpr));
+
+// Remove methods in conditions - the condition is a check already
+CxList conditions = Find_Conditions();
+regex -= regex.GetByAncs(conditions);
+
+// Remove methods that are assigned to a variable
+CxList assignMethods = regex.GetAncOfType(typeof(AssignExpr));
+CxList _ = All.FindByShortName("$_").GetAncOfType(typeof(AssignExpr));
+assignMethods -= _;
+regex -= regex.GetByAncs(assignMethods);
+
+// remove checks in ternary expressions
+regex -= regex.GetByAncs(All.FindByType(typeof(TernaryExpr)));
+
+// Also consider all the members assigned a value from these methods, and appear in conditions
+CxList assignValues = All.GetByAncs(assignMethods).FindByAssignmentSide(CxList.AssignmentSide.Left);
+assignValues -= assignValues.FindAllReferences(conditions.FindAllReferences(assignValues));
+
+/// return the methods and the relevant assigned members
+result = regex + assignValues;
+
+// Remove results under  testing
+result -= result.GetByAncs(All.FindByShortName("||"));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

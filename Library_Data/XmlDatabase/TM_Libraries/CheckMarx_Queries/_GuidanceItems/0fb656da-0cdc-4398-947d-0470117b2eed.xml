@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0fb656da-0cdc-4398-947d-0470117b2eed</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>53 - Parameter Tampering</Title>
+    <Category>CWE: 472</Category>
+    <Phase>Apex Low Visibility</Phase>
+    <Technology>Apex</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Parameter Tampering</h1>
+  <iframe height="300" src="/html/Parameter_Tampering" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  472</h1>
+  <iframe height="500" src="/content/472" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 53
+Cwe : 472
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 5
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList input = Find_Interactive_Inputs();
+CxList db = Find_DB_Output();
+CxList methods = Find_Methods();
+
+CxList sObjDB = methods.FindByShortName("insert") +
+	methods.FindByShortName("update") +
+	methods.FindByShortName("delete") +
+	methods.FindByShortName("merge") +
+	methods.FindByShortName("upsert") +
+	methods.FindByShortName("undelete") +
+	methods.FindByShortName("convertlead");
+
+db -= sObjDB;
+
+CxList strings = Find_Strings();
+CxList Select = strings.FindByName("*select*", false);
+CxList Where = strings.FindByName("*where*", false);
+CxList And = strings.FindByName("*and *", false) + 
+	strings.FindByName("* and*", false);
+
+CxList db1 = db.DataInfluencedBy(Select).DataInfluencedBy(Where);
+db1 -= db1.DataInfluencedBy(And);
+db = db1 + (Select * Where - And).GetByAncs(All.GetParameters(db));
+
+result = db.InfluencedByAndNotSanitized(input, Find_Test_Code());
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

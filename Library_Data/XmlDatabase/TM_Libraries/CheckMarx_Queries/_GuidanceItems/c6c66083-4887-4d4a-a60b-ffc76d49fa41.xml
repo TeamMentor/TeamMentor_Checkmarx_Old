@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c6c66083-4887-4d4a-a60b-ffc76d49fa41</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>350 - Stored Resource Injection</Title>
+    <Category>CWE: 99</Category>
+    <Phase>CPP Stored Vulnerabilities</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  99</h1>
+  <iframe height="500" src="/content/99" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 350
+Cwe : 99
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 22
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList resource = Find_Methods().FindByShortName("connect");
+
+CxList getEnvVariable = Find_Methods().FindByShortName("GetEnvironmentVariable");
+CxList getEnvVariableParams = All.GetParameters(getEnvVariable, 0) + All.GetParameters(getEnvVariable, 1);
+getEnvVariableParams = All.GetByAncs(getEnvVariableParams);
+
+resource += getEnvVariableParams;
+
+resource += All.GetByAncs(All.GetParameters(All.FindByMemberAccess("ifstream")+All.FindByMemberAccess("filebuf")));
+
+result = (Find_Read() + Find_DB()).DataInfluencingOn(resource);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6550f04e-aa6c-4a61-a269-aa14958c2f19</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1821 - R05 04 Tag Name Reused</Title>
+    <Category>CWE: 11009</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11009</h1>
+  <iframe height="500" src="/content/11009" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1821
+Cwe : 11009
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 5-4
+------------------------------
+This query searches for tag names that are reused anywhere in the code
+
+	The Example below shows code with vulnerability: 
+
+struct rgb
+{
+    signed     int   r:2;
+    unsigned short   g:3;
+    unsigned   int   b:3;
+};
+
+int rgb;
+
+*/
+
+CxList identifiers = Find_Identifiers();
+
+// find tag names
+CxList tags = identifiers.FindByType(typeof(ClassDecl));
+
+
+// search for duplicates 
+SortedList identNames = new SortedList(identifiers.Count);
+CxList duplicateNames = All.NewCxList();
+foreach(CxList curIdentifier in identifiers)
+{
+	string curName = (curIdentifier.data.GetByIndex(0) as CSharpGraph).ShortName;
+	if (!identNames.Contains(curName)){
+		identNames.Add(curName, null);
+	}
+	else{
+		duplicateNames += curIdentifier;
+	}
+}
+
+result = identifiers.FindByShortName(tags.FindByShortName(duplicateNames));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>18264a9f-a739-450b-a212-042724491c7a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>209 - Unvalidated Arguments Of Public Methods</Title>
+    <Category>CWE: 10004</Category>
+    <Phase>CPP Best Coding Practice</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10004</h1>
+  <iframe height="500" src="/content/10004" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 209
+Cwe : 10004
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 14
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //review
+CxList allUnkRef = All.FindByType(typeof(UnknownReference)) + All.FindByType(typeof(ParamDecl));
+CxList memberAccess = (All.FindByType(typeof(MemberAccess))).GetTargetOfMembers().FindByType(typeof(UnknownReference));
+CxList paramDeclMemberAccess = memberAccess + All.FindByType(typeof(ParamDecl));
+
+CxList publicMethods = All.FindByFieldAttributes(Modifiers.Public).FindByType(typeof(MethodDecl));
+
+CxList paramDecl = All.FindByType(typeof(ParamDecl));
+CxList allIfStmt = All.FindByType(typeof(IfStmt));
+CxList allTryCatchFinallyStmt = All.FindByType(typeof(TryCatchFinallyStmt));
+CxList allMethodInvokeExpr = Find_Methods();
+
+paramDecl -= paramDecl.FindByType("boolean");
+paramDecl -= paramDecl.FindByType("byte");
+paramDecl -= paramDecl.FindByType("sbyte");
+paramDecl -= paramDecl.FindByType("short");
+paramDecl -= paramDecl.FindByType("ushort");
+paramDecl -= paramDecl.FindByType("int");
+paramDecl -= paramDecl.FindByType("uint");
+paramDecl -= paramDecl.FindByType("long");
+paramDecl -= paramDecl.FindByType("ulong");
+paramDecl -= paramDecl.FindByType("float");
+paramDecl -= paramDecl.FindByType("double");
+paramDecl -= paramDecl.FindByType("decimal");
+paramDecl -= paramDecl.FindByType("char");
+paramDecl -= paramDecl.FindByType("DateTime");
+
+CxList publicMethodsWithParams = paramDecl.GetAncOfType(typeof(MethodDecl)) * publicMethods;
+CxList paramsInPublicMethods = paramDecl.GetByAncs(publicMethodsWithParams);
+CxList nullInIfStmt = All.FindByName("null").GetByAncs(allIfStmt);
+CxList checkedParamsInPublicMethods = paramsInPublicMethods;
+
+foreach(CxList method in publicMethodsWithParams)
+{
+	CxList paramsInMethod = paramDecl.GetByAncs(method);
+	CxList ifStmtInMethod = allIfStmt.GetByAncs(method);
+
+	foreach(CxList paramInMethod in paramsInMethod)
+	{
+		CxList paramMemberAccessInMethodReferences = paramDeclMemberAccess.FindAllReferences(paramInMethod);
+		CxList paramInMethodReferences = allUnkRef.FindAllReferences(paramInMethod);
+
+		if((paramMemberAccessInMethodReferences - paramInMethod - 
+			paramMemberAccessInMethodReferences.GetByAncs(allMethodInvokeExpr) -
+			paramMemberAccessInMethodReferences.GetByAncs(allTryCatchFinallyStmt)).Count == 0)
+		{
+			continue;
+		}
+		
+		CxList paramInIfStmt = paramInMethodReferences.GetByAncs(ifStmtInMethod);
+		
+		CxList GetMethodIfThisParamIsChecked = paramInIfStmt.FindByFathers(paramInIfStmt.GetFathers() * nullInIfStmt.GetFathers()).GetAncOfType(typeof(MethodDecl));
+
+		if(GetMethodIfThisParamIsChecked.Count == 0)
+		{
+			checkedParamsInPublicMethods -= paramInMethod;
+		}
+	}
+}
+
+result = paramsInPublicMethods - checkedParamsInPublicMethods;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

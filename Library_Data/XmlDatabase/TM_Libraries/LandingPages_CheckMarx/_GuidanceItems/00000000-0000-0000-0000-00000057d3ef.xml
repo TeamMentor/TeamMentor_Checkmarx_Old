@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000057d3ef</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Use of Hard-Coded Cryptographic Key</Title>
+    <Category />
+    <Phase />
+    <Technology>Java</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Use of Hard-Coded Cryptographic Key</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Applications that use cryptography need a method for managing keys. One of the simplest ways to store the keys is to hard-code them into the application. This approach is not secure, because anyone with access to the application code is able to recover the keys. Once an attacker has recovered the keys, he can use them to decrypt sensitive data. This vulnerability applies to all applications that use cryptography. To prevent this vulnerability, provide a secure admin interface that allows managing encryption keys and use protected storage APIs to store the keys. To check for this vulnerability, examine all code that uses encryption and find where it stores the keys.
+
+
+==Impact==
+
+An attacker that has access to the application code is able to recover any hard-coded cryptographic keys. If the attacker gets access to the data encrypted with those keys, he will be able to decrypt them. The trouble is that if the attacker is able to get the encrypted data, he can probably get the application code as well. Therefore, using hard-coded cryptographic keys essentially defeats the purpose of using encryption in the first place.
+
+
+==Countermeasures==
+
+Provide a secure administrative interface that allows managing cryptographic keys:
+
+Store encryption keys using protected storage APIs:
+* [[1057099e-dd79-4f41-8b7e-36f00f1343e4|Use a Secure Key Storage Location]]
+
+==Checklists==
+
+A secure administrative interface that allows managing cryptographic keys is provided:
+
+Encryption keys are stored using protected storage APIs:
+* [[08e76219-384d-4c5f-954e-09617f717558|A Secure Key Storage Location Is Used]]
+
+==Additional Resources==
+
+* For more information about this vulnerability type, see https://www.owasp.org/index.php/Use_of_hard-coded_cryptographic_key]]></Data>
+  </Content>
+</TeamMentor_Article>

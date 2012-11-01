@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b8506fc8-92e1-4225-a196-c0f29d7c1a23</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1332 - Find DB Linq Full</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1332
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 24
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> string[] linqSeparators = new string[] {
+	"aggregate",
+	"all",
+	"any",
+	"ascending",
+	"asenumerable",
+	"average",
+	"cast",
+	"concat",
+	"contains",
+	"count",
+	"defaultifempty",
+	"descending",
+	"distinct",
+	"elementat",
+	"elementatordefault",
+	"empty",
+	"except",
+	"first",
+	"firstordefault",
+	"groupby",
+	"groupjoin",
+	"intersect",
+	"join",
+	"last",
+	"lastordefault",
+	"longcount",
+	"max",
+	"min",
+	"oftype",
+	"orderby",
+	"orderbydescending",
+	"range",
+	"repeat",
+	"reverse",
+	"select",
+	"selectmany",
+	"sequenceequal",
+	"single",
+	"singleordefault",
+	"skip",
+	"skipwhile",
+	"sum",
+	"take",
+	"takewhile",
+	"thenby",
+	"thenbydescending",
+	"toarray",
+	"todictionary",
+	"tolist",
+	"tolookup",
+	"union",
+	"where",
+	
+	
+	"DeleteOnSubmit",
+	"InsertOnSubmit",
+	"UpdateOnSubmit",
+	"SubmitChanges",
+	"OnSubmit"	
+	};
+
+CxList linq = All.InheritsFrom("DataContext") + All.FindByType("DataContext");
+CxList linq1 = All.FindByFathers(All.FindByType(typeof(ObjectCreateExpr)));
+linq1 = linq1.FindByType("DataContext") + linq1.InheritsFrom("DataContext");
+linq += All.GetByAncs(linq1.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+		+ linq1.GetAncOfType(typeof(Declarator));
+linq = All.FindAllReferences(linq);
+linq = linq.GetFathers().GetFathers();
+linq = All.FindAllReferences(linq);// -linq;
+
+linq = Find_All_Members(linq);
+foreach (string str in linqSeparators)
+{
+	linq -= linq.FindByShortName(str, false);
+}
+
+linq -= linq.GetTargetOfMembers();
+linq -= linq.GetTargetOfMembers();
+linq -= linq.GetTargetOfMembers();
+linq -= linq.GetTargetOfMembers();
+
+linq += All.FindByType("Table");
+
+CxList linqMethods = Find_Methods().FindByParameters(linq);
+linqMethods += linqMethods.GetFathers().GetAncOfType(typeof(MethodInvokeExpr));
+linqMethods += linqMethods.GetFathers().GetAncOfType(typeof(MethodInvokeExpr));
+linqMethods += linqMethods.GetFathers().GetAncOfType(typeof(MethodInvokeExpr));
+//CxList LINQ = All.FindByName("LINQ");
+//CxList linqMethods2 = Find_All_Members(LINQ.GetMembersOfTarget());
+//linqMethods *= linqMethods2;
+
+//linqMethods = linqMethods.FindByName("LINQ.*");
+CxList postLinq = linqMethods.GetMembersOfTarget();
+int countPost = -1;
+int counter = 0;
+while (postLinq.Count &gt; countPost &amp;&amp; counter++  countPrev &amp;&amp; counter++ </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

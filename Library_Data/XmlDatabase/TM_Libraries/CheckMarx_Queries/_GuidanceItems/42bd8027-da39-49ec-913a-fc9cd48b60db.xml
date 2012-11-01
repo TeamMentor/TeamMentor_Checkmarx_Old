@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>42bd8027-da39-49ec-913a-fc9cd48b60db</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1885 - R00 01 10 Find Unused Defined Functions</Title>
+    <Category>CWE: 10777</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10777</h1>
+  <iframe height="500" src="/content/10777" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1885
+Cwe : 10777
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 0-1-10
+ ------------------------------
+ This query searches for unused functions, unused prototype functions are tolerated.
+ 
+ The Example below shows code with vulnerability: 
+
+		void f1() { }
+		void f2() { } 	//Non-compliant
+		void f3();		//Compliant prototype
+		int main() 
+		{
+			f1();
+			return 0;
+		}
+*/
+
+CxList protoMethods = All.FindByType(typeof(MethodDecl));
+//Remove main and includes.
+protoMethods -= protoMethods.FindByShortName("main") + protoMethods.FindByShortName("INCLUDEREPLACE");
+//Split prototype methods and regular ones.
+CxList methods = All.FindByFathers(protoMethods).FindByType(typeof(StatementCollection)).GetFathers();
+protoMethods -= methods;
+CxList methodInvokes = All.FindByType(typeof(MethodInvokeExpr));
+//Remove regular methods with invokes under their definition.
+CxList unused = methods - methods.FindDefinition(methodInvokes.FindByShortName(methods));
+//Remove methods that were called by using-directive
+CxList imports = All.FindByType(typeof(Import));
+CxList classes = All.FindByType(typeof(ClassDecl));
+CxList namespaces = All.FindByType(typeof(NamespaceDecl));
+foreach(CxList cur in imports) {
+	string[] use = ((Import) cur.data.GetByIndex(0)).Namespace.Split('.');
+	if (use.Length != 2) {
+		continue;
+	}
+	CxList curMethods = unused.FindByShortName(use[1]);
+	unused -= curMethods.GetByClass(classes.FindByShortName(use[0]));
+	unused -= curMethods.GetByAncs(namespaces.FindByShortName(use[0]));
+}
+
+//Keep prototype methods with invokes under their definition.
+CxList protoUsed = protoMethods.FindDefinition(methodInvokes.FindByShortName(protoMethods));
+CxList allParams = All.FindByType(typeof(ParamDecl)).GetParameters(protoUsed + unused);
+CxList typerefs = All.FindByType(typeof(TypeRef)).GetByAncs(allParams.GetParameters(protoUsed + unused));
+string oldFile = "";
+CxList others = All.NewCxList();
+
+//Check if prototype method was definition - and not method itself
+foreach (CxList curr in protoUsed) {
+	CSharpGraph currGraph = curr.data.GetByIndex(0) as CSharpGraph;
+	string filename = currGraph.LinePragma.FileName;
+	if(!filename.Equals(oldFile)) {
+		others = unused.FindByFileName(filename);	
+		oldFile = filename;
+	}
+	others = others.FindByShortName(curr);
+	CxList currParams = allParams.GetParameters(curr);
+	currParams = typerefs.GetByAncs(currParams);
+	bool isOverride = true;
+	foreach(CxList other in others) {
+		CxList otherParams = allParams.GetParameters(other);
+		otherParams = typerefs.GetByAncs(otherParams);
+		//Check if otherMethod overrides currMethod.
+		if(currParams.Count == otherParams.Count) {
+			for(int i = 0; i </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

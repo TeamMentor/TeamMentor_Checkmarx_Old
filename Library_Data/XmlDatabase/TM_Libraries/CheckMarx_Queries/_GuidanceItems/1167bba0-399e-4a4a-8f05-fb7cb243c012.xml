@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1167bba0-399e-4a4a-8f05-fb7cb243c012</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1411 - Methods Without ReturnType</Title>
+    <Category>CWE: 10712</Category>
+    <Phase>CPP Best Coding Practice</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10712</h1>
+  <iframe height="500" src="/content/10712" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1411
+Cwe : 10712
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 14
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Methods_Without_ReturnType
+// --------------------------------
+// The purpose of the query to find the function / methods that not defined with any type
+// for Example method
+// foo(){ } should be recognized as bad code practice vulnerability
+// ======================================================================================
+
+// In general, the method that not define the returned type
+// like "   foo(int size)  " kept in the DOM like "void foo(int size)"
+// So, the purpose of the query is to find methods that defined as void and returns any value
+// For example
+//	foo(int size)
+//	{
+//		int y;	 
+//		y = 10;
+//		return y;
+//	}
+// will be kept in DOM as "void foo(int size)"
+// and should be found
+
+
+// The methodDecl variable will keep the list of all Method Declaration
+CxList methodDecl = All.FindByType(typeof(MethodDecl));
+
+// The method All.FindByType(typeof(TypeRef)) looks for all types like "int", "void", "char"...
+// Filter it by void
+// and choose justt hese one that appears in method declaration
+// For example: void f3(int size)
+// this "void"
+CxList methodDeclVoid = All.FindByType(typeof(TypeRef)).FindByShortName("void").FindByFathers(methodDecl);
+
+// Now we took method declarator that Father of this "void" 
+// so all statement "void f3(int size)" will be selected
+methodDeclVoid =  methodDeclVoid.GetFathers();
+
+//There are 3 types of method declaration will be selected up to now
+// 1) void f1() 	 - kept in DOM as void
+// 2) f2()   		 - kept in DOM as void
+// 3) void * f3()    - kept in DOM as void
+//
+// From list of possable variation above, just f2() should be selected
+// Althought all of example above kept as void type in DOM, just for f2() Line Pragma of method declaration will be SAME
+// as line pragma of it method type. It caused by fact, that "void" of f2() is not real type, so by this way will be possable to 
+// recognize the valnerability
+
+foreach(CxList method in methodDeclVoid){
+	MethodDecl singleMethodDecl = method.data.GetByIndex(0) as MethodDecl;	
+	TypeRef methodType = singleMethodDecl.ReturnType; 	
+	if (singleMethodDecl.LinePragma.ToString() == methodType.LinePragma.ToString()){
+		result += method;
+	}
+	
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

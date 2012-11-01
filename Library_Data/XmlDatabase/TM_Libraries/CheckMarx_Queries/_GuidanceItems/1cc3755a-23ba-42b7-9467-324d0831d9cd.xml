@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1cc3755a-23ba-42b7-9467-324d0831d9cd</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1932 - R06 06 04 One GoTo Break In Iteration</Title>
+    <Category>CWE: 10807</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10807</h1><iframe src='/content/10807' width="100%" height="500"></iframe><h1>Checkmarx Rule</h1>
+<div style='padding:10px'><pre>QueryId : 1932
+Cwe : 10807
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre></div><h3>Source</h3><div style='padding:10px'><pre> /*
+MISRA CPP RULE 6-6-4
+------------------------------
+This query searches for a multiple appearance of goto and break statements in an iteration statement
+
+	The Example below shows code with vulnerability: 
+
+for (n=1; n<20; n++){
+	if (n==5){
+		break;  //non-compliant
+		goto s; //non-compliant
+	}
+	if (n = 7){
+		break;  //non-compliant
+		goto s; //non-compliant
+	}
+	s:  //some code;
+
+}
+
+*/
+
+// find iterations and breaks
+CxList iterations = All.FindByType(typeof(IterationStmt));
+CxList  allGoTos=All.FindByFathers(All.FindByType(typeof(Declarator))).FindByName("goto");
+CxList gotos = allGoTos;
+CxList breaks = All.FindByType(typeof(BreakStmt));
+CxList switches = All.FindByType(typeof(SwitchStmt));
+foreach(CxList iter in iterations){
+	
+	CxList curBreaks = breaks.GetByAncs(iter);
+	CxList curGotos = gotos.GetByAncs(iter);
+	CxList descIters = iterations.GetByAncs(iter) - iter;
+	CxList descSwitches = switches.GetByAncs(iter);
+	
+	// remove breaks not directly under current loop
+	curBreaks -= curBreaks.GetByAncs(descIters);
+	curGotos -= curGotos.GetByAncs(descIters);
+	curBreaks -= curBreaks.GetByAncs(descSwitches);
+	
+	if (curBreaks.Count >= 2)
+		result += curBreaks;
+	if(curGotos.Count >= 2)
+	{
+		result += curGotos;
+	}
+}</pre></div>]]></Data>
+  </Content>
+</TeamMentor_Article>

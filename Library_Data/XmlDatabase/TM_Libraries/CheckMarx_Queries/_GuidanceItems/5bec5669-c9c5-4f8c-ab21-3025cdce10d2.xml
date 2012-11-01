@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5bec5669-c9c5-4f8c-ab21-3025cdce10d2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>671 - Client Potential ReDoS In Match</Title>
+    <Category>CWE: 730</Category>
+    <Phase>JavaScript Vulnerabilities</Phase>
+    <Technology>JavaScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  730</h1>
+  <iframe height="500" src="/content/730" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 671
+Cwe : 730
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 41
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList evilStrings = Find_Evil_Strings();
+
+// Find all regex commands
+CxList regex = Find_Match();
+
+// Find regex commands that are influenced by evil strings
+CxList activeEvilRegexes = evilStrings.DataInfluencingOn(regex);
+
+regex -= regex.DataInfluencedBy(Find_Inputs());
+
+// Find relevant matches
+CxList result1 = activeEvilRegexes.DataInfluencingOn(regex);
+
+// Add static regexes (these do not influence their references, so needed in addition)
+CxList staticFields = regex.FindByType(typeof(FieldDecl)).FindByFieldAttributes(Modifiers.Static);
+CxList result2 = regex.GetByAncs(staticFields).DataInfluencedBy(evilStrings);
+
+// If only one type is found, no need to combine CxLists, because combining might lose the path
+if (result1.Count &gt; 0 &amp;&amp; result2.Count &gt; 0)
+{
+	result = result1 + result2;
+}
+else if (result1.Count &gt; 0)
+{
+	result = result1;
+}
+else
+{
+	result = result2;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

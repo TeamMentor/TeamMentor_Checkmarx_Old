@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>16dd900c-cf1d-46ee-be67-992b48e1d2ea</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>437 - Improper Resource Shutdown or Release</Title>
+    <Category>CWE: 404</Category>
+    <Phase>CSharp Low Visibility</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  404</h1>
+  <iframe height="500" src="/content/404" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 437
+Cwe : 404
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 27
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList io = All.FindByType("*StreamReader") +
+			All.FindByType("*BinaryReader") +
+			All.FindByType("*BufferedStream") +
+			All.FindByType("*FileStream") +
+			All.FindByType("*StreamReader") +
+			All.FindByType("*StringReader") +
+			All.FindByType("*TextReader") +	
+			All.FindByType("*StreamWriter") +
+			All.FindByType("*BinaryWriter") +
+			All.FindByType("*StringWriter") +
+			All.FindByType("*TextWriter");
+io -= io.FindByType(typeof(FieldDecl));		// When declaring a field of class, there's also a FieldDecl
+											// with the same name as the Declarator, IN ADDITION to the
+											// Declarator, and it's not wanted here.
+
+io -= io.FindByType(typeof(TypeDecl));		// Declaring a type (class etc.), that's inheriting from
+											// a stream is irrelevant.
+
+CxList io_with_Close = All.FindAllReferences(All.FindByShortName("Close").GetTargetOfMembers());
+io_with_Close += io.FindAllReferences(io.GetByAncs(All.GetAncOfType(typeof(ForEachStmt))).DataInfluencingOn(io_with_Close));
+
+CxList Using = All.FindByType(typeof(UsingStmt));
+
+CxList io_in_Using = All.GetByAncs(Using);
+
+result = All.FindDefinition(io - io_with_Close - io_in_Using) - 
+	io.FindByType(typeof(ParamDecl)) -
+	All.FindByType(typeof(ClassDecl));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

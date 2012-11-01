@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00dc9e89-f255-49d7-ba74-e6355dc7ca10</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1660 - Serializable Class Containing Sensitive Data</Title>
+    <Category>CWE: 499</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  499</h1>
+  <iframe height="500" src="/content/499" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1660
+Cwe : 499
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find Sensitive data field (non boolean)
+CxList sensitiveData = Find_Personal_Info();
+sensitiveData = sensitiveData.FindByType(typeof(FieldDecl));
+sensitiveData -= sensitiveData.FindByType("boolean");
+sensitiveData -= sensitiveData.FindByType("bool");
+// Find their classes
+CxList sensitiveClasses = sensitiveData.GetAncOfType(typeof(ClassDecl));
+
+// The problematic classes are the ones that are serializable
+CxList problematicClasses = sensitiveClasses.InheritsFrom("Serializable");
+
+// For each problematic class connect the class with the sensitive data inside it
+foreach (CxList problematicClass in problematicClasses)
+{
+	CxList sensitive = sensitiveData.GetByAncs(problematicClass);
+	result += sensitive.ConcatenateAllSources(problematicClass);
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

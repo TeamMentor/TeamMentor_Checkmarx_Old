@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000715552</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>LDAP Injection</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>LDAP Injection</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+LDAP injection is a technique for exploiting applications that use input from users to query an LDAP directory. Lightweight Directory Access Protocol (LDAP) is a widely used protocol for accessing directory services. Directories provide a set of attributes about people that are organized in a hierarchal manner. LDAP injection has the potential to view, modify, or remove personal information about anyone in the directory. LDAP injection applies to all applications that use LDAP. To prevent LDAP injection, validate all input and use parameterized APIs if they are available. To check for this vulnerability, find all code that queries directories and verify that data included in the queries is sufficiently validated.
+
+==Impact==
+
+LDAP injection allows an attacker to access and/or modify restricted data in the LDAP database. The attacker may leverage this vulnerability to view personal information of users in the database. The attacker may also leverage this vulnerability to give himself administrative privileges or to take over another account. Once the attacker has administrative privileges, he usually has full control of the application.
+
+==Countermeasures==
+
+Validate all input:
+
+Use parameterized APIs:
+
+==Checklists==
+
+All input is validated:
+
+Parameterized APIs are used:
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

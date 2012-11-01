@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e9b21aa0-667e-468c-bf7b-fc1231f660f3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1906 - R07 03 05 Multiple Declarations After Using</Title>
+    <Category>CWE: 10790</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10790</h1>
+  <iframe height="500" src="/content/10790" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1906
+Cwe : 10790
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* 
+ MISRA CPP RULE 7-3-5
+ ------------------------------
+ This query searches for declarations of methods after using-declarations usage.
+ 
+ The Example below shows code with vulnerability: 
+ 
+    namespace NS{
+    	int f(int);
+	}
+	using NS::f;
+	namespace NS{
+	    int f(long);	//Non-compliant
+	}
+
+*/
+
+CxList imps = All.FindByType(typeof(Import));
+imps -= imps.FindByRegex("using namespace ",false,false,false);
+CxList methods = All.FindByType(typeof(MethodDecl));
+CxList namespaces = All.FindByType(typeof(NamespaceDecl));
+
+foreach(CxList imp in imps) {
+	LinePragma impLp = ((CSharpGraph) imp.data.GetByIndex(0)).LinePragma;
+	
+	string ns = ((Import) imp.data.GetByIndex(0)).Namespace;
+	string[] nsSplit = ns.Split('.');
+	if( nsSplit.Length == 1 ){
+		continue;
+	}
+	string methodName = nsSplit[nsSplit.Length - 1];
+	string impNs = nsSplit[nsSplit.Length - 2];
+	CxList currMethods = methods.FindByFileName(impLp.FileName).FindByShortName(methodName);
+	CxList currNS = namespaces.FindByFileName(impLp.FileName).FindByShortName(impNs);
+	for(int i = 0;i  impLp.Line &amp;&amp; //method declaration has to be after using line
+		currNS.FindByShortName(method.Namespace.Name).Count == 1) {//method namespace has to be same as in using
+			result += methods.FindById(method.NodeId);
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

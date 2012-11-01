@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>dcae1304-e6f0-46e2-b9a1-272dc7039f08</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1319 - Stored Code Injection</Title>
+    <Category>CWE: 94</Category>
+    <Phase>PHP Medium Threat</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  94</h1>
+  <iframe height="500" src="/content/94" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1319
+Cwe : 94
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1273
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList dynamic_method_invoke = methods.FindByShortName("$_Function") + 
+	methods.FindByShortName("call_user_func*") +
+	methods.FindByShortName("forward_static_call*") + 
+	methods.FindByShortName("create_function") + 
+	methods.FindByShortName("register_shutdown_function") +
+	methods.FindByShortName("register_tick_function") +
+	methods.FindByShortName("eval");
+
+CxList dynamic_variable_access = methods.FindByShortName("$_Variable");
+
+CxList influencedBydbRefFunc = All.InfluencedBy(All.FindByShortName("*Reflection*"));
+CxList reflectionInvoke = All.FindByShortName("invoke*").GetTargetOfMembers() * influencedBydbRefFunc;
+
+dynamic_method_invoke += reflectionInvoke;
+
+result = Find_DB_Out().DataInfluencingOn(dynamic_method_invoke + dynamic_variable_access);
+result += Find_Read().DataInfluencingOn(dynamic_method_invoke + dynamic_variable_access);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

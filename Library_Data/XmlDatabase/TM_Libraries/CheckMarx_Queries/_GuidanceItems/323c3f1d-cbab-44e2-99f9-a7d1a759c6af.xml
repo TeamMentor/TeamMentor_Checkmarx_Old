@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>323c3f1d-cbab-44e2-99f9-a7d1a759c6af</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>179 - DoS by Sleep</Title>
+    <Category>CWE: 730</Category>
+    <Phase>ASP Medium Threat</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  730</h1>
+  <iframe height="500" src="/content/730" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 179
+Cwe : 730
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 12
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // $ASP*
+
+CxList Inputs = Find_Interactive_Inputs();
+CxList sleep = All.FindByName("WScript.Sleep", false) + 					// vbs
+	All.GetParameters(Find_Methods().FindByShortName("setTimeout"), 1) + 	// js
+	All.GetParameters(Find_Methods().FindByShortName("setInterval"), 1); 	// js
+
+result = sleep.DataInfluencedBy(Inputs);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>959d46f5-2fad-412f-99f3-0eea415222c6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1949 - R16 01 01 Defined Standart Forms</Title>
+    <Category>CWE: 10774</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10774</h1>
+  <iframe height="500" src="/content/10774" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1949
+Cwe : 10774
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 16-1-1
+ ------------------------------
+ This query finds all "defined" that appear in a non standart form.
+ 
+ The only two permissible forms for the "defined" preprocessor operator are:
+      1) defined(identifier)
+      2) defined identifier   
+
+ The Example below shows code with vulnerability: 
+
+      #if defined (x&gt;y) //non-compliant
+      #if defined x+y   //non-compliant
+
+ *Special case*
+ Generation of the token defined during expansion of #if  and #elif can lead to an undefined behaviour.
+
+      #define DEFINED defined
+      #if DEFINED (X)   //non-compliant - undefined behaviour
+      #if DEFINED Z     //non-compliant - undefined behaviour     
+*/
+
+
+// makes sure that the defined is in one of the two standard forms:
+CxList nonStandart = All.FindByRegex(@"\s*#\s*(if|elif)\s*[^\n\r]*defined((?=\s+\w+[^\w\n\|\|&amp;&amp;]+\w)|(?=(\s*[(]\s*\w+[^\w\n\s]+\w*\s*[)])))",
+	All.NewCxList());
+
+//deals with the special case:
+CxList specialCase = All.FindByRegex(@"#\s*define\s+(\w+)\s+defined\s+.*\n*.*\s*#(?=\s*if|elif\s+\1+\s+\w+|[(]\w+[)]\s+)", 
+	All.NewCxList());
+
+result = nonStandart + specialCase;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

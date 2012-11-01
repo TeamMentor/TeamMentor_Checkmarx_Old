@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0839b68e-6fe5-4f36-b639-ac6da064a54e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1848 - R14 06 Multiple Breaks In Iteration Statement</Title>
+    <Category>CWE: 11036</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11036</h1><iframe src='/content/11036' width="100%" height="500"></iframe><h1>Checkmarx Rule</h1>
+<div style='padding:10px'><pre>QueryId : 1848
+Cwe : 11036
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre></div><h3>Source</h3><div style='padding:10px'><pre> /*
+MISRA C RULE 14-6
+------------------------------
+This query searches for multiple break statements used for loop termination in the same iteration.
+
+	The Example below shows code with vulnerability: 
+
+for (n=1; n<20; n++){
+	if (n==5){
+		break; 
+	}
+	if (n = 7){
+		break;
+	}
+}
+
+*/
+
+// find iterations and breaks
+CxList iterations = All.FindByType(typeof(IterationStmt));
+CxList breaks = All.FindByType(typeof(BreakStmt));
+CxList switches = All.FindByType(typeof(SwitchStmt));
+
+foreach(CxList iter in iterations){
+	CxList curBreaks = breaks.GetByAncs(iter);
+	CxList descIters = iterations.GetByAncs(iter) - iter;
+	CxList descSwitches = switches.GetByAncs(iter);
+	
+	// remove breaks not directly under current loop
+	curBreaks -= curBreaks.GetByAncs(descIters);
+	curBreaks -= curBreaks.GetByAncs(descSwitches);
+	
+	if (curBreaks.Count >= 2)
+		result += curBreaks;
+}</pre></div>]]></Data>
+  </Content>
+</TeamMentor_Article>

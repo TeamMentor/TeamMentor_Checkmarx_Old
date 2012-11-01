@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6cdae1e0-5f13-4d05-bb16-bbcaf281eaa8</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>552 - Find Log Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 552
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList write =
+	All.FindByName("*Debug.Write", false) +
+	All.FindByName("*Log.Write", false) + 
+	All.FindByName("*Debug.WriteLine", false) +
+	All.FindByName("*Log.WriteLine", false) + 
+	All.FindByName("*Log.debug", false) + 
+	All.FindByName("*Log.error", false) + 
+	All.FindByMemberAccess("ServletContext.log") +
+	All.FindByMemberAccess("GenericServlet.log") +
+	All.FindByMemberAccess("LogWriter.write");
+
+CxList log = All.FindByMemberAccess("Log.*").GetTargetOfMembers();
+log = log.FindByType("Log") + log.FindByShortName("Log", false);
+write += log.GetMembersOfTarget();
+log = All.FindByMemberAccess("Logger.*").GetTargetOfMembers();
+log = log.FindByType("Logger") + log.FindByShortName("Logger", false);
+write += log.GetMembersOfTarget();
+
+CxList notWrite = 
+	write.FindByMemberAccess("Logger.getLogger") + 
+	write.FindByMemberAccess("Logger.is*") + 
+	write.FindByMemberAccess("Log.is*");;
+
+
+result = log + write - notWrite;
+result -= Find_Dead_Code_Contents();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

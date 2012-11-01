@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d00bcb49-38f8-4000-b458-426c836962dc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2039 - Import of Deprecated Modules</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2039
+Cwe : 0
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+
+see: https://www.securecoding.cert.org/confluence/display/perl/DCL30-PL.+Do+not+import+deprecated+modules
+
+Deprecated
+----------
+Class::ISA
+Pod::Plainer
+Shell
+Switch
+Universal::isa
+Universal::can
+Universal::VERSION
+File::PathConvert
+*/
+
+CxList imports = All.FindByType(typeof(Import));
+
+result = 
+	imports.FindByRegex("CLASS").FindByRegex(@"\(ISA\)") +
+	imports.FindByRegex("POD").FindByRegex(@"\(Plainer\)") +
+	imports.FindByRegex("Shell") +
+	imports.FindByRegex("Switch") +
+	imports.FindByRegex("UNIVERSAL").FindByRegex(@"\(isa\)") +
+	imports.FindByRegex("UNIVERSAL").FindByRegex(@"\(can\)") +
+	imports.FindByRegex("UNIVERSAL").FindByRegex(@"\(VERSION\)") +
+	imports.FindByRegex("File").FindByRegex(@"\(PathConvert\)") +
+
+	imports.FindByRegex("CLASS::ISA") +
+	imports.FindByRegex("POD::Plainer") +
+	imports.FindByRegex("UNIVERSAL::isa") +
+	imports.FindByRegex("UNIVERSAL::can") +
+	imports.FindByRegex("UNIVERSAL::VERSION") +
+	imports.FindByRegex("File::PathConvert");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

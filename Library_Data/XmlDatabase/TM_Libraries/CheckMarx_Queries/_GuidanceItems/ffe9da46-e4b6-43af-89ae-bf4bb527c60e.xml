@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ffe9da46-e4b6-43af-89ae-bf4bb527c60e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2056 - Permissive Regular Expression</Title>
+    <Category>CWE: 625</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  625</h1>
+  <iframe height="500" src="/content/625" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2056
+Cwe : 625
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Inputs();
+CxList regex = Find_Regex();
+
+CxList goodRegexes = 
+	regex.FindByName(@"/^*").FindByName(@"*$/") +
+	regex.FindByName(@"^*").FindByName(@"*$/") +
+	regex.FindByName(@"/^*").FindByName(@"*$") +
+	regex.FindByName(@"!^*").FindByName(@"*$") +
+	regex.FindByName(@"s/^*").FindByName(@"*$/") +
+	regex.FindByName(@"s/^*").FindByName(@"*$") +
+	regex.FindByName(@"{^*").FindByName(@"*$/") +
+	regex.FindByName(@"{^*").FindByName(@"*$") +
+	regex.FindByName(@"m/^*").FindByName(@"*$/") +
+	regex.FindByName(@"m/^*").FindByName(@"*$") +
+	regex.FindByName(@"tr/^*").FindByName(@"*$/") +
+	regex.FindByName(@"tr/^*").FindByName(@"*$") +
+	regex.FindByName(@"/^*").FindByName(@"*$/g") +
+	regex.FindByName(@"^*").FindByName(@"*$/g") +
+	regex.FindByName(@"s/^*").FindByName(@"*$/g") +
+	regex.FindByName(@"{^*").FindByName(@"*$/g") +
+	regex.FindByName(@"m/^*").FindByName(@"*$/g") +
+	regex.FindByName(@"tr/^*").FindByName(@"*$/g"); // all possible permutations
+
+regex -= goodRegexes;
+
+// Regex in a ~= or !~ operation
+CxList regexInBinary = regex.GetAncOfType(typeof(BinaryExpr));
+
+// Find regexes that do not start and end with /^ and $/
+result = regexInBinary.DataInfluencedBy(inputs);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

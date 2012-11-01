@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9caf7c67-c391-48ca-a290-0d39d9c52815</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2042 - Variables Outside The Scope of a Regex</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2042
+Cwe : 0
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+source: https://www.securecoding.cert.org/confluence/display/perl/STR30-PL.+Do+not+use+capture+variables+outside+the+scope+of+a+regex
+
+Perl's capture variables ($1, $2, etc.) are assigned the values of capture expressions after
+a regular expression (regex) match has been found. If a regex fails to find a match, the contents
+of the capture variables can remain undefined. The perlre manpage [Wall 2011] contains this note:
+  NOTE: Failed matches in Perl do not reset the match variables, which makes it easier to write code that
+        tests for a series of more specific cases and remembers the best match.
+
+Consequently, the value of a capture variable can be indeterminate if a previous regex failed.
+Always ensure that a regex was successful before reading its capture variables.
+
+A regular exression should be checked for success before the capture variables are accessed.
+
+Bad example:
+  $data =~ /\[(\d*)\].+/;  # this regex will fail
+  $time = 1;
+  print "time is $time\n";
+
+---
+
+Good example:
+  if ($data =~ /\[(\d*)\].+/) {  # this regex will fail
+    $time = 1;
+    print "time is $time\n";
+  }
+*/
+
+CxList regex = Find_Regex();
+
+// All the methods where we test regex
+CxList regexMethods = All.GetMethod(regex);
+
+// Find if statements that contain a test on the regexes
+CxList testRegex = regex.GetByAncs(Find_Conditions());
+
+// Remove the cases where we test when regexes fail before using their $1, $2 etx.
+CxList not = testRegex.GetByAncs(All.FindByShortName("Not"));
+not += regex.FindByFathers(All.FindByType(typeof(IfStmt))).FindByRegex("unless"); // unless issues
+regexMethods -= regexMethods.GetMethod(not);
+
+// Get the if stmt and the while loop statement
+testRegex = testRegex.GetAncOfType(typeof(IfStmt)) + testRegex.GetAncOfType(typeof(IterationStmt));
+
+// Find variables
+CxList dollar = All.FindByName("$*");
+dollar = dollar.GetByAncs(regexMethods); // relevant only when we have regexes, not any parameters
+CxList variables = 
+	dollar.FindByName("$1*") +
+	dollar.FindByName("$2*") +
+	dollar.FindByName("$3*") +
+	dollar.FindByName("$4*") +
+	dollar.FindByName("$5*") +
+	dollar.FindByName("$6*") +
+	dollar.FindByName("$7*") +
+	dollar.FindByName("$8*") +
+	dollar.FindByName("$9*");
+
+
+// Find all regex variables that are not tested
+result = variables - variables.GetByAncs(testRegex);
+
+// Every Param has its value, so we don't need to return both of them
+result -= result.FindByType(typeof(Param));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

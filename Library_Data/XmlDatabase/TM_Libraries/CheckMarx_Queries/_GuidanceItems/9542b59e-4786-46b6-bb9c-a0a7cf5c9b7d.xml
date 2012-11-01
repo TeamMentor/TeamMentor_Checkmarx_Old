@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9542b59e-4786-46b6-bb9c-a0a7cf5c9b7d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1003 - Connect Loop To DB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Apex Force com Code Quality</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1003
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1001
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length == 3)
+{
+	CxList db1 = param[0] as CxList;
+	CxList origDB = param[1] as CxList;
+	bool checkForNull = (bool) param[2];
+
+	if ((db1 * origDB).Count == 0)
+	{
+		CxList methods = db1;
+		for(int i = 0; i  0)
+			{
+				db1 -= dbInstance;
+			}
+		}
+	}
+	result = db1;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

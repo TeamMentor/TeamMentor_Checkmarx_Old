@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>65576bb2-c29f-4c54-a4a5-d29d88a506aa</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1526 - Insufficiently Protected Credentials</Title>
+    <Category>CWE: 522</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Insufficiently Protected Credentials</h1>
+  <iframe height="300" src="/html/Insufficiently_Protected_Credentials" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  522</h1>
+  <iframe height="500" src="/content/522" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1526
+Cwe : 522
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList AllPSW = Find_Passwords();
+
+AllPSW = AllPSW - Find_Methods();
+
+CxList AllDB = Find_DB_Methods();
+CxList DBOut = Find_DB();
+
+foreach (CxList db in DBOut)
+{
+	result += AllPSW.InfluencedByAndNotSanitized(db, AllDB - db);	
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

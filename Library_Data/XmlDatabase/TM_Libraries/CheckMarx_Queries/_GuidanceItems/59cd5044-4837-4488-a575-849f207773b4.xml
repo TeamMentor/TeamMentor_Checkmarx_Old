@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>59cd5044-4837-4488-a575-849f207773b4</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>354 - Dynamic SQL Queries</Title>
+    <Category>CWE: 89</Category>
+    <Phase>CSharp Best Coding Practice</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  89</h1>
+  <iframe height="500" src="/content/89" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 354
+Cwe : 89
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 23
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+
+CxList db = Find_DB();
+
+CxList binary = All.FindByType(typeof(BinaryExpr));
+
+CxList str = (All.FindByType(typeof(UnknownReference)) + 
+	All.FindByType(typeof(Declarator))).FindByType("String");
+
+CxList concat = binary.DataInfluencingOn(str);
+
+CxList sanitize = Find_Parameters();
+
+result = db.InfluencedByAndNotSanitized(concat, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

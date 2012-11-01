@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9ef31ebc-2b70-4743-97de-ed8e2b825514</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1826 - R06 03 Non Typedefd Basic Types</Title>
+    <Category>CWE: 11014</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11014</h1>
+  <iframe height="500" src="/content/11014" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1826
+Cwe : 11014
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 6-3
+------------------------------
+This query searches for usage of basic types not wrapped by a typedef that indicates size and signedness
+except for the definition of main()
+
+	The Example below shows code with vulnerability: 
+
+int i;
+
+*/
+
+// start with all type objects
+CxList basicTypes = All.FindByType(typeof(TypeRef));
+
+// we only care about basic types
+basicTypes = basicTypes.FindByName("char") +
+	basicTypes.FindByName("short") +
+	basicTypes.FindByName("int") +
+	basicTypes.FindByName("long") +
+	basicTypes.FindByName("float") +
+	basicTypes.FindByName("double");
+
+// remove redundent instances
+basicTypes -= basicTypes.FindByFathers(All.FindByType(typeof(ObjectCreateExpr)));
+
+// remove typedef'd types
+CxList typedefAnc = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetAncOfType(typeof(VariableDeclStmt))
+	+ All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetAncOfType(typeof(FieldDecl));
+basicTypes -= basicTypes.GetByAncs(typedefAnc);
+
+
+// main() is exempt from this, return value type won't be returned since it receives a special name in DOM
+// paramaters need to be dealt with
+CxList mains = All.FindByType(typeof(MethodDecl)).FindByShortName("main");
+CxList mainParamTypes = basicTypes.FindByFathers(All.FindByFathers(
+	All.FindByFathers(mains).FindByType(typeof(ParamDeclCollection))));
+CxList mainReturnValue = basicTypes.FindByFathers(mains);
+basicTypes -= (mainParamTypes + mainReturnValue);
+
+// Bit fields are also exempt
+basicTypes -= basicTypes.FindByRegex(@"[\}|\w]+?\s*?:\s*?\d+?\s*?;",false,false,false);
+
+
+result = basicTypes;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

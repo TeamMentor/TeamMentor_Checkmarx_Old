@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a4a3b7ae-4b2e-4f9e-b806-24365fbed6d3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1548 - Privilege Escalation</Title>
+    <Category>CWE: 285</Category>
+    <Phase>Ruby Medium Threat</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  285</h1>
+  <iframe height="500" src="/content/285" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1548
+Cwe : 285
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1283
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+// Will catch @Project = Project.find(params[:id])
+// User will be able to see projects he's not allowed to.
+// Should use:
+// @current_user.projects.find(params[:id])
+CxList id = All.FindByShortName("id");
+//id = id.GetByAncs(Find_Interactive_Inputs());
+
+result = id.GetByAncs(All.FindByMemberAccess("Project.find", false));
+
+
+/*
+//Actually should be something like the following, but thn how do we detect that this is a DB?
+CxList db = All.InheritsFrom("ActiveRecord.Base");
+CxList find = All.FindAllReferences(db).GetMembersOfTarget().FindByShortName("find") * Find_Methods();
+id = id.GetByAncs(find);
+result = id.GetAncOfType(typeof(MethodInvokeExpr));
+
+//*/</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

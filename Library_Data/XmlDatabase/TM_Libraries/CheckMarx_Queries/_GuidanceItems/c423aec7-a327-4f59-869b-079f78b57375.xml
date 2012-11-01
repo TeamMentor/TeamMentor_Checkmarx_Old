@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c423aec7-a327-4f59-869b-079f78b57375</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1498 - Find WS Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1498
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList MethodDecls = All.FindByType(typeof(MethodDecl));
+
+// Find all custom attributes
+CxList custAttr = All.FindByType(typeof(CustomAttribute));
+
+CxList WebAttr = custAttr.FindByName("*WebMethod"); 		// Web Services
+CxList WcfAttr = custAttr.FindByName("*OperationContract");	// WCF
+
+CxList inMethod1 = (WcfAttr + WebAttr).GetFathers().GetFathers().FindByType(typeof(MethodDecl));
+
+// Methods of interface class 
+CxList interfaceMethod = WcfAttr.GetFathers().GetFathers().FindByType(typeof(MethodDecl));
+CxList interfaceClass = All.GetClass(interfaceMethod);
+CxList InheritsFromInterface = All.InheritsFrom(interfaceClass);
+
+// All Methods of implementation class Inherits From Interface
+CxList MethodsOfImpl = All.GetByAncs(InheritsFromInterface) * MethodDecls;
+CxList inMethod2 = MethodsOfImpl;	 
+
+// Find all methods with name from CxList - CxList FindMembersByName(CxList cml)
+CxList mList = new CxList();
+foreach (CxList cml in interfaceMethod)
+{
+	MethodDecl m = cml.data.GetByIndex(0) as MethodDecl;
+	string nodeName = m.Name;
+	bool CaseSensitive = true;
+	mList += MethodDecls.FindByShortName(nodeName, CaseSensitive);
+}
+
+inMethod2 = inMethod2 * mList;	// Only methods that implementat interface method
+
+
+// Methods Of Interface class only
+CxList inClass = All.FindByType(typeof(InterfaceDecl));
+CxList MethodsOfInterface = All.GetByAncs(inClass) * MethodDecls;
+
+CxList inMethod = inMethod1 + inMethod2;
+inMethod -= MethodsOfInterface;	// remove Methods Of Interface - for sake of performance
+
+result = All.FindByFathers(All.FindByFathers(inMethod)).FindByType(typeof(ParamDecl));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

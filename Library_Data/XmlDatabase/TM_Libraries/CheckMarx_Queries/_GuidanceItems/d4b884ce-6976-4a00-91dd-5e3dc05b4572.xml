@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d4b884ce-6976-4a00-91dd-5e3dc05b4572</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1943 - R15 03 07 Catch All Final</Title>
+    <Category>CWE: 10768</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10768</h1>
+  <iframe height="500" src="/content/10768" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1943
+Cwe : 10768
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 15-3-7   
+ ------------------------------
+ This query checks if catch-all appears last in try-catch statement in case of multiple catch handlers
+ 
+
+ The Example below shows code with vulnerability:  
+ 
+       void f1()
+       {
+             try
+             {
+                  ...
+             }
+             catch(...)
+             {
+                   //handle all exception types
+             }          
+             catch(int i)       //non-compliant-handler will never be called
+             {
+             }   
+       }
+
+*/
+
+//finds all try-catch statements 
+CxList trycatch = All.FindByType(typeof(TryCatchFinallyStmt));
+
+CxList lastCatches = All.NewCxList();
+
+//find the last catch in a try-catch scope
+foreach(CxList temp in trycatch){
+	TryCatchFinallyStmt t = temp.data.GetByIndex(0) as TryCatchFinallyStmt;
+	if(t!=null &amp;&amp; t.CatchClauses!=null &amp;&amp; t.CatchClauses.Count &gt; 1)
+	{
+		
+		Catch c = t.CatchClauses[t.CatchClauses.Count - 1];
+		if(c != null)
+		{
+			lastCatches += All.FindById(c.NodeId);
+		}
+	}
+}
+CxList notOkCatch = All.NewCxList();
+//checks if the catch is catch all and removes all the catch- all statements from the result.
+CxList fatherOfCatch = All.NewCxList();
+//gets the father of the catch in order to find out if it has parameters or not:
+foreach(CxList cur in lastCatches)
+{	
+	
+	CxList references = All.FindByFathers(cur).FindByType(typeof(TypeRef));
+	if(references.Count&gt;0)
+		  notOkCatch+=cur;	
+		
+}
+
+result= notOkCatch;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

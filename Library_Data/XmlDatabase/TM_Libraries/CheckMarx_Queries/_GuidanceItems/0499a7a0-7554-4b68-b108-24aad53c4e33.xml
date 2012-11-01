@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0499a7a0-7554-4b68-b108-24aad53c4e33</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>840 - TraceEnabled</Title>
+    <Category>CWE: 10708</Category>
+    <Phase>VbNet WebConfig</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10708</h1>
+  <iframe height="500" src="/content/10708" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 840
+Cwe : 10708
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 49
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList webConfig = Find_Web_Config();
+CxList value_false = webConfig.FindByName("false", false).FindByType(typeof(StringLiteral));
+CxList value_true = webConfig.FindByName("true", false).FindByType(typeof(StringLiteral));
+
+CxList enabledTrue = value_true.DataInfluencingOn(webConfig.FindByName("CONFIGURATION.SYSTEM.WEB.TRACE.ENABLED", false));
+CxList localOnlyFalse = value_false.DataInfluencingOn(webConfig.FindByName("CONFIGURATION.SYSTEM.WEB.TRACE.LOCALONLY", false));
+
+if ((enabledTrue + localOnlyFalse).Count &gt; 1)
+{
+	result = value_true * enabledTrue;
+}
+if ((enabledTrue + localOnlyFalse).Count == 1)
+{
+	result = (value_true * enabledTrue) + (value_false * localOnlyFalse);
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

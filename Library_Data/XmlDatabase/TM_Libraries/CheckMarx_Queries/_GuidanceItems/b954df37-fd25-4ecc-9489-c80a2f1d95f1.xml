@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b954df37-fd25-4ecc-9489-c80a2f1d95f1</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1969 - Get Attribute</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1969
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList getSession = 
+	All.FindByMemberAccess("request.getSession") +
+	All.FindByName("*request.getSession") +
+	All.FindByName("*Request.getSession");
+
+CxList getAttr = 
+	All.FindByMemberAccess("HttpServletRequest.getAttribute") +
+	All.FindByName("*request.getAttribute") +
+	All.FindByName("*Request.getAttribute");
+
+getAttr += getSession.GetMembersOfTarget().FindByShortName("getAttribute");
+getAttr += All.FindByMemberAccess("Session.getAttribute");
+getAttr += All.FindByName("*session.getAttribute", false);
+getAttr += All.FindByName("*session.get", false);
+getAttr += All.FindByMemberAccess("session.get");
+
+result = getAttr;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

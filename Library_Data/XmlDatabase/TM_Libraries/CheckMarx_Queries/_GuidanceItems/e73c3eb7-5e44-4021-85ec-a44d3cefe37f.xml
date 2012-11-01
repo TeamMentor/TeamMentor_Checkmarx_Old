@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e73c3eb7-5e44-4021-85ec-a44d3cefe37f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1044 - Find If With Return or Create</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1044
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 3
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList apexFiles = Find_Apex_Files() - Find_Triggers_Code() - Find_Test_Code();
+CxList returnInsideIfStmt = apexFiles.FindByType(typeof(ReturnStmt)).GetAncOfType(typeof(IfStmt));
+CxList createInsideIfStmt = apexFiles.FindByType(typeof(ObjectCreateExpr)).GetAncOfType(typeof(IfStmt));
+
+result = returnInsideIfStmt + createInsideIfStmt;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

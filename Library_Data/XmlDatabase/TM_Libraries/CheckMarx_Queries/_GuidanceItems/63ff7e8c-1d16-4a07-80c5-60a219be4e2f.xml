@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>63ff7e8c-1d16-4a07-80c5-60a219be4e2f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1057 - Potential Command Injection</Title>
+    <Category>CWE: 77</Category>
+    <Phase>Java Potential</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  77</h1>
+  <iframe height="500" src="/content/77" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1057
+Cwe : 77
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1004
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Potential_Inputs();
+CxList exec = 
+	All.FindByMemberAccess("Runtime.exec") + 
+	All.FindByMemberAccess("getRuntime.exec") +
+	All.FindByMemberAccess("System.exec");
+
+CxList execParam = All.GetParameters(exec);
+CxList execFirstParam = All.GetParameters(exec, 0);
+
+CxList sanitize = 
+	Find_General_Sanitize() + 
+	Find_Integers() + 
+	All.GetByAncs(execParam - execFirstParam);	// exec's non-first parameters
+
+result = exec.InfluencedByAndNotSanitized(inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

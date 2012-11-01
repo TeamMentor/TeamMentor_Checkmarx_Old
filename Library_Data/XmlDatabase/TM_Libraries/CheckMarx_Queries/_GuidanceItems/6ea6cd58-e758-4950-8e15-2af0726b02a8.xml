@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6ea6cd58-e758-4950-8e15-2af0726b02a8</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>310 - Log Forging</Title>
+    <Category>CWE: 117</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  117</h1>
+  <iframe height="500" src="/content/117" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 310
+Cwe : 117
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Inputs = Find_Interactive_Inputs();
+CxList Log = All.GetParameters(Find_Methods().FindByShortName("syslog"), 2);
+Log += Find_Write().FindByName("*.clog.*");
+
+CxList sanitize = Find_Sanitize();
+
+result = Log.InfluencedByAndNotSanitized(Inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

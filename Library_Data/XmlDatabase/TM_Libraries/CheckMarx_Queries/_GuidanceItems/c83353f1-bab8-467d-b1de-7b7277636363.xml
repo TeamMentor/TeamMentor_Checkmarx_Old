@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c83353f1-bab8-467d-b1de-7b7277636363</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1866 - R18 04 Use Of Union</Title>
+    <Category>CWE: 11054</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11054</h1>
+  <iframe height="500" src="/content/11054" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1866
+Cwe : 11054
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 18-4
+------------------------------
+This query searches for usage of unions
+
+	The Example below shows code with vulnerability: 
+
+union utag {
+	float f1;      
+	float fbit ; 
+	unsigned long i1 : 1;
+} u ;
+
+*/
+
+return All.FindByRegex(@"\Wunion\W", false, false, false, All.NewCxList());</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

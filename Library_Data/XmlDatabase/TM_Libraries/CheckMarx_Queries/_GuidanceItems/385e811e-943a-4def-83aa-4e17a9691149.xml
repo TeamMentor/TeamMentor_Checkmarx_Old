@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>385e811e-943a-4def-83aa-4e17a9691149</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1597 - Insufficient Sensitive Transport Layer</Title>
+    <Category>CWE: 359</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  359</h1>
+  <iframe height="500" src="/content/359" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1597
+Cwe : 359
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Insufficient_Sensitive_Transport_Layer
+// Meaning: (Unsecured_Sensitive_Data_Transmission)
+// -------------------------------------------
+// Vulnerability: Lack of data protection in transit
+// Description: After data has been secured on the device the next 
+//              high concern area is protecting the communications between 
+//              the mobile application and the server.
+
+// The purpose of the query is found out the scenarios of using HTTP protocol 
+// instead of HTTPS where Sensitve Data is transfered
+
+//The block below calculate access to the network over HTTP but not HTTPS
+CxList https = All.FindByName(@"*https:*");
+CxList http = All.FindByName(@"*http:*");
+CxList pureHTTP = http - https;
+
+// Find outputs that performed over HTTP
+CxList outInfluencedByHttp = Find_Write() * Find_Write().DataInfluencedBy(pureHTTP);
+
+// Find all paths that include sensitive (personal) data and outstreamed over HTTP
+CxList pathResult = Find_Personal_Info().DataInfluencingOn(outInfluencedByHttp);
+
+// The patern below choose longest pathes from few same
+result = pathResult - pathResult.DataInfluencedBy(pathResult);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

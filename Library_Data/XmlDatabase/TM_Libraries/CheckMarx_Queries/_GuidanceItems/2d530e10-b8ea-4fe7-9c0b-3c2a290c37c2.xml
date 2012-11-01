@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2d530e10-b8ea-4fe7-9c0b-3c2a290c37c2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>465 - Data Filter Injection</Title>
+    <Category>CWE: 200</Category>
+    <Phase>CSharp Medium Threat</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  200</h1>
+  <iframe height="500" src="/content/200" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 465
+Cwe : 200
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 28
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Data Filter Manipulation (Information Leak)
+
+CxList db = Find_Disconnected_DB_Access();
+CxList inputs = Find_Interactive_Inputs();
+CxList sanitized = Find_SQL_Sanitize();
+
+result = All.FindSQLInjections(inputs, db, sanitized);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

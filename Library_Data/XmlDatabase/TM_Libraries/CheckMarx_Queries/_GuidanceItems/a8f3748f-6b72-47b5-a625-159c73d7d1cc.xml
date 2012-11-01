@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a8f3748f-6b72-47b5-a625-159c73d7d1cc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>259 - Find Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 259
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList qSQL1 = methods.FindByMemberAccess("QSqlQuery.bindValue");
+CxList qSQL2 = methods.FindByMemberAccess("QSqlQuery.addBindValue");
+
+result = Find_Integers() +
+	All.GetParameters(qSQL1, 1) +
+	All.GetParameters(qSQL2, 0);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

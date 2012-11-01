@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>cae6797a-d96f-4193-974e-9c752fb63498</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>206 - Declaration Of Catch For Generic Exception</Title>
+    <Category>CWE: 396</Category>
+    <Phase>CPP Best Coding Practice</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  396</h1>
+  <iframe height="500" src="/content/396" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 206
+Cwe : 396
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 14
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Try = All.FindByType(typeof(TryCatchFinallyStmt));
+CxList generalException = All.FindByName("Exception").GetFathers().FindByType(typeof(Catch));
+
+foreach(CxList curTry in Try)
+{
+	TryCatchFinallyStmt tr = curTry.data.GetByIndex(0) as TryCatchFinallyStmt;
+	if(tr.CatchClauses.Count == 1)
+	{
+		if(generalException.data.Contains(tr.CatchClauses[0].NodeId))
+		{
+			result += All.FindById(tr.CatchClauses[0].NodeId);
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

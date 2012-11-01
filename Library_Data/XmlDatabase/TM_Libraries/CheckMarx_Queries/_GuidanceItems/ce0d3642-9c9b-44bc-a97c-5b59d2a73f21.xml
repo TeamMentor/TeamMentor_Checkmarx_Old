@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ce0d3642-9c9b-44bc-a97c-5b59d2a73f21</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1533 - Information Exposure Through an Error Message</Title>
+    <Category>CWE: 209</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  209</h1>
+  <iframe height="500" src="/content/209" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1533
+Cwe : 209
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList ctch = All.FindByType(typeof(Catch));
+CxList exc = All.FindAllReferences(ctch) - ctch;
+CxList outputs = Find_Interactive_Outputs() + Find_Console_Outputs();
+
+result = outputs.DataInfluencedBy(exc);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

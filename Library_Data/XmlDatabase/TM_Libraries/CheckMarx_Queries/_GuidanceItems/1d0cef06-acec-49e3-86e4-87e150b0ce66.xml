@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1d0cef06-acec-49e3-86e4-87e150b0ce66</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>658 - Struts Duplicate Config Files</Title>
+    <Category>CWE: 694</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  694</h1>
+  <iframe height="500" src="/content/694" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 658
+Cwe : 694
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList configFiles = Find_Class_Decl().FindByName("Cxstruts_configxml");
+if (configFiles.Count&gt;1)
+{
+	result = configFiles;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

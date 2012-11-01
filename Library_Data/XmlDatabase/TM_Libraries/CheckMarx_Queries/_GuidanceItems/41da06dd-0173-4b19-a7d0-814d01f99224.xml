@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>41da06dd-0173-4b19-a7d0-814d01f99224</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>787 - Impersonation Issue</Title>
+    <Category>CWE: 10024</Category>
+    <Phase>VbNet Low Visibility</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10024</h1>
+  <iframe height="500" src="/content/10024" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 787
+Cwe : 10024
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 46
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Inputs = Find_Inputs();
+CxList methods = Find_Methods();
+CxList Logon = methods.FindByShortName("logonuser");
+CxList DuplicateToken = methods.FindByShortName("duplicatetoken");
+
+CxList Impersonate = All.FindByMemberAccess("windowsidentity.impersonate") + 
+					All.FindByShortName("impersonateloggedonuser");
+
+foreach(CxList curLogon in Logon)
+{	
+	CxList prm = All.GetParameters(curLogon);
+	if(prm.DataInfluencedBy(Inputs).Count &gt; 0)
+	{
+		result += Impersonate.DataInfluencedBy(prm);
+		
+		foreach(CxList curDuplicate in DuplicateToken)
+		{	
+			CxList prmDupl = All.GetParameters(curDuplicate);
+			if(prmDupl.DataInfluencedBy(prm).Count &gt; 0)
+			{
+				result += Impersonate.DataInfluencedBy(prmDupl);
+			}
+		}
+	}
+}
+
+result += All.FindByShortName("createprocesswithlogonw").DataInfluencedBy(Inputs);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

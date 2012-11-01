@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>fd268741-091e-4714-a69c-b0275382348e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>578 - GWT Reflected XSS</Title>
+    <Category>CWE: 79</Category>
+    <Phase>Java GWT</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  79</h1>
+  <iframe height="500" src="/content/79" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 578
+Cwe : 79
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 33
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methodDecl = All.FindByType(typeof(MethodDecl));
+CxList public_methods = methodDecl.FindByFieldAttributes(Modifiers.Public);
+CxList remoteService = All.InheritsFrom("RemoteServiceServlet");
+public_methods = public_methods.GetByAncs(remoteService);
+CxList XSS_GWT_Output = GWT_XSS_Outputs();
+CxList Input = Find_Inputs();
+CxList onSuccess = methodDecl.FindByShortName("onSuccess");
+CxList onFailure = methodDecl.FindByShortName("onFailure");
+
+foreach(CxList curMethods in public_methods)
+{
+	CxList returnStmt = All.GetByAncs(curMethods).FindByType(typeof(ReturnStmt));
+	returnStmt = All.GetByAncs(returnStmt).DataInfluencedBy(Input);
+	if(returnStmt.Count &gt; 0)//there is an input influencing on return of rmi call
+	{
+		CSharpGraph graph = curMethods.data.GetByIndex(0) as CSharpGraph;
+		string name = graph.ShortName;
+		CxList clientRMIInvoke = Find_Methods().FindByShortName(name);
+		CxList clientAsync = All.GetParameters(clientRMIInvoke);
+		
+		//clientAsync = clientAsync.FindByType("AsyncCallback") + clientAsync.FindByType(typeof(ObjectCreateExpr));
+		
+		clientAsync += All.DataInfluencingOn(All.FindAllReferences(clientAsync));		
+		result += clientAsync;
+	}
+}
+
+result = All.FindAllReferences(All.GetByAncs(result));
+result = XSS_GWT_Output.DataInfluencedBy(All.GetParameters(result * onSuccess));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

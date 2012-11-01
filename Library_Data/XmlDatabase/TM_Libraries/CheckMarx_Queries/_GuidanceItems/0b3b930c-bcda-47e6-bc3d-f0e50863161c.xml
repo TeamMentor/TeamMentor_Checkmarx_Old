@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0b3b930c-bcda-47e6-bc3d-f0e50863161c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1852 - R14 10 If Else If Not Ending With Else</Title>
+    <Category>CWE: 11040</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11040</h1>
+  <iframe height="500" src="/content/11040" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1852
+Cwe : 11040
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 14-10
+------------------------------
+This query searches for if else if structures not ending with else
+
+	The Example below shows code with vulnerability: 
+
+if (i &gt; 0)
+	{
+		...
+	}
+	else if (i = 0){
+		 ...
+	}		
+
+*/
+
+CxList ifs = All.FindByType(typeof(IfStmt));
+CxList elseIfs = All.NewCxList();
+
+// find else if statements
+foreach(CxList cur in ifs){
+	StatementCollection falseStmts = (cur.data.GetByIndex(0) as IfStmt).FalseStatements;
+	if (falseStmts != null &amp;&amp; falseStmts.Count == 1){
+		IfStmt elseIf = falseStmts[0] as IfStmt;
+		if (elseIf != null){
+			elseIfs += All.FindById(elseIf.NodeId);
+		}
+	}
+}
+elseIfs -= elseIfs.FindByFathers(All.FindByType(typeof(StatementCollection)));
+
+// remove else ifs that have an else with a non comment statement
+foreach(CxList cur in elseIfs){
+	StatementCollection falseStmts = (cur.data.GetByIndex(0) as IfStmt).FalseStatements;
+	if (falseStmts != null &amp;&amp; falseStmts.Count != 0){
+		elseIfs -= cur;
+	}
+}
+
+// remove else ifs that have an else with a comment statement
+elseIfs -= elseIfs.FindByRegex(@"[\W]if[^;\{]*{[^\}]*}[(\s)(\r\n)]*else[(\s)(\r\n)]*{[^\}]*?[(/\*)(//)]");
+
+result = elseIfs;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

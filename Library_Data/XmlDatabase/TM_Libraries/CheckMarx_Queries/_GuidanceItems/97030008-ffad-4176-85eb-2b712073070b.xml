@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>97030008-ffad-4176-85eb-2b712073070b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>314 - Unchecked Array Index</Title>
+    <Category>CWE: 129</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  129</h1>
+  <iframe height="500" src="/content/129" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 314
+Cwe : 129
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Unchecked Array Index
+//  ---------------------
+//  In this query we look for return values of functions that their implementation
+//  is not in the code + primitive functions, and check if there is an if condition
+//  influenced by this value. If not, and the value propagates to an index,
+//  such as "i" in "buf[i]", it's a potential vulnerability.
+///////////////////////////////////////////////////////////////////////
+
+CxList methods = All.FindByType(typeof(MethodDecl)) - Find_Empty_Methods();
+
+CxList methodCalls = Find_Methods();
+methodCalls -= methodCalls.FindByShortName("sizeof");
+methodCalls -= Find_All_Strlen();
+
+foreach (CxList methodCall in methodCalls)
+{
+	if (methods.FindDefinition(methodCall).Count &gt; 0)
+	{
+		methodCalls -= methodCall;
+	}
+}
+
+CxList declarators = methodCalls.GetAncOfType(typeof(Declarator));
+CxList indxRef = All.FindByType(typeof(IndexerRef));
+CxList possibleIndexes = All.FindByType(typeof(Reference)).GetByAncs(indxRef);
+CxList indx = new CxList();
+foreach (CxList ind in indxRef)
+{
+	IndexerRef p = ind.data.GetByIndex(0) as IndexerRef;
+	foreach (Expression ex in p.Indices)
+	{
+		indx += possibleIndexes.FindById(ex.NodeId);
+	}
+}
+
+CxList conditions = Get_Conditions();
+CxList allGoodIndexes = conditions.FindAllReferences(indx);
+allGoodIndexes = indx.FindAllReferences(allGoodIndexes);
+CxList problems = indx - allGoodIndexes;
+result = problems.GetByAncs(problems.GetAncOfType(typeof(IndexerRef)).FindByAssignmentSide(CxList.AssignmentSide.Left));
+
+
+
+
+/// old version:
+/*
+CxList methods = All.FindByType(typeof(MethodDecl)) - Find_Empty_Methods();
+
+CxList methodCalls = Find_Methods();
+methodCalls -= methodCalls.FindByShortName("sizeof");
+methodCalls -= methodCalls.FindByShortName("strlen");
+methodCalls -= methodCalls.FindByShortName("lstrlen");
+
+foreach (CxList methodCall in methodCalls)
+{
+	if (methods.FindDefinition(methodCall).Count &gt; 0)
+	{
+		methodCalls -= methodCall;
+	}
+}
+
+CxList declarators = methodCalls.GetAncOfType(typeof(Declarator));
+CxList indxRef = All.FindByType(typeof(IndexerRef));
+CxList possibleIndexes = All.FindByType(typeof(Reference)).GetByAncs(indxRef);
+CxList indx = new CxList();
+foreach (CxList ind in indxRef)
+{
+	IndexerRef p = ind.data.GetByIndex(0) as IndexerRef;
+	foreach (Expression ex in p.Indices)
+	{
+		indx += possibleIndexes.FindById(ex.NodeId);
+	}
+}
+
+CxList indx1 = All.GetByAncs(indx) * All.FindAllReferences(declarators);
+
+CxList conditions = Get_Conditions();
+
+CxList indxDef = All.FindDefinition(indx1);
+CxList methodsInDecl = All.GetByAncs(indxDef);
+CxList methodsNotInDecl = methodCalls - All.GetByAncs(indxDef);
+methodsInDecl *= methodCalls;
+
+foreach (CxList i in indx1)
+{
+	CxList def = All.FindDefinition(i);
+	CxList methodInDecl = methodsInDecl.GetByAncs(def) * methodCalls;
+	if (methodInDecl.DataInfluencingOn(conditions).Count == 0)
+	{
+		result += i;
+	}
+}
+
+CxList leftSide = methodsNotInDecl.GetAncOfType(typeof(AssignExpr));
+leftSide = All.GetByAncs(leftSide).FindByAssignmentSide(CxList.AssignmentSide.Left);
+leftSide = All.FindAllReferences(indx) * leftSide;
+
+CxList indx2 = All.GetByAncs(indx) * All.FindAllReferences(leftSide);
+CxList indxRef2 = All.FindAllReferences(indx2);
+foreach (CxList i in indx2)
+{
+	CxList references = indxRef2.FindAllReferences(i) * leftSide;
+	CxList methodNotInDecl = methodsNotInDecl.GetByAncs(references.GetAncOfType(typeof(AssignExpr))) * methodsNotInDecl;
+	CxList refInCondition = conditions.FindAllReferences(references);
+	CxList ref2 = (refInCondition - indx2).GetAncOfType(typeof(IfStmt));
+	if (i.GetByAncs(ref2).Count == 0)
+	{
+		result += i;
+	}
+}
+*/</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

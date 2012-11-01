@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000001e617d</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Hard-coded Credentials</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Hard-coded Credentials</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Applications that use authentication need a method for storing credentials. Credentials may be stored for authenticating users to the application or for the application to authenticate to external services. One of the simplest ways to store the credentials is to hard-code them into the application. This approach is not secure, because anyone with access to the application code is able to recover these credentials. Once an attacker has recovered the credentials, he can use them to authenticate with the application or to access the external services. To prevent this vulnerability, provide a secure admin interface that allows changing credentials and store credentials securely. To check for this vulnerability, examine all code that uses authentication and find where it stores credentials.
+
+==Impact==
+
+An attacker with access to application code gains valid credentials. Usually hard-coded credentials are used to provide a default administrative account that is then used to set up the rest of the application. Once the attacker has such administrative credentials, he usually has full control of the application.
+
+==Countermeasures==
+
+Provide a secure administrative interface that allows changing credentials:
+
+Store credentials securely:
+
+==Checklists==
+
+A secure administrative interface allows changing credentials:
+
+Credentials are stored securely:
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

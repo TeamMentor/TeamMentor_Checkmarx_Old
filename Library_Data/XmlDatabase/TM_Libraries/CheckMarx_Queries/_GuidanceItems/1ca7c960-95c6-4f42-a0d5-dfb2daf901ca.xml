@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1ca7c960-95c6-4f42-a0d5-dfb2daf901ca</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2096 - Reliance on Cookies in a Decision</Title>
+    <Category>CWE: 784</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  784</h1>
+  <iframe height="500" src="/content/784" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2096
+Cwe : 784
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList cookies = 
+	All.FindByMemberAccess("request.getCookies");
+
+CxList cond = Find_Conditions();
+
+result = cond.DataInfluencedBy(cookies);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7682516b-4ab1-4b96-b3aa-6a50e060004c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1891 - R03 02 01 Identical Function and Object Decl Def</Title>
+    <Category>CWE: 10814</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10814</h1>
+  <iframe height="500" src="/content/10814" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1891
+Cwe : 10814
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA CPP RULE 3-2-1
+------------------------------
+This query searches for decleration/definitions of functions which differ in the return type or paramater types
+and of other objects.
+
+	The Example below shows code with vulnerability:
+
+int sum (char a, char b);
+
+int sum (int a, int b){
+	return (a+b);
+}
+
+*/
+
+CxList methDecls = All.FindByType(typeof(MethodDecl));
+CxList typeRef = All.FindByType(typeof(TypeRef));
+//get all method definitions:
+CxList methDef = methDecls - All.FindByType(typeof(StatementCollection)).FindByFathers(methDecls).GetFathers();
+
+CxList allMethodsWithSameName = All.FindByType(typeof(MethodDecl)).FindByShortName(methDef);
+CxList allMdParams = All.fbt(typeof(ParamDecl)).GetParameters(methDef);
+CxList allMwsnParams = All.fbt(typeof(ParamDecl)).GetParameters(allMethodsWithSameName);
+CxList allMdReturnType = typeRef.FindByFathers(methDef);
+CxList allMwsnReturnType = typeRef.FindByFathers(allMethodsWithSameName);
+CxList mwsnTypeRef = typeRef.GetByAncs(allMwsnParams);
+typeRef = typeRef.GetByAncs(allMdParams);
+
+foreach(CxList md in methDef)
+{
+	CxList ParamTypes = typeRef.GetByAncs(allMdParams.GetParameters(md));
+	CxList returnType = allMdReturnType.FindByFathers(md);		
+	CSharpGraph g = md.data.GetByIndex(0) as CSharpGraph;
+	CSharpGraph rt = returnType.data.GetByIndex(0) as CSharpGraph;	
+	CxList methodsWithSameName = allMethodsWithSameName.FindByShortName(g.ShortName) - md;
+	CxList nonCompliant = All.NewCxList();
+	foreach(CxList mwsn in methodsWithSameName)
+	{
+		CxList retTypeOfOthers = allMwsnReturnType.FindByFathers(mwsn);
+		CSharpGraph rtoo = retTypeOfOthers.data.GetByIndex(0) as CSharpGraph;
+		
+		if(rtoo.ShortName != rt.ShortName)
+		{
+			result += mwsn + md;
+			nonCompliant += mwsn;
+			allMethodsWithSameName -= mwsn + md;
+		}	
+	}
+	methodsWithSameName -= nonCompliant;
+	foreach(CxList mwsn in  methodsWithSameName)
+	{
+		CxList otherParamTypes = mwsnTypeRef.GetByAncs(allMwsnParams.GetParameters(mwsn));
+		if(otherParamTypes.Count != ParamTypes.Count)
+		{
+			result += mwsn + md;
+			allMethodsWithSameName -= mwsn + md;
+			continue;
+		}
+		if(otherParamTypes.Count == 0 &amp;&amp; ParamTypes.Count == 0)
+		{
+			continue;
+		}
+		if((otherParamTypes.FindByShortName("void").Count &gt; 0 &amp;&amp; ParamTypes.Count == 0) ||
+			(ParamTypes.FindByShortName("void").Count &gt; 0 &amp;&amp; otherParamTypes.Count == 0) ||
+			(ParamTypes.FindByShortName("void").Count &gt; 0 &amp;&amp; otherParamTypes.FindByShortName("void").Count &gt; 0))
+		{	
+			continue;
+		}
+		
+		CxList defParamColl = ParamTypes.GetAncOfType(typeof(ParamDeclCollection));
+		CxList declParamColl = otherParamTypes.GetAncOfType(typeof(ParamDeclCollection));
+		for (int i = 0; i </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

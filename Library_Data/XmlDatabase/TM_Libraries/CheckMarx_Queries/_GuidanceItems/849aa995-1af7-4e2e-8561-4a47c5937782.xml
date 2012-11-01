@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>849aa995-1af7-4e2e-8561-4a47c5937782</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1977 - Find Zend Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1977
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //every Zend application contains a Bootstrap class which extends Zend_Application_Bootstrap
+CxList trc = All.FindByType(typeof(TypeRefCollection));
+CxList extend = All.FindByType(typeof(TypeRef)).GetByAncs(trc);
+CxList extendZend = extend.FindByShortName("*Zend*");
+
+if (extendZend.Count == 0){
+	return result;
+}
+
+/*
+This query finds Zend unique interactive inputs
+*/
+
+//handle Zend_Controller_Request and url params
+CxList methods = Find_Methods();
+CxList extendActionController = extend.FindByShortName("*Action*");
+
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList zendControllerRequest = (methods + memberAccess).FindByShortName("__get") +
+	(methods + memberAccess).FindByShortName("get") +
+	(methods + memberAccess).FindByShortName("post") +
+	(methods + memberAccess).FindByShortName("getPost") +
+	(methods + memberAccess).FindByShortName("getQuery") +
+	(methods + memberAccess).FindByShortName("getCookie") +
+	(methods + memberAccess).FindByShortName("getEnv") +
+	(methods + memberAccess).FindByShortName("getServer") +
+	(methods + memberAccess).FindByShortName("getParam*") +
+	(methods + memberAccess).FindByShortName("_getParam*") +
+	(methods + memberAccess).FindByShortName("getAllParam*") +
+	(methods + memberAccess).FindByShortName("getActionKey") +
+	(methods + memberAccess).FindByShortName("getUserParam*") +
+	(methods + memberAccess).FindByShortName("getRawBody") +
+	(methods + memberAccess).FindByShortName("getHeader*");
+
+CxList getInst = memberAccess.FindByShortName("getInstance") +
+	memberAccess.FindByShortName("instance");
+CxList requestParams = memberAccess.FindByShortName("params") +
+	memberAccess.FindByShortName("rawBody");
+zendControllerRequest += requestParams;
+
+CxList ur = All.FindByType(typeof(UnknownReference));
+CxList thisR = All.FindByType(typeof(ThisRef));
+CxList myClass = All.FindByType(typeof(ClassDecl));
+
+
+foreach(CxList cur in zendControllerRequest)
+{
+	CxList unrf = cur.GetTargetOfMembers() * ur;
+	CxList rightSideOfAsn = Find_Methods().DataInfluencingOn(unrf);
+	CxList errorHandler = zendControllerRequest.DataInfluencingOn(cur.GetTargetOfMembers().GetTargetOfMembers() * ur); 
+	if(errorHandler.Count &gt; 0)
+	{
+		result += cur;
+	}
+	
+	rightSideOfAsn += (cur.GetTargetOfMembers()) * memberAccess;
+	CxList ma = rightSideOfAsn.FindByShortName("request") + 
+		rightSideOfAsn.FindByShortName("_request") + 
+		rightSideOfAsn.FindByShortName("getRequest");
+	CxList GetClass = (cur.GetTargetOfMembers() + ma.GetTargetOfMembers()) * thisR;
+	GetClass = GetClass.FindByShortName("*Controller");
+	
+	CxList fromAnywhere = (cur.GetTargetOfMembers() + ma.GetTargetOfMembers()) * getInst;
+	CxList directAccess = ur.FindByShortName("*Controller*").FindByFathers(fromAnywhere);
+
+	
+	if(extendActionController.GetByAncs(trc.FindByFathers(myClass.FindDefinition(GetClass))).Count &gt; 0 || directAccess.Count &gt; 0)
+	{
+		result += cur;
+	}
+}
+//handle form inputs
+
+CxList oce = All.FindByType(typeof(ObjectCreateExpr));
+CxList zendFilteredInputCalls = methods.FindByShortName("getValue*") +
+	methods.FindByShortName("getUnfilteredValue*") +
+	methods.FindByShortName("getValidValue*");
+
+CxList inheritFromForm = myClass.InheritsFrom("Zend_Form") + myClass.InheritsFrom("Form");
+
+foreach(CxList input in zendFilteredInputCalls)
+{
+	CxList form = input.GetTargetOfMembers();
+	CxList FormClasses = oce.DataInfluencingOn(form);
+
+	if(inheritFromForm.FindByShortName(FormClasses).Count &gt; 0 || FormClasses.FindByShortName("*Form").Count &gt; 0)
+	{
+		result += input;
+	}
+	
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

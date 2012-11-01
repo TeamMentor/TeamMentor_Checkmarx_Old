@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f3627196-0682-49c6-b45c-3b0431905c43</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1849 - R14 07 Single Point Exit At Function End</Title>
+    <Category>CWE: 11037</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11037</h1>
+  <iframe height="500" src="/content/11037" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1849
+Cwe : 11037
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 14-7
+------------------------------
+This query searches for methods with more than one return, or a return not covering the exit path
+
+	The Example below shows code with vulnerability: 
+
+int32_t f(void){ 
+	...	
+	if(a==b){ 
+		return(1);  
+	} 
+	i++;
+}
+
+*/
+
+CxList methods = All.FindByType(typeof(MethodDecl));
+CxList returns = All.FindByType(typeof(ReturnStmt));
+CxList controls = All.FindByType(typeof(IfStmt)) + All.FindByType(typeof(IterationStmt)) + All.FindByType(typeof(SwitchStmt));
+CxList returnsInControl = returns.GetByAncs(controls);
+
+foreach(CxList cur in methods){
+	CxList descReturns = returns.GetByAncs(cur);
+	CxList descReturnsInControls = returnsInControl.GetByAncs(cur);
+	
+	// more than a single return statement is always a violation
+	if (descReturns.Count &gt;= 2){
+		result += descReturns;
+	}
+	
+	// returns not in end of method - wrapped by control object
+	if (descReturnsInControls.Count &gt; 0){
+		result += descReturnsInControls;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

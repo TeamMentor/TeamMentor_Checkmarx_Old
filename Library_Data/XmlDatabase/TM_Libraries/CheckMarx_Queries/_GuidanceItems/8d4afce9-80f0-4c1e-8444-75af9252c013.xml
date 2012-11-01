@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8d4afce9-80f0-4c1e-8444-75af9252c013</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1504 - Command Injection</Title>
+    <Category>CWE: 77</Category>
+    <Phase>Ruby High Risk</Phase>
+    <Technology>Ruby</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Command Injection</h1>
+  <iframe height="300" src="/html/Command_Injection" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  77</h1>
+  <iframe height="500" src="/content/77" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1504
+Cwe : 77
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1281
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+still missing:
+		`#{command}`
+		@whois = %x[whois #{dom}]
+*/
+
+CxList methods = Find_Methods();
+
+CxList commands = 
+	methods.FindByShortName("command") + 
+	methods.FindByShortName("exec") + 
+	methods.FindByShortName("syscall") + 
+	methods.FindByShortName("system");
+commands -= commands.GetTargetOfMembers().GetMembersOfTarget();
+commands += 
+	methods.FindByMemberAccess("IO.popen") + 
+	methods.FindByMemberAccess("Open3.popen3");
+//commands += Find_MongoDB_Def().GetMembersOfTarget().FindByShortName("drop_database");
+
+//CxList commandParams = All.GetByAncs(All.GetParameters(commands, 0));
+
+CxList inputs = Find_Interactive_Inputs();
+CxList sanitize = (All.GetByAncs(All.GetParameters(commands)) - All.GetByAncs(All.GetParameters(commands, 0))) +
+	Find_Integers();
+
+result = commands.InfluencedByAndNotSanitized(inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

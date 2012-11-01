@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5e69a208-683d-469e-affc-32a2bf788fb5</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>821 - XSRF</Title>
+    <Category>CWE: 352</Category>
+    <Phase>VbNet Medium Threat</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  352</h1>
+  <iframe height="500" src="/content/352" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 821
+Cwe : 352
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 47
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (All.isWebApplication)
+{
+	CxList requests = Find_Interactive_Inputs() + All.FindByName("*request.querystring*", false);
+	CxList db = Find_DB();
+	CxList strings = Find_Strings();
+
+	CxList write = strings.FindByName("*update*", StringComparison.OrdinalIgnoreCase) +
+		strings.FindByName("*delete*", StringComparison.OrdinalIgnoreCase) +
+		strings.FindByName("*insert*", StringComparison.OrdinalIgnoreCase);
+
+	result = db.DataInfluencedBy(write).DataInfluencedBy(requests);
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9045edc4-57a7-4917-970e-6da0c2004d7e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>573 - Find XSS Replace</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 573
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList replace = All.FindByShortName("replace*");
+
+replace = replace.FindByType(typeof(MemberAccess)) + 
+	replace.FindByType(typeof(MethodInvokeExpr));
+
+result = replace.FindByParameterValue(0, "\"<_5c_22_22_2c_ _.findbyparametervalue28_12c_="" _binaryoperator.identityequality29_=""></_5c_22_22_2c_><_5c_22_22_2c_ _replace.findbyparametervalue28_12c_="" _binaryoperator.identityinequality29_="" _2b_=""></_5c_22_22_2c_><_5c_22_22_2c_ _.findbyparametervalue28_02c_="" _binaryoperator.identityequality29_=""></_5c_22_22_2c_><_5c_22_22_2c_ _binaryoperator.identityinequality29_="" _.findbyparametervalue28_22c_=""></_5c_22_22_2c_><_5c_22_22_2c_ result="" _binaryoperator.identityinequality29_3b_="" _2b_="replace.FindByParameterValue(0," _22_5c_22_="">\"", BinaryOperator.IdentityEquality)
+	.FindByParameterValue(1, "\"&gt;\"", BinaryOperator.IdentityInequality)
+	+
+	replace.FindByParameterValue(1, "\"&gt;\"", BinaryOperator.IdentityEquality)
+	.FindByParameterValue(0, "\"&gt;\"", BinaryOperator.IdentityInequality)
+	.FindByParameterValue(2, "\"&gt;\"", BinaryOperator.IdentityInequality);
+
+result = All.GetByAncs(result).FindByShortName("replace*", false);</_5c_22_22_2c_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

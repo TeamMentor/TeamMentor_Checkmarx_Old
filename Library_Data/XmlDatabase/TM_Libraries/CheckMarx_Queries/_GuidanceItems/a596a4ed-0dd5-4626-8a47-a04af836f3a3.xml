@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a596a4ed-0dd5-4626-8a47-a04af836f3a3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>451 - Potential ReDoS</Title>
+    <Category>CWE: 730</Category>
+    <Phase>CSharp Low Visibility</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  730</h1>
+  <iframe height="500" src="/content/730" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 451
+Cwe : 730
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 27
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList evil = Find_Evil_Strings();
+
+CxList filter = Potential_ReDoS_In_Code() +
+	Potential_ReDoS_In_Static_Field() +
+	All.FindByType("ValidationExpression");
+
+result = evil - filter - evil.DataInfluencingOn(filter);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

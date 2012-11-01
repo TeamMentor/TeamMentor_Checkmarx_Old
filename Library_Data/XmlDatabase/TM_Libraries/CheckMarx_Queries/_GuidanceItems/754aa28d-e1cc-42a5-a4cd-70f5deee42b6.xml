@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>754aa28d-e1cc-42a5-a4cd-70f5deee42b6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>674 - Client ReDoS In Match</Title>
+    <Category>CWE: 730</Category>
+    <Phase>JavaScript Vulnerabilities</Phase>
+    <Technology>JavaScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  730</h1>
+  <iframe height="500" src="/content/730" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 674
+Cwe : 730
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 41
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Inputs();
+CxList evilStrings = Find_Evil_Strings();
+
+// Find all regex commands
+CxList match = Find_Match();
+CxList matchParameters = All.GetByAncs(All.GetParameters(match));
+
+// Find their Regexes
+CxList regex = matchParameters.GetByAncs(matchParameters.GetParameters(match, 0));
+
+// Find only matches that are influenced by an input, then use only their regexes
+match = match.InfluencedByAndNotSanitized(inputs, matchParameters);
+regex = matchParameters.GetByAncs(matchParameters.GetParameters(match, 0));
+
+// Find regex commands that are influenced by evil strings
+CxList activeEvilRegexes = (evilStrings * regex) + evilStrings.DataInfluencingOn(regex);
+
+// Sanitization
+CxList sanitize = Sanitize() + Find_Replace();
+
+// Find relevant matches
+result = match.InfluencedByAndNotSanitized(activeEvilRegexes, sanitize);
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

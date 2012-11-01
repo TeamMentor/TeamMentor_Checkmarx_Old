@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>3e2cd4d7-e54e-40cd-8738-28e83b9280e1</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>186 - Privacy Violation</Title>
+    <Category>CWE: 359</Category>
+    <Phase>ASP Medium Threat</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  359</h1>
+  <iframe height="500" src="/content/359" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 186
+Cwe : 359
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 12
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //return result;
+
+CxList personal_info = Find_Personal_Info();
+
+personal_info = personal_info - Find_Strings();
+
+CxList outputs = Find_Outputs();
+CxList db = Find_DB();
+
+result = outputs.InfluencedByAndNotSanitized(personal_info, db);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

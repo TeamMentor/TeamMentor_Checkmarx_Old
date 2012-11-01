@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>678f7b4b-419e-4b3d-a848-1519c966e861</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1703 - Find Same Switch And Case</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1703
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Case = All.FindByType(typeof(Case));
+CxList Switch = All.FindByType(typeof(SwitchStmt));
+CxList caseValues = All.FindByFathers(Case);
+caseValues -= caseValues.FindByType(typeof(StatementCollection));
+CxList switchValues = All.FindByFathers(Switch) - Case;
+
+foreach (CxList caseValue in caseValues)
+{
+	CxList switchValue = switchValues.GetByAncs(caseValue.GetFathers().GetFathers());
+	if (switchValue.FindByShortName(caseValue).Count &gt; 0)
+	{
+		result += switchValue.Concatenate(caseValue);
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

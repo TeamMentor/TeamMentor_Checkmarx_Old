@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8c7c0fae-ff2d-4363-9d3b-f8ffcd23d36f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1902 - R07 03 01 Definitions in Global Namespace</Title>
+    <Category>CWE: 10786</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10786</h1>
+  <iframe height="500" src="/content/10786" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1902
+Cwe : 10786
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 7-3-1
+ ------------------------------
+ Only definitions in global scope are main function, namespaces and extern "C" commands.
+
+ The Example below shows code with vulnerability: 
+
+	//file.cpp
+	int func() { };		 	//Non-compliant
+	namespace NS {			//Compliant
+		int newFunc() { };	//Compliant
+	}
+
+*/
+
+//Find typedefs that create compliance with Rule 3-9-2.
+// start with all type objects
+CxList basicTypes = All.FindByType(typeof(TypeRef));
+
+// we only care about basic types
+basicTypes = basicTypes.FindByName("char") +
+	basicTypes.FindByName("short") +
+	basicTypes.FindByName("int") +
+	basicTypes.FindByName("long") +
+	basicTypes.FindByName("float") +
+	basicTypes.FindByName("double");
+
+// remove redundent instances
+basicTypes -= basicTypes.FindByFathers(All.FindByType(typeof(ObjectCreateExpr)));
+
+// Find typedef'd types, save relevant ones in typedefs.
+CxList typedefDecl = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetAncOfType(typeof(FieldDecl));
+CxList typedefs = All.NewCxList();
+foreach (CxList typedefD in typedefDecl) {
+	CxList cut = All.FindByFathers(typedefD) * basicTypes;
+	if(cut.Count &gt; 0) {
+		typedefs += typedefD;
+	}
+}
+
+//Build potential objects that may be under global namespace.
+CxList methods = All.FindByType(typeof(MethodDecl));
+CxList classes = All.FindByType(typeof(ClassDecl));
+classes -= classes.FindByShortName("checkmarx_default_classname*");
+CxList potent = All.FindByType(typeof(FieldDecl)) +
+	All.FindByType(typeof(StructDecl)) +
+	All.FindByType(typeof(EnumDecl)) +
+	methods - methods.FindByShortName("main") - methods.FindByShortName("INCLUDEREPLACE")
+	- typedefs;
+potent -= potent.FindByShortName("checkmarx_default_*");
+
+foreach(CxList obj in potent) {
+	if (obj.FindByPosition(0).Count &gt; 0) {
+		continue;
+	}
+	// if obj is not in a class, still relevant.
+	CxList scope = obj.GetAncOfType(typeof(ClassDecl));
+	if (scope.FindByShortName("checkmarx_default_classname*").Count == 0) {
+		continue;
+	}
+		
+	//Check if obj is in a defined namespace.
+	scope = obj.GetAncOfType(typeof(NamespaceDecl));
+	
+	if (scope.FindByShortName("Namespace*").Count &gt;= 1) {
+		result += obj;
+	}
+}
+
+//Take care of classes.
+foreach(CxList obj in classes) {
+	//Check if in defined namespace
+	CxList scope = obj.GetAncOfType(typeof(NamespaceDecl));
+	if (scope.FindByShortName("Namespace*").Count == 0){
+		continue;
+	}
+	//Check if in a method
+	scope = obj.GetAncOfType(typeof(MethodDecl));
+	if (scope.Count &gt; 0) {
+		continue;
+	}
+	//If not, check if nested.
+	string fileName = ((CSharpGraph) obj.data.GetByIndex(0)).LinePragma.FileName;
+	CxList checkClass = classes - obj;
+	checkClass = checkClass.FindByFileName(fileName);
+	bool isNested = false;
+	foreach (CxList checker in checkClass) {
+		if (obj.GetByAncs(checker).Count &gt; 0) {
+			isNested = true;
+			break;
+		}
+	}
+	if(!isNested) {
+		result += obj;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

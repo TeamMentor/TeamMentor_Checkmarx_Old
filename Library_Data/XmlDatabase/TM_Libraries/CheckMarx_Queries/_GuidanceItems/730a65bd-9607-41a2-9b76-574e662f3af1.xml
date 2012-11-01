@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>730a65bd-9607-41a2-9b76-574e662f3af1</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1696 - Storing Passwords in a Recoverable Format</Title>
+    <Category>CWE: 257</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  257</h1>
+  <iframe height="500" src="/content/257" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1696
+Cwe : 257
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all cookies
+CxList cookie = All.FindByType("Cookie");
+// and cookies addition
+CxList addCookie =
+	All.FindByMemberAccess("response.addCookie") +
+	All.FindByName("*response.addCookie") +
+	All.FindByName("*Response.addCokies");
+
+// Find the personal info, as the "name" of the password saved
+CxList personalInfo = Find_Personal_Info() * Find_Strings();
+
+// Get all cookies with a personal info as a name
+CxList problematicCookieParam = personalInfo.GetParameters(cookie, 0);
+CxList problematicCookie = cookie.FindByParameters(problematicCookieParam);
+
+// inputs
+CxList inputs = Find_Inputs();
+
+// Sanitize by encryption (we are looking for non-encrypted data
+CxList encrypting = 
+	All.FindByMemberAccess("MessageDigest.digest") + 
+	All.FindByMemberAccess("MessageDigest.update") +
+	All.FindByMemberAccess("MD5.getHash*") +
+	All.FindByMemberAccess("MD5.update*") +
+	All.FindByMemberAccess("MD2.getHash*") +
+	All.FindByMemberAccess("MD2.update*");
+//+
+//	Find_Methods().FindByShortName("md5", false);
+
+//CxList strings = Find_Strings();
+//CxList oneSide = 
+//	strings.FindByShortName("\"SHA*") + 
+//	strings.FindByMemberAccess("\"MD2*") +
+//	strings.FindByMemberAccess("\"MD5*");
+//CxList sanitize = All.FindByMemberAccess("MessageDigest.digest").DataInfluencedBy(oneSide);
+
+/// Inputs that are stored in a sensitive cookie without encrypting
+result = inputs.InfluencingOnAndNotSanitized(problematicCookie, encrypting);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>506e38da-b1f2-48fa-854b-02514615dc6d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1895 - R05 02 11 Find Special Operator Overloads</Title>
+    <Category>CWE: 10782</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10782</h1>
+  <iframe height="500" src="/content/10782" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1895
+Cwe : 10782
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 5-2-11
+ ------------------------------
+ This query searches for overloads of the comma, &amp;&amp; and || operators.
+ 
+ The Example below shows code with vulnerability: 
+
+		bool operator &amp;&amp; (int, int); //Non-compliant
+		bool operator || (int, int); //Non-compliant
+		bool operator , (int, int);  //Non-compliant
+
+*/
+
+CxList methods = All.FindByType(typeof(MethodDecl));
+result = methods.FindByShortName("operator__Comma") + 
+	methods.FindByShortName("operator__|And") +
+	methods.FindByShortName("operator__|Or");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

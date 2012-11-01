@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0030b449-d91e-4666-bdd5-84a8ee693dd2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1622 - Direct Use of Threads</Title>
+    <Category>CWE: 383</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  383</h1>
+  <iframe height="500" src="/content/383" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1622
+Cwe : 383
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList servletRequest = All.FindByType("HttpServletRequest");
+CxList servletResponse = All.FindByType("HttpServletResponse");
+
+CxList servlet1 = servletRequest.GetFathers().GetFathers().FindByType(typeof(MethodDecl));
+CxList servlet2 = servletResponse.GetFathers().GetFathers().FindByType(typeof(MethodDecl));
+CxList servlet = servlet1 * servlet2;
+
+CxList runnable = All.FindByType("Runnable").FindByType(typeof(Declarator));
+
+result = runnable.GetByAncs(servlet);
+
+// Add "run" in thread
+if(All.isWebApplication)
+{
+	CxList run = All.FindByShortName("run").FindByType(typeof(MethodDecl));
+	result += All.GetClass(run) * All.InheritsFrom("Thread");
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>299e50eb-84de-4aa3-a731-37dfbf4c54d0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>506 - Confusing Naming</Title>
+    <Category>CWE: 710</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  710</h1>
+  <iframe height="500" src="/content/710" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 506
+Cwe : 710
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList fields = Find_Field_Decl();
+CxList methods = All.FindByType(typeof(MethodDecl));
+
+foreach(CxList curField in fields)
+{
+	CSharpGraph graph = curField.data.GetByIndex(0) as CSharpGraph;
+	CxList methodWithSameName = methods.FindByName(graph.FullName);
+	if(methodWithSameName.Count &gt; 0)
+	{
+		result += methods.FindByName(graph.FullName).ConcatenateAllTargets(curField);
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>042031b4-a7f8-4694-8068-279a95401849</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1396 - Find ReDoS</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1396
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 24
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length == 2)
+{
+	try
+	{
+		bool isPotential = (bool) param[1];
+		
+		CxList inputs = Find_Inputs();
+		CxList evilStrings = param[0] as CxList;
+
+		// Find all regex commands and patterns
+		CxList regex = Find_Regex();
+		CxList regexPatterns = All.GetByAncs(All.GetParameters(Find_Regex(), 0));
+
+		// Sanitization
+		CxList sanitize = Find_Integers();
+
+		// Find regex commands that are influenced by evil strings
+		CxList activeEvilRegexes = (evilStrings * regexPatterns) + 
+			evilStrings.InfluencingOnAndNotSanitized(regexPatterns, sanitize);
+
+		// Find all matches of regexes
+		CxList match = Find_Match();
+
+		//Get the matched strings that are influenced by input
+		CxList allMatchString = All.GetByAncs(All.GetParameters(match, 0));
+
+		allMatchString = allMatchString.FindByType(typeof(UnknownReference)) +
+			allMatchString.FindByType(typeof(StringLiteral)) +
+			allMatchString.FindByType(typeof(MemberAccess));
+		
+		CxList matchString = All.NewCxList();
+
+		if (isPotential)
+		{
+			matchString = allMatchString - allMatchString.DataInfluencedBy(inputs) - inputs;
+		}
+		else
+		{
+			matchString = allMatchString.DataInfluencedBy(inputs) + 
+				((allMatchString + allMatchString.GetTargetOfMembers()) * inputs);
+		}
+		
+		// Leave only relevant matches (strings influenced by input)
+		match = match.FindByParameters(matchString);
+		
+		// Find relevant matches
+		result = match.InfluencedByAndNotSanitized(activeEvilRegexes, sanitize + allMatchString);
+		result -= result.DataInfluencedBy(result);
+
+	}
+	catch
+	{
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

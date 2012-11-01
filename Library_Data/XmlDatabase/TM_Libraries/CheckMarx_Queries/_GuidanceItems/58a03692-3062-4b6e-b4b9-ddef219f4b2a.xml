@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>58a03692-3062-4b6e-b4b9-ddef219f4b2a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1487 - Find Sanitize PG</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1487
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList allMethods = Find_Methods();
+CxList pgParamSanitizer = 
+	allMethods.FindByShortName("pg_execute") +
+	allMethods.FindByShortName("pg_send_execute") +
+	allMethods.FindByShortName("pg_convert") +
+	allMethods.FindByShortName("pg_escape_string") +
+	allMethods.FindByShortName("pg_escape_bytea");
+result += pgParamSanitizer;
+
+// pg_send_execute - SQL stmt params are sanitized.
+CxList sendExecuteCalls = 
+	allMethods.FindByShortName("pg_send_query_params");
+
+CxList sendExecuteParam2 = 
+	All.GetParameters(sendExecuteCalls, 2);
+
+result += sendExecuteParam2;
+
+// pg_execute, pg_query_params
+CxList varParamsExecCalls = 
+	allMethods.FindByShortName("pg_query_params");
+
+// Get the last parameter of each call - it is the parameters' array for the query.
+foreach (CxList curExec in varParamsExecCalls)
+{
+	MethodInvokeExpr method = curExec.data.GetByIndex(0) as MethodInvokeExpr;
+	if (method != null &amp;&amp; method.Parameters != null &amp;&amp; method.Parameters.Count &gt; 0)
+	{
+		Param lastParam = method.Parameters[method.Parameters.Count - 1];
+		Expression exp = lastParam.Value;		
+		result += All.FindById(lastParam.NodeId) + All.GetByAncs(All.FindById(exp.NodeId));
+		
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4c1154c7-9e55-44f4-807a-d7d9c30c864f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1705 - Struts Duplicate Form Bean</Title>
+    <Category>CWE: 694</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  694</h1>
+  <iframe height="500" src="/content/694" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1705
+Cwe : 694
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList strings = Find_Strings();
+
+CxList formBeanName = All.FindByMemberAccess("FORM_BEAN.NAME").FindByFileName("*struts-config.xml");
+CxList formBeans = strings * strings.DataInfluencingOn(formBeanName);
+
+SortedList beanNamesList = new SortedList();
+foreach (CxList formBean in formBeans)
+{
+	StringLiteral str = formBean.data.GetByIndex(0) as StringLiteral;
+	string strName = str.ShortName;
+	if (beanNamesList.ContainsKey(strName))
+	{
+		result += formBean.Concatenate(beanNamesList[strName] as CxList);
+	}
+	else
+	{
+		beanNamesList[strName] = formBean;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000000fc870</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Require SSL</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Require SSL</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+SSL should be used to protect any sensitive data in transit. Some applications don't use SSL even during authentication or when transmitting sensitive data. An attacker may be able to intercept data that is sent over the network unencrypted. This vulnerability applies to all applications that send sensitive data over the network. To prevent this problem, use SSL for all sensitive communications, configure SSL to use strong cipher suites, and use valid certificates. To check for this issue, use the application and verify that SSL is used for any sensitive communications.
+
+
+==Impact==
+
+The exact impact depends on the type of data that the attacker is able to intercept. In some cases, the attacker may be able to intercept confidential information. More commonly, the attacker will try to intercept usernames and passwords to gain access to the application. Once the attacker has valid usernames and passwords, he can access and modify the users' data in the application. The attacker is also able to impersonate the users whose usernames and passwords he has acquired. If the attacker intercepts the administrator's username and password, he may gain full control of the application.
+
+==Countermeasures==
+
+Use SSL for all sensitive communications:
+* [[5bff1c23-47fc-46ad-84bd-130b822d9611|Encrypt Communication Links]]
+
+Configure SSL to use strong cipher suites:
+
+Use valid certificates:
+* [[8df9fe45-29b6-47c6-81c5-6248930d303c|Use a Valid SSL Certificate]]
+
+==Checklists==
+
+SSL is used for all sensitive communications:
+* [[edcb9c8f-7ab4-4b24-aa2e-f186f3903332|All Sensitive Communications Are Encrypted]]
+
+SSL is configured to use strong cipher suites:
+
+Valid certificates are used:
+* [[e8270fbe-a9e2-4504-a4af-688d3462cb0e|A Valid SSL Certificate Is Used]]
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

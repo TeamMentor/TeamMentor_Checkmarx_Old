@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9a17e417-82f9-4a08-b1e6-b18f80fbceb1</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>258 - Find Required Null Termination String</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 258
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //Find_Required_Null_Termination_String
+//-------------------------------------
+//  http://en.wikibooks.org/wiki/C_Programming/Strings#The_strcat_function
+
+CxList methods = Find_Methods();
+result = 
+	methods.FindByShortName("lstrcpy") +			
+	methods.FindByShortName("lstrlen") +			
+	methods.FindByShortName("strcat") +			
+	methods.FindByShortName("strchr") +			
+	methods.FindByShortName("strcmp") +			
+	methods.FindByShortName("strcoll") +					
+	methods.FindByShortName("strcspn") +			
+	methods.FindByShortName("strerror") +			
+	methods.FindByShortName("strlen") +			
+	methods.FindByShortName("strpbrk") +			
+	methods.FindByShortName("strrchr") +			
+	methods.FindByShortName("strspn") +			
+	methods.FindByShortName("strstr") +			
+	methods.FindByShortName("strtok") +			
+	methods.FindByShortName("strxfrm");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

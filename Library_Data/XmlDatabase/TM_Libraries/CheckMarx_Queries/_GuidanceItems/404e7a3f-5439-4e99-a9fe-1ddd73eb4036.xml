@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>404e7a3f-5439-4e99-a9fe-1ddd73eb4036</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>316 - Dangerous Functions</Title>
+    <Category>CWE: 242</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  242</h1>
+  <iframe height="500" src="/content/242" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 316
+Cwe : 242
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList _methods = methods.FindByShortName("_*");
+CxList Chamethods = methods.FindByShortName("Cha*");
+CxList IsBadmethods = methods.FindByShortName("IsBad*");
+CxList lstrmethods = methods.FindByShortName("lstr*");
+CxList strmethods = methods.FindByShortName("str*", false);
+CxList wmethods = methods.FindByShortName("w*");
+
+// Dangerous functions
+CxList dangerous = 
+	//	methods.FindByShortName("fgets") +
+	methods.FindByShortName("mbscpy", false) +
+	methods.FindByShortName("olestrcpy", false) +
+	methods.FindByShortName("realloc", false) +
+	strmethods.FindByShortName("StrCAdd", false) +
+	strmethods.FindByShortName("StrCCpy", false) +
+	strmethods.FindByShortName("StrCpyA", false) +
+	methods.FindByShortName("ualstrcpy", false) +
+	methods.FindByShortName("ualstrcpyA", false) +
+	methods.FindByShortName("ualstrcpyW", false) +
+	methods.FindByShortName("vfork");
+
+// Micosoft SDLC security banned methods ()
+CxList microsoft = 
+	_methods.FindByShortName("_alloca") +
+	_methods.FindByShortName("_ftcscat") +
+	_methods.FindByShortName("_ftcscpy") +
+	_methods.FindByShortName("_getts") +
+	_methods.FindByShortName("_gettws") +
+	_methods.FindByShortName("_i64toa") +
+	_methods.FindByShortName("_i64tow") +
+	_methods.FindByShortName("_itoa") +
+	_methods.FindByShortName("_itow") +
+	_methods.FindByShortName("_makepath") +
+	_methods.FindByShortName("_mbccat") +
+	_methods.FindByShortName("_mbccpy") +
+	_methods.FindByShortName("_mbscat") +
+	_methods.FindByShortName("_mbscpy") +
+	_methods.FindByShortName("_mbslen") +
+	_methods.FindByShortName("_mbsnbcat") +
+	_methods.FindByShortName("_mbsnbcpy") +
+	_methods.FindByShortName("_mbsncat") +
+	_methods.FindByShortName("_mbsncpy") +
+	_methods.FindByShortName("_mbstok") +
+	_methods.FindByShortName("_mbstrlen") +
+	_methods.FindByShortName("_snprintf") +
+	_methods.FindByShortName("_sntprintf") +
+	_methods.FindByShortName("_sntscanf") +
+	_methods.FindByShortName("_snwprintf") +
+	_methods.FindByShortName("_splitpath") +
+	_methods.FindByShortName("_stprintf") +
+	_methods.FindByShortName("_stscanf") +
+	_methods.FindByShortName("_tccat") +
+	_methods.FindByShortName("_tccpy") +
+	_methods.FindByShortName("_tcscat") +
+	_methods.FindByShortName("_tcscpy") +
+	_methods.FindByShortName("_tcsncat") +
+	_methods.FindByShortName("_tcsncpy") +
+	_methods.FindByShortName("_tcstok") +
+	_methods.FindByShortName("_tmakepath") +
+	_methods.FindByShortName("_tscanf") +
+	_methods.FindByShortName("_tsplitpath") +
+	_methods.FindByShortName("_ui64toa") +
+	_methods.FindByShortName("_ui64tot") +
+	_methods.FindByShortName("_ui64tow") +
+	_methods.FindByShortName("_ultoa") +
+	_methods.FindByShortName("_ultot") +
+	_methods.FindByShortName("_ultow") +
+	_methods.FindByShortName("_vsnprintf") +
+	_methods.FindByShortName("_vsntprintf") +
+	_methods.FindByShortName("_vsnwprintf") +
+	_methods.FindByShortName("_vstprintf") +
+	_methods.FindByShortName("_wmakepath") +
+	_methods.FindByShortName("_wsplitpath") +
+	methods.FindByShortName("alloca") +
+	Chamethods.FindByShortName("ChangeWindowMessageFilter") +
+	Chamethods.FindByShortName("CharToOem") +
+	Chamethods.FindByShortName("CharToOemA") +
+	Chamethods.FindByShortName("CharToOemBuffA") +
+	Chamethods.FindByShortName("CharToOemBuffW") +
+	Chamethods.FindByShortName("CharToOemW") +
+	methods.FindByShortName("CopyMemory") +
+	methods.FindByShortName("gets") +
+	IsBadmethods.FindByShortName("IsBadCodePtr") +
+	IsBadmethods.FindByShortName("IsBadHugeReadPtr") +
+	IsBadmethods.FindByShortName("IsBadHugeWritePtr") +
+	IsBadmethods.FindByShortName("IsBadReadPtr") +
+	IsBadmethods.FindByShortName("IsBadStringPtr") +
+	IsBadmethods.FindByShortName("IsBadWritePtr") +
+	lstrmethods.FindByShortName("lstrcat") +
+	lstrmethods.FindByShortName("lstrcatA") +
+	lstrmethods.FindByShortName("lstrcatn") +
+	lstrmethods.FindByShortName("lstrcatnA") +
+	lstrmethods.FindByShortName("lstrcatnW") +
+	lstrmethods.FindByShortName("lstrcatW") +
+	lstrmethods.FindByShortName("lstrcpy") +
+	lstrmethods.FindByShortName("lstrcpyA") +
+	lstrmethods.FindByShortName("lstrcpyn") +
+	lstrmethods.FindByShortName("lstrcpynA") +
+	lstrmethods.FindByShortName("lstrcpynW") +
+	lstrmethods.FindByShortName("lstrcpyW") +	
+	lstrmethods.FindByShortName("lstrlen") +
+	lstrmethods.FindByShortName("lstrncat") +
+	methods.FindByShortName("makepath") +
+	methods.FindByShortName("memcpy") +
+	methods.FindByShortName("OemToChar") +
+	methods.FindByShortName("OemToCharA") +
+	methods.FindByShortName("OemToCharW") +
+	methods.FindByShortName("RtlCopyMemory") +
+	methods.FindByShortName("scanf") +
+	methods.FindByShortName("snscanf") +
+	methods.FindByShortName("snwscanf") +
+	methods.FindByShortName("sprintf") +
+	methods.FindByShortName("sprintfA") +
+	methods.FindByShortName("sprintfW") +
+	methods.FindByShortName("sscanf") +
+	strmethods.FindByShortName("strcat") +
+	strmethods.FindByShortName("StrCat") +
+	strmethods.FindByShortName("strcatA") +
+	strmethods.FindByShortName("StrCatA") +
+	strmethods.FindByShortName("StrCatBuff") +
+	strmethods.FindByShortName("StrCatBuffA") +
+	strmethods.FindByShortName("StrCatBuffW") +
+	strmethods.FindByShortName("StrCatChainW") +
+	strmethods.FindByShortName("StrCatN") +
+	strmethods.FindByShortName("StrCatNA") +
+	strmethods.FindByShortName("StrCatNW") +
+	strmethods.FindByShortName("strcatW") +
+	strmethods.FindByShortName("StrCatW") +
+	strmethods.FindByShortName("strcpy") +
+	strmethods.FindByShortName("StrCpy") +
+	strmethods.FindByShortName("strcpyA") +
+	strmethods.FindByShortName("StrCpyA") +
+	strmethods.FindByShortName("StrCpyN") +
+	strmethods.FindByShortName("StrCpyNA") +
+	strmethods.FindByShortName("strcpynA") +
+	strmethods.FindByShortName("StrCpyNA") +
+	strmethods.FindByShortName("strcpynA") +
+	strmethods.FindByShortName("StrCpyNW") +
+	strmethods.FindByShortName("strcpyW") +
+	strmethods.FindByShortName("StrCpyW") +
+	strmethods.FindByShortName("strlen") +
+	strmethods.FindByShortName("StrLen") +
+	strmethods.FindByShortName("strlen") +
+	strmethods.FindByShortName("StrLen") +
+	strmethods.FindByShortName("strncat") +
+	strmethods.FindByShortName("StrNCat") +
+	strmethods.FindByShortName("StrNCatA") +
+	strmethods.FindByShortName("StrNCatW") +
+	strmethods.FindByShortName("strncpy") +
+	strmethods.FindByShortName("StrNCpy") +
+	strmethods.FindByShortName("strncpy") +
+	strmethods.FindByShortName("StrNCpy") +
+	strmethods.FindByShortName("StrNCpyA") +
+	strmethods.FindByShortName("StrNCpyW") +
+	strmethods.FindByShortName("strtok") +
+	methods.FindByShortName("swprintf") +
+	methods.FindByShortName("swscanf") +
+	methods.FindByShortName("vsnprintf") +
+	methods.FindByShortName("vsprintf") +
+	methods.FindByShortName("vswprintf") +
+	wmethods.FindByShortName("wcscat") +
+	wmethods.FindByShortName("wcscpy") +
+	wmethods.FindByShortName("wcslen") +
+	wmethods.FindByShortName("wcsncat") +
+	wmethods.FindByShortName("wcsncpy") +
+	wmethods.FindByShortName("wcstok") +
+	wmethods.FindByShortName("wmemcpy") +
+	wmethods.FindByShortName("wnsprintf") +
+	wmethods.FindByShortName("wnsprintfA") +
+	wmethods.FindByShortName("wnsprintfW") +
+	wmethods.FindByShortName("wscanf") +
+	wmethods.FindByShortName("wsprintf") +
+	wmethods.FindByShortName("wsprintfA") +
+	wmethods.FindByShortName("wsprintfW") +
+	wmethods.FindByShortName("wvnsprintf") +
+	wmethods.FindByShortName("wvnsprintfA") +
+	wmethods.FindByShortName("wvnsprintfW") +
+	wmethods.FindByShortName("wvsprintf") +
+	wmethods.FindByShortName("wvsprintfA") +
+	wmethods.FindByShortName("wvsprintfW");
+
+result = microsoft + dangerous;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

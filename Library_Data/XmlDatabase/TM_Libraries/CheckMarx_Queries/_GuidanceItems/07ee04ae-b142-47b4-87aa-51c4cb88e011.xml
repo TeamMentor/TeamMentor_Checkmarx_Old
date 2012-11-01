@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>07ee04ae-b142-47b4-87aa-51c4cb88e011</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1299 - Find Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1299
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //CxList allMethods = Find_Methods();
+//CxList sqlservplugin = allMethods.FindByShortName("sqlsrv_query");
+//CxList sqlservpluginSanitizer = All.GetParameters(sqlservplugin, 2);
+
+//CxList quouteSanitizer = allMethods.FindByShortName("quote");
+//CxList escapeSanitizer = allMethods.FindByShortName("*_escape_string") + 
+//	allMethods.FindByShortName("addslashes");
+
+//result = Find_Replace() + Find_Regex() + 
+//	sqlservpluginSanitizer + quouteSanitizer + escapeSanitizer + Find_Integers();
+
+CxList methods = Find_Methods();
+
+result += Find_General_Sanitize() +
+	Find_Sanitize_DBX() +
+	Find_Sanitize_MSSQL() +
+	Find_Sanitize_MYSQL() +
+	Find_Sanitize_ODBC() +
+	Find_Sanitize_ORACLE() +
+	Find_Sanitize_PDO() +
+	Find_Sanitize_PG() +
+	Find_Left_Side_Sanitize() +
+	Find_Replace();
+
+result += methods.FindByShortName("*filter_var*", false);
+
+result += Find_Zend_Sanitize() + Find_Kohana_Sanitize() + Find_Cake_Sanitize();
+
+/*
+   HTML encode functions which can aslo santize SQL statements
+*/
+CxList html_encode = methods.FindByShortName("htmlentities") + methods.FindByShortName("htmlspecialchars");
+CxList parameters = All.FindByType(typeof(Param));
+CxList encode_sanitize = new CxList();
+foreach( CxList single in html_encode)
+{
+	CxList html_param = parameters.GetParameters(single, 1);
+
+	if (html_param.FindByShortName("ENT_QUOTES").Count &gt; 0)
+	{
+		encode_sanitize += single;
+	}
+}
+result += encode_sanitize;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e4da0b7e-f433-478a-8d95-a547ebf5125f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1697 - Unchecked Return Value to NULL Pointer Dereference</Title>
+    <Category>CWE: 690</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  690</h1>
+  <iframe height="500" src="/content/690" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1697
+Cwe : 690
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+// General members
+CxList deadCode = Find_Dead_Code_Contents();
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList methods = Find_Methods();
+CxList returnStmt = All.FindByType(typeof(ReturnStmt));
+methods -= deadCode;
+
+// Add the FindByRegex, because the default initialization of an object is to null
+CxList nullLiteral = All.FindByType(typeof(NullLiteral)).FindByRegex("null");
+
+// All "null" that are set as an initialvalue of an array member
+CxList nullInArray = nullLiteral.GetByAncs(All.FindByType(typeof(ArrayInitializer)));
+
+// Remove the cases where there are "null in member" from the "set as null" cases
+nullLiteral -= nullInArray;
+
+// All if-statements that check "null"
+CxList nullIfStmt = nullLiteral.GetByAncs(Find_Conditions()).GetAncOfType(typeof(IfStmt));
+
+// Unknown references, that are not under the "null" if-statement (otherwise - irrelevant
+CxList unknown = All.FindByType(typeof(UnknownReference));
+unknown -= deadCode;
+CxList returnCommand = 
+	returnStmt +
+	All.FindByType(typeof(BreakStmt)) +
+	All.FindByType(typeof(ContinueStmt));
+CxList nullReturn = returnCommand.GetAncOfType(typeof(IfStmt)) * nullIfStmt;
+CxList nullCheckUnknown = unknown.GetByAncs(All.FindByType(typeof(BinaryExpr)).FindByShortName("==").GetByAncs(Find_Conditions()).GetByAncs(nullReturn));
+CxList sanitize = unknown.FindAllReferences(nullCheckUnknown);
+sanitize += deadCode;
+
+// null inside an initializer is OK
+sanitize += All.GetByAncs(All.FindByType(typeof(ArrayInitializer)));
+
+// If assigning to a member of a class, sometimes we mistakenly affect the class, so we remove it
+sanitize += All.FindByType(typeof(MemberAccess)).FindByAssignmentSide(CxList.AssignmentSide.Left).GetTargetOfMembers();
+
+// if passing through a parameterless method call, it's not what we mean
+//CxList parametersMethods = All.GetParameters(methods, 0);
+//sanitize += All.GetByAncs(methods - methods.FindByParameters(parametersMethods)); 
+
+CxList undeclaredMethods = methods - methods.FindDefinition(All.FindAllReferences(methods));
+CxList parameters = All.GetByAncs(undeclaredMethods) - undeclaredMethods;
+CxList bin = All.FindByType(typeof(BinaryExpr));
+sanitize += /*All.GetByAncs(returnStmt) +*/ parameters + bin;
+//sanitize -= nullLiteral + nullLiteral.GetFathers() * returnStmt;
+
+unknown -= unknown.GetByAncs(nullIfStmt);
+
+
+/// Members of an unknown reference target that is influenced by null literal
+
+// Find membes of all unknown references that are influenced by a null literal
+CxList unknownMembers = unknown.GetMembersOfTarget().GetTargetOfMembers();
+// Remove the cases where the last influence was by an assign operation
+// (we need things that were set as null before this instance)
+CxList assignExp = unknownMembers.GetAncOfType(typeof(AssignExpr));
+
+//CxList sanitizer = All.GetByAncs(assignExp).FindByAssignmentSide(CxList.AssignmentSide.Right);
+unknownMembers -= All.FindByType(typeof(MemberAccess))
+	.GetByAncs(All.FindByAssignmentSide(CxList.AssignmentSide.Left))
+	.GetTargetOfMembers();
+
+CxList problematicMethods = 
+	methods.FindByShortName("getParameter") + 
+	methods.FindByShortName("getProperty") +
+	methods.FindByMemberAccess("InetAddress.getByName");
+
+// Find all members that were influenced by null
+//CxList memberByNull = unknownMembers.DataInfluencedBy(nullLiteral + problematicMethods);
+CxList memberByNull = nullLiteral
+//	.DataInfluencingOn(returnStmt)
+	.InfluencingOnAndNotSanitized(unknownMembers, sanitize);
+CxList memberByGetter = problematicMethods
+	.InfluencingOnAndNotSanitized(unknownMembers, sanitize);
+
+/// Result - all together
+result = memberByNull + memberByGetter;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

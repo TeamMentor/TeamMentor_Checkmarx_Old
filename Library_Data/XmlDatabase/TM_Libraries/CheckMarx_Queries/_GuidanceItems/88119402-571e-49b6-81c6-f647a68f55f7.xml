@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>88119402-571e-49b6-81c6-f647a68f55f7</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>761 - Not Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 761
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 43
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = All.FindByMemberAccess("request.userhostname") + 
+				All.FindByMemberAccess("request.filter") + 
+				All.FindByMemberAccess("request.userhostaddress") + 
+				All.FindByMemberAccess("request.filepath") + 
+				All.FindByMemberAccess("request.contentencoding") + 
+				All.FindByMemberAccess("request.contenttype") + 
+				All.FindByMemberAccess("request.accepttypes") + 
+				All.FindByMemberAccess("request.applicationpath") + 
+				All.FindByMemberAccess("request.apprelativecurrentexecutionfilepath") + 
+				All.FindByMemberAccess("request.currentexecutionfilepath") + 
+				All.FindByMemberAccess("request.gethashcode") + 
+				All.FindByMemberAccess("request.gettype") + 
+				All.FindByMemberAccess("request.httpmethod") + 
+				All.FindByMemberAccess("request.isauthenticated") + 	
+				All.FindByMemberAccess("request.islocal") + 
+				All.FindByMemberAccess("request.issecureconnection") + 
+				All.FindByMemberAccess("request.logonuseridentity") + 
+				All.FindByMemberAccess("request.mappath") + 
+				All.FindByMemberAccess("request.physicalapplicationpath") + 
+				All.FindByMemberAccess("request.requesttype") + 
+				All.FindByMemberAccess("request.servervariables") + 
+				All.FindByMemberAccess("request.validateinput");
+result = inputs + inputs.GetTargetOfMembers();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d4c43d2f-84f8-4fff-96a9-f8d58cf6d188</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1893 - R04 10 01 NULL As An Integer Value</Title>
+    <Category>CWE: 10800</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10800</h1>
+  <iframe height="500" src="/content/10800" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1893
+Cwe : 10800
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 4-10-1
+ ------------------
+  NULL shall not be used as an integer value.
+  
+  The Example below shows code with vulnerability: 
+
+ 				#include <cstddef>
+				void f1 (int a);
+				void f2 (int * a);
+				void f3 ()
+				{
+					f1 (NULL) //Non-compliant, NULL used as an integer.
+					f2 (NULL) //Compliant
+				}
+
+*/
+
+CxList methodDecl = All.FindByType(typeof(MethodDecl));
+CxList paramDecl = All.FindByType(typeof(ParamDecl)); 
+CxList pointers = paramDecl.FindByRegex(@"\w\s*\*\s*\w");
+CxList nullParams = All.FindByType(typeof(Param)).FindByShortName("NULL");
+nullParams = nullParams.GetByAncs(All.FindByType(typeof(MethodInvokeExpr)));
+CxList nullMethInvoke = nullParams.GetAncOfType(typeof(MethodInvokeExpr));
+CxList nullMethDecl = methodDecl.FindDefinition(nullMethInvoke);
+
+//Get all int typerefs (also typedef'd refs)
+CxList typedefs = All.FindByName("CX_TYPEDEF").FindByType(typeof(StringLiteral));
+typedefs = typedefs.GetAncOfType(typeof(VariableDeclStmt));
+CxList tpr = All.FindByType(typeof(TypeRef));
+CxList intTypeRefs = All.NewCxList();
+
+foreach(CxList nf in typedefs)
+{
+	CSharpGraph g = nf.data.GetByIndex(0) as CSharpGraph;
+	if(g.TypeName == "int" ||
+		g.TypeName == "short" ||
+		g.TypeName == "long")
+	{
+		intTypeRefs += tpr.FindByShortName(g.ShortName);
+	}
+}
+
+intTypeRefs += tpr.FindByName("int") + 
+	tpr.FindByName("short") +
+	tpr.FindByName("long");
+
+foreach(CxList nullInvoke in nullMethInvoke)
+{
+	int paramCounter = 0;
+	LinePragma lp = ((CSharpGraph) nullInvoke.data.GetByIndex(0)).LinePragma;
+	CxList curMethDecl = nullMethDecl.FindDefinition(nullInvoke);
+	if (curMethDecl.Count == 0) {//Definition not found.
+		continue;
+	}
+	LinePragma clp = ((CSharpGraph) curMethDecl.data.GetByIndex(0)).LinePragma;
+	foreach(CxList curParamDecl in All.FindByPosition(clp.FileName, clp.Line).GetParameters(curMethDecl))
+	{
+		CSharpGraph g = curParamDecl.data.GetByIndex(0) as CSharpGraph;
+		if (pointers.FindById(g.NodeId).Count &gt; 0) {
+			paramCounter++;
+			continue;
+		}
+		CxList curParam = All.FindByPosition(lp.FileName, lp.Line).GetParameters(nullInvoke, paramCounter);
+		curParam = curParam.FindByType(typeof(Param));
+		if (curParam.FindByShortName("NULL").Count &gt; 0 &amp;&amp;
+		intTypeRefs.FindById(((ParamDecl) g).Type.NodeId).Count &gt; 0) {
+			result += curParam;
+		}
+		paramCounter++;
+	}
+	
+}</cstddef></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

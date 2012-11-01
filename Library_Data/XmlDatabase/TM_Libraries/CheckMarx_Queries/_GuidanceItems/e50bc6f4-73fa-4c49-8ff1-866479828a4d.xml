@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e50bc6f4-73fa-4c49-8ff1-866479828a4d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>213 - Buffer Overflow cin</Title>
+    <Category>CWE: 120</Category>
+    <Phase>CPP Buffer Overflow</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  120</h1>
+  <iframe height="500" src="/content/120" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 213
+Cwe : 120
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 15
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Buffer Overflow - cin
+//  ---------------------
+//  Find all cin inputs to arrays that have no cin.width sanitation.
+///////////////////////////////////////////////////////////////////////
+
+// Find assignments from cin (inputs)
+CxList assignExpr = All.FindByType(typeof(AssignExpr));
+CxList cin = All.FindByShortName("cin");
+cin = cin.GetByAncs(assignExpr);
+
+// Find all array creations
+CxList arrays = All.FindByType(typeof(ArrayCreateExpr)); // array creation
+CxList arraysFathers = arrays.GetFathers();
+arrays = All.FindByFathers(arraysFathers.FindByType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+	+ arraysFathers.FindByType(typeof(Declarator));
+arrays = All.FindAllReferences(arrays); // all the arrays' references
+
+CxList cinGetsArray = arrays.GetFathers() * cin.GetFathers(); // find only cin inputs
+CxList cinArrays = cin.GetByAncs(cinGetsArray); // get the arrays themselves
+
+// Result should contain all inputs to arrays
+result = cinArrays*cin;
+
+// Find sanitizer
+CxList cinWidth = All.FindByName("*cin.width");
+
+cinWidth = cinWidth.GetTargetOfMembers().FindByShortName("cin");
+
+// Remove sanitizer
+result -= cin.DataInfluencedBy(cinWidth);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

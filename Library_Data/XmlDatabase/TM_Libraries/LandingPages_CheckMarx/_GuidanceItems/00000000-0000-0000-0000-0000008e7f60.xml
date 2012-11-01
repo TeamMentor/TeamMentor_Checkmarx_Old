@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000008e7f60</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Unchecked Error Condition</Title>
+    <Category />
+    <Phase />
+    <Technology>Java</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Unchecked Error Condition</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Unchecked error conditions may allow attacks to go unnoticed. Checking error conditions helps the application determine if someone out of the ordinary is happening and log that information. Log information helps administrators determine when an attack is taking place and provides information about the attack. Unchecked error condition flaws may occur in any type of application. 
+
+==Impact==
+
+
+==Countermeasures==
+
+Use a global exception handler:
+* [[3e815c74-4d57-4c1b-8446-750b319ea046|Use a Global Exception Handler for Unhandled Exceptions]]
+
+Use structured exception handling:
+* [[fceefe0c-900a-4c29-9c2e-ee662aa9e1f1|Use Structured Exception Handling]]
+
+Log error information:
+
+==Checklists==
+
+A global exception handler is used:
+* [[c88e1b49-357d-4202-aafc-86ce0de485bd|A Global Exception Handler Is Used for Unhandled Exceptions]]
+
+Structured exception handling is used:
+* [[2739df30-b3da-417e-8856-2201a2b2a17a|Structured Exception Handling Is Used]]
+
+Error information is logged:
+
+==Additional Resources==
+
+* For the CWE page about this vulnerability type, see http://www.cvedetails.com/cwe-details/391/Unchecked-Error-Condition.html]]></Data>
+  </Content>
+</TeamMentor_Article>

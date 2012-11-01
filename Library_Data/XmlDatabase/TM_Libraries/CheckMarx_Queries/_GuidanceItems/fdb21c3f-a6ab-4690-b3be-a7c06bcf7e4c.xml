@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>fdb21c3f-a6ab-4690-b3be-a7c06bcf7e4c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1843 - R13 03 Floating Point Equality Or Inequality</Title>
+    <Category>CWE: 11031</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11031</h1>
+  <iframe height="500" src="/content/11031" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1843
+Cwe : 11031
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 13-3
+------------------------------
+This query searches for  floating point operands checked for equality or inequality directly (==, !=) or indirectly (<_3d_ _26_26_="">=)
+
+	The Example below shows code with vulnerability: 
+
+float f = 0.1234f;
+float g = 0.1234f;
+    
+if ( f == g ){
+	c = 1;   
+}
+
+if ( f <_3d_ _26_26_="" g="" f="">= g ){
+	c = 1;
+}
+
+*/
+
+// first we build a list of all floating point typedefs
+CxList typedefDecls = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetFathers();
+CxList floatTypedefDecls = typedefDecls.FindByType("float") + typedefDecls.FindByType("double");
+ArrayList floatTypes = new ArrayList();
+floatTypes.Add("float");
+floatTypes.Add("double");
+foreach(CxList cur in floatTypedefDecls){
+	Declarator g = (Declarator) cur.data.GetByIndex(0);
+	if(g == null || g.Name == null) {
+		continue;
+	}
+	string typeName = g.Name;
+	if (!floatTypes.Contains(typeName)){
+		floatTypes.Add(typeName);
+		floatTypes.Add("*." + typeName);
+	}
+}
+
+// now build a list of all floating point declarators
+CxList floatDecls = All.FindByType(typeof(Declarator)).FindByTypes((string[]) floatTypes.ToArray(typeof(string)));
+floatDecls -= typedefDecls;
+
+// uses are decl instances
+CxList fpoints = All.FindAllReferences(floatDecls).FindByType(typeof(UnknownReference)) +
+	All.FindByType(typeof(RealLiteral));
+// remove all casted
+CxList castIntoTypes = All.FindByFathers(All.FindByType(typeof(CastExpr))).FindByType(typeof(TypeRef));
+fpoints -= fpoints.GetByAncs(castIntoTypes);
+foreach(CxList cur in castIntoTypes){
+	TypeRef g = (TypeRef) cur.data.GetByIndex(0);
+	if(g == null || g.FullName == null) {
+		continue;
+	}
+	string curName = g.FullName;
+	// if irrelevant type, remove it from casted list
+	if (!floatTypes.Contains(curName)){
+		castIntoTypes -= cur;
+	}	
+}
+// add back relevant casted
+fpoints += All.GetByAncs(castIntoTypes.GetFathers()).FindByType(typeof(UnknownReference)) +
+	All.GetByAncs(castIntoTypes.GetFathers()).FindByType(typeof(RealLiteral));
+
+// now that we have the floating point objects, add direct comparisons to results
+CxList directComparisons = All.FindByType(typeof(BinaryExpr)).FindByName("==") + 
+	All.FindByType(typeof(BinaryExpr)).FindByName("!=");
+result += fpoints.FindByFathers(directComparisons);
+
+// for indirect comparisons, first find the relevant comparison and logical expressions
+CxList lte = fpoints.GetFathers().GetByBinaryOperator(BinaryOperator.LessThanOrEqual);
+CxList gte = fpoints.GetFathers().GetByBinaryOperator(BinaryOperator.GreaterThanOrEqual);
+CxList diffWeak = lte + gte;
+CxList lt = fpoints.GetFathers().GetByBinaryOperator(BinaryOperator.LessThan);
+CxList gt = fpoints.GetFathers().GetByBinaryOperator(BinaryOperator.GreaterThan);
+CxList diffStrong = lt + gt;
+CxList allDiffs = diffWeak + diffStrong;
+
+// logical conditions
+CxList andExpr = allDiffs.GetFathers().GetByBinaryOperator(BinaryOperator.BooleanAnd);
+CxList orExpr = allDiffs.GetFathers().GetByBinaryOperator(BinaryOperator.BooleanOr);
+
+// iteration optimization
+CxList andOrExprSons = All.FindByFathers(andExpr + orExpr);
+CxList fpointOperands = fpoints.FindByFathers(allDiffs);
+
+// test indirect "==" such as (x&gt;=y &amp;&amp; x<_3d_y29_ _2a_="" logical="" there="" both="" _21_="2)){" _diffweak29_.count="" not="" _7d_="" _28_cxlist="" point="" supporting="" conditions="" _28_28_cursons="" _28_28_cursons.count="" know="" sons="" we="" exactly="" currently="" _7c_7c_="" cursons="andOrExprSons.FindByFathers(cur);" only="" are="" with="" at="" two="" _andexpr29_7b_="" more="" _continue3b_="" cur="" than="" foreach="" _sons2c_="" cxlist="" if="" in="" this=""></_3d_y29_><_3d_ or="">=
+	BinaryExpr firstOp = curSons.data.GetByIndex(0) as BinaryExpr;
+	BinaryExpr secondOp = curSons.data.GetByIndex(1) as BinaryExpr;
+	if(firstOp == null || secondOp == null ||
+		firstOp.Left == null || secondOp.Left == null ||
+		firstOp.Right == null || secondOp.Right == null) {
+		continue;
+	}
+	CxList firstLeft = fpointOperands.FindById(((CSharpGraph) firstOp.Left).NodeId);
+	CxList firstRight = fpointOperands.FindById(((CSharpGraph) firstOp.Right).NodeId);
+	CxList SecondLeft = fpointOperands.FindById(((CSharpGraph) secondOp.Left).NodeId);
+	CxList Secondright = fpointOperands.FindById(((CSharpGraph) secondOp.Right).NodeId);
+	bool FLeqSL = (firstLeft.FindByName(SecondLeft).Count != 0);
+	bool FLeqSR = (firstLeft.FindByName(Secondright).Count != 0);
+	bool FReqSL = (firstRight.FindByName(SecondLeft).Count != 0);
+	bool FReqSR = (firstRight.FindByName(Secondright).Count != 0);
+	// (x&gt;=y &amp;&amp; y&gt;=x), (x<_3d_y _26_26_=""></_3d_y><_3d_x29_ _28_28_fleqsr="" _7d_="" result="" _28_x="" if="" _28_firstop.operator="=" _secondop.operator29_29_7b_="" _freqsl29_="" _26_26_="" _2b_="fpointOperands.FindByFathers(curSons);">=y &amp;&amp; x<_3d_y29_2c_></_3d_y29_2c_><_3d_y x="" _26_26_="">=y)	
+	else if ((FLeqSL &amp;&amp; FReqSR) &amp;&amp; (firstOp.Operator != secondOp.Operator)){
+		result += fpointOperands.FindByFathers(curSons);
+	}
+}
+// test indirect "!=" such as (x&gt;y || x<_y29_ _2a_="" both="" logical="" there="" know="" _21_="2)){" not="" _7d_="" _28_cxlist="" point="" supporting="" conditions="" _28_28_cursons="" _28_28_cursons.count="" _diffstrong29_.count="" sons="" we="" exactly="" currently="" _7c_7c_="" cursons="andOrExprSons.FindByFathers(cur);" only="" are="" with="" at="" two="" _orexpr29_7b_="" more="" _continue3b_="" cur="" than="" foreach="" _sons2c_="" cxlist="" if="" in="" this=""></_y29_>
+	BinaryExpr firstOp = curSons.data.GetByIndex(0) as BinaryExpr;
+	BinaryExpr secondOp = curSons.data.GetByIndex(1) as BinaryExpr;
+	if(firstOp == null || secondOp == null ||
+		firstOp.Left == null || secondOp.Left == null ||
+	firstOp.Right == null || secondOp.Right == null) {
+		continue;
+	}
+	CxList firstLeft = fpointOperands.FindById(((CSharpGraph) firstOp.Left).NodeId);
+	CxList firstRight = fpointOperands.FindById(((CSharpGraph) firstOp.Right).NodeId);
+	CxList SecondLeft = fpointOperands.FindById(((CSharpGraph) secondOp.Left).NodeId);
+	CxList Secondright = fpointOperands.FindById(((CSharpGraph) secondOp.Right).NodeId);
+	bool FLeqSL = (firstLeft.FindByName(SecondLeft).Count != 0);
+	bool FLeqSR = (firstLeft.FindByName(Secondright).Count != 0);
+	bool FReqSL = (firstRight.FindByName(SecondLeft).Count != 0);
+	bool FReqSR = (firstRight.FindByName(Secondright).Count != 0);
+	// (x&gt;y || y&gt;x), (x<y _7c_7c_=""></y><_x29_ _28_28_fleqsr="" _7d_="" result="" _28_x="" if="" _28_firstop.operator="=" _secondop.operator29_29_7b_="" _freqsl29_="" _26_26_="" _2b_="fpointOperands.FindByFathers(curSons);">y || x<_y29_2c_></_y29_2c_><y x="" _7c_7c_="">y)	
+	else if ((FLeqSL &amp;&amp; FReqSR) &amp;&amp; (firstOp.Operator != secondOp.Operator)){
+		result += fpointOperands.FindByFathers(curSons);
+	}
+}</y></_x29_></_3d_y></_3d_x29_></_3d_></_3d_></_3d_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

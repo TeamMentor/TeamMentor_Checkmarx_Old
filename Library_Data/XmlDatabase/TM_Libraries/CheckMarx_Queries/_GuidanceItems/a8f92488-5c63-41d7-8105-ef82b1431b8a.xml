@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a8f92488-5c63-41d7-8105-ef82b1431b8a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>81 - Sockets in WebApp</Title>
+    <Category>CWE: 246</Category>
+    <Phase>ASP Best Coding Practice</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  246</h1>
+  <iframe height="500" src="/content/246" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 81
+Cwe : 246
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 7
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = All.FindByMemberAccess("tcplistener.accept");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

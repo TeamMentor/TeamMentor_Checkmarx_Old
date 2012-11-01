@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>268a1fc0-dc5a-4ccf-acaa-5874dc91d66e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>667 - Struts Validation Turned Off</Title>
+    <Category>CWE: 109</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  109</h1>
+  <iframe height="500" src="/content/109" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 667
+Cwe : 109
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList configXML = All.FindByFileName("*config.xml");
+CxList actionValidate = configXML.FindByName("STRUTS_CONFIG.ACTION_MAPPINGS.ACTION.VALIDATE");
+CxList falseStrings = configXML.FindByName("\"false\"").FindByType(typeof(StringLiteral));
+
+CxList validateAssignments = actionValidate.GetFathers();
+result = configXML.FindByFathers(validateAssignments)*falseStrings;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

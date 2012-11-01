@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2e58b6d3-1e2f-4d09-b70d-81cc79f53ca8</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1581 - Not Using a Random IV with CBC Mode</Title>
+    <Category>CWE: 329</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  329</h1>
+  <iframe height="500" src="/content/329" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1581
+Cwe : 329
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Non_Random_IV
+// ===================
+// (IV - Initilize Vector)
+// Code example
+/*
+		byte[] text = "Secret".getBytes();
+		byte[] ivBad = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+		KeyGenerator kg = KeyGenerator.getInstance("DES");
+		kg.init(56);
+		SecretKey key = kg.generateKey();
+		Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+		IvParameterSpec ipsBad = new IvParameterSpec(ivBad);
+		cipher.init(Cipher.ENCRYPT_MODE, key, ipsBad);
+		cipher.doFinal(text);
+				
+		byte[] ivGood = new byte[8];
+		rand.nextBytes(ivGood);
+		IvParameterSpec ipsGood = new IvParameterSpec(ivGood);
+		cipher.init(Cipher.ENCRYPT_MODE, key, ipsGood);
+		cipher.doFinal(text);
+*/
+// In code above ivBad should be recognized
+
+CxList createExpr = All.FindByType(typeof(ObjectCreateExpr)).FindByName("*IvParameterSpec*");
+CxList paramsExpr = All.GetParameters(createExpr, 0);
+CxList paramsExprDecl = All.FindDefinition(All.FindAllReferences(paramsExpr));
+
+CxList random = All.FindByType("*Random") + All.FindByMemberAccess("Math.Random");
+CxList methodsOfRandom = All.FindAllReferences(random).GetMembersOfTarget();
+CxList paramsRandom = All.GetParameters(methodsOfRandom, 0);
+CxList paramsRandomDecl = All.FindDefinition(All.FindAllReferences(paramsRandom));
+CxList nonRandomDecl = paramsExprDecl - paramsRandomDecl;
+result =  paramsExpr.FindAllReferences(nonRandomDecl);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

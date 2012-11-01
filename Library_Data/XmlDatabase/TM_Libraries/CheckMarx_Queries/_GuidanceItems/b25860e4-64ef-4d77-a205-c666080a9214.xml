@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b25860e4-64ef-4d77-a205-c666080a9214</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1348 - Open Redirect</Title>
+    <Category>CWE: 601</Category>
+    <Phase>PHP Medium Threat</Phase>
+    <Technology>PHP</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Open Redirect</h1>
+  <iframe height="300" src="/html/Open_Redirect" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  601</h1>
+  <iframe height="500" src="/content/601" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1348
+Cwe : 601
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1273
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList redirectFunctions = Find_Methods().FindByShortName("header", false);
+CxList redirectLocationStrings = All.FindByType(typeof(StringLiteral)).FindByShortName("*location*", false);
+
+redirectFunctions = redirectFunctions.InfluencedBy(redirectLocationStrings);
+
+return redirectFunctions.InfluencedBy(Find_Interactive_Inputs());</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

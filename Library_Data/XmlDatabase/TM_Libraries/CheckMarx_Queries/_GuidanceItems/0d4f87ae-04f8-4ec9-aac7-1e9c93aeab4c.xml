@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0d4f87ae-04f8-4ec9-aac7-1e9c93aeab4c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>721 - Use of System Output Stream</Title>
+    <Category>CWE: 10033</Category>
+    <Phase>VbNet Best Coding Practice</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10033</h1>
+  <iframe height="500" src="/content/10033" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 721
+Cwe : 10033
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 42
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if(All.isWebApplication)
+{
+	CxList methods = Find_Methods();
+	result = methods.FindByName("*out.write*") + methods.FindByName("*error.write*");
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

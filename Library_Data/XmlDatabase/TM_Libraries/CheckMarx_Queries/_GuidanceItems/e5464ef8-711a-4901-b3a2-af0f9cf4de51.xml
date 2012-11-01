@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e5464ef8-711a-4901-b3a2-af0f9cf4de51</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1213 - Privacy Violation</Title>
+    <Category>CWE: 359</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  359</h1>
+  <iframe height="500" src="/content/359" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1213
+Cwe : 359
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList personal_info = All.FindByShortName("*password*", false) + 
+	All.FindByShortName("*psw*", false) + 
+	All.FindByShortName("*pwd*", false) + 
+	All.FindByShortName("*pass*", false) + 
+	All.FindByShortName("*pass*", false) + 
+	All.FindByShortName("*Credit*", false) + 
+	All.FindByShortName("*Account*", false) + 
+	All.FindByShortName("*SSN*", false) +
+	All.FindByShortName("*SocialSecurity*", false);
+
+personal_info = personal_info - Find_Strings();
+
+CxList outputs = Find_Outputs() + All.GetParameters(Find_Methods().FindByShortName("syslog"), 2);
+outputs += All.GetByAncs(All.GetParameters(All.FindByShortName("realloc", false), 0));
+CxList db = Find_DB();
+	
+result = personal_info.InfluencingOnAndNotSanitized(outputs, db);
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

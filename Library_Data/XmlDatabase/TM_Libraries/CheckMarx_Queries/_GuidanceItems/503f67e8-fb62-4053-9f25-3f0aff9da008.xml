@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>503f67e8-fb62-4053-9f25-3f0aff9da008</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1313 - Command Injection</Title>
+    <Category>CWE: 77</Category>
+    <Phase>PHP High Risk</Phase>
+    <Technology>PHP</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Command Injection</h1>
+  <iframe height="300" src="/html/Command_Injection" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  77</h1>
+  <iframe height="500" src="/content/77" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1313
+Cwe : 77
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1272
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //finds command injection
+CxList methods = Find_Methods();
+
+CxList dynamic_shell = methods.FindByShortName("$_Shell*") +
+	methods.FindByShortName("system") +
+	methods.FindByShortName("exec") +
+	methods.FindByShortName("shell_exec");
+
+CxList sanitize = Find_Command_Injection_Sanitize();
+CxList inputs = Find_Interactive_Inputs();
+result = inputs.InfluencingOnAndNotSanitized(dynamic_shell, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

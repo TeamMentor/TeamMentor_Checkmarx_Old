@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>85f454d2-5e0f-4e2e-bf03-b52240d6a89a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1521 - Leftover Debug Code</Title>
+    <Category>CWE: 489</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  489</h1>
+  <iframe height="500" src="/content/489" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1521
+Cwe : 489
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList all = Find_NonJS_Code();
+
+CxList methodDecl = all.FindByType(typeof(MethodDecl));
+result = methodDecl.FindByShortName("test") + methodDecl.FindByShortName("test_*");
+
+CxList classDecl = all.FindByType(typeof(ClassDecl));
+result += classDecl.FindByShortName("*Test") + classDecl.FindByShortName("Test*");
+
+CxList namespaceDecl = all.FindByType(typeof(NamespaceDecl));
+result += namespaceDecl.FindByShortName("*test_*");
+
+result += Find_Methods().FindByShortName("test");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d215c63c-4799-4bb2-acc4-b86eb0c604e6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>796 - Session Clearing Problems</Title>
+    <Category>CWE: 10027</Category>
+    <Phase>VbNet Low Visibility</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10027</h1>
+  <iframe height="500" src="/content/10027" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 796
+Cwe : 10027
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 46
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList session = 	All.FindByShortName("*session_user*", false) +
+	All.FindByShortName("*session_cust*", false) +
+	All.FindByShortName("*session_id*", false);
+
+if(session.Count == 0)
+	return new CxList();
+
+CxList emptyString = Find_Empty_Strings();
+CxList zero = All.FindByName("0");
+
+CxList clear = 	All.FindByName("*session.clear") + 
+	All.FindByName("*session.abandon") + 	
+	All.FindByMemberAccess("*formsauthentication.signout");
+
+CxList a = All.FindByAssignmentSide(CxList.AssignmentSide.Left) * session;
+CxList b = All.FindByAssignmentSide(CxList.AssignmentSide.Right) * (emptyString+zero);
+
+CxList c = a.GetFathers() * b.GetFathers();
+
+if((c + clear).Count == 0)
+{
+	result = session;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

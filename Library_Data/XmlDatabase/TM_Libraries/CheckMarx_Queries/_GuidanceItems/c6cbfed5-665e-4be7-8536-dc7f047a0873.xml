@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c6cbfed5-665e-4be7-8536-dc7f047a0873</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1682 - Use of a One Way Hash with a Predictable Salt</Title>
+    <Category>CWE: 760</Category>
+    <Phase>Java Medium Threat</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  760</h1>
+  <iframe height="500" src="/content/760" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1682
+Cwe : 760
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 37
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all strings
+CxList strings = Find_Strings();
+// find all inputs
+CxList inputs = Find_Inputs();
+
+// Get all the relevant digest algorithms
+CxList digestStrings = 
+	strings.FindByShortName("\"SHA*") + 
+	strings.FindByShortName("\"MD2*") +
+	strings.FindByShortName("\"MD5*");
+
+// All the update commands
+CxList update = All.FindByMemberAccess("MessageDigest.update");
+
+
+// The result - any update of the relevant algorithms, influenced by any input
+result = update.DataInfluencedBy(digestStrings).DataInfluencedBy(inputs);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

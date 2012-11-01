@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000072caa4</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Insufficiently Protected Credentials</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Insufficiently Protected Credentials</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+This weakness occurs when the application transmits or stores authentication credentials and uses an insecure method that is susceptible to unauthorized interception and/or retrieval.
+
+==Impact==
+
+==Countermeasures==
+
+Hash and salt passwords:
+* [[4940a340-62a3-4dc5-8d2d-3b5e3a4dc5b9|Hash And Salt Passwords]]
+
+==Checklists==
+
+Passwords are hashed and salted for storage:
+* [[29f48335-d577-4962-aac5-61ab7a56297a|Passwords Are Hashed And Salted When Stored]]
+
+==Additional Resources==
+
+* For the CWE page about this vulnerability type, see http://cwe.mitre.org/data/definitions/522.html]]></Data>
+  </Content>
+</TeamMentor_Article>

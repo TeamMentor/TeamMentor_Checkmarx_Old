@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>da096ebd-478d-445a-867b-edffaad4a0c3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>844 - Cookies Inspection</Title>
+    <Category>CWE: 315</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  315</h1>
+  <iframe height="500" src="/content/315" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 844
+Cwe : 315
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Cookies_Inspection
+// ------------------
+// This query finds cases where sensitive data in stored in cookies.
+//////////////////////////////////////////////////////////////////////////
+
+CxList cookies = AllVbs().FindByMemberAccess("document.cookie");
+CxList personal = Find_Personal_Info();
+
+result = cookies.DataInfluencedBy(personal);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f8dc03a2-68e4-401e-ad26-f13e7e4084a4</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>374 - Exposure of Resource to Wrong Sphere</Title>
+    <Category>CWE: 668</Category>
+    <Phase>CSharp Best Coding Practice</Phase>
+    <Technology>CSharp</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Exposure of Resource to Wrong Sphere</h1>
+  <iframe height="300" src="/html/Exposure_of_Resource_to_Wrong_Sphere" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  668</h1>
+  <iframe height="500" src="/content/668" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 374
+Cwe : 668
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 23
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList allFields = All.FindByType(typeof(FieldDecl));
+CxList allPublicFields = allFields.FindByFieldAttributes(Modifiers.Public);
+CxList allProtectedFields = allFields.FindByFieldAttributes(Modifiers.Protected);
+CxList allConstFields = allFields.FindByFieldAttributes(Modifiers.Readonly);
+result = allProtectedFields + allPublicFields - allConstFields;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

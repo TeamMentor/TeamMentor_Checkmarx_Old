@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ea7f137a-30e8-4e07-b7f2-eae7fdb02693</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1631 - Find Always True</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1631
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList assign = All.FindByType(typeof(AssignExpr));
+CxList integers = All.FindByType(typeof(IntegerLiteral));
+CxList conditions = Find_Conditions();
+CxList constants = All.FindByType(typeof(ConstantDecl));
+CxList inConstants = All.GetByAncs(constants);
+CxList binaryExpr = All.FindByType(typeof(BinaryExpr));
+CxList methods = All.FindByType(typeof(MethodInvokeExpr));
+CxList strings = All.FindByType(typeof(StringLiteral));
+CxList nul = All.FindByType(typeof(NullLiteral));
+CxList Param = All.FindByType(typeof(Param));
+CxList ParamDecl = All.FindByType(typeof(ParamDecl));
+
+CxList unaryExpr = All.FindByType(typeof(UnaryExpr));
+CxList unknown = All.FindByType(typeof(UnknownReference));
+CxList equal = methods.FindByShortName("equals");
+
+CxList allTrue = All.FindByShortName("true");
+CxList allFalse = All.FindByShortName("false");
+CxList objectCreate = (allTrue + allFalse).GetAncOfType(typeof(ObjectCreateExpr));
+
+allTrue -= allTrue.GetByAncs(objectCreate);
+allFalse -= allFalse.GetByAncs(objectCreate);
+
+// Find true conditions
+CxList True = conditions * allTrue;
+
+CxList notAlwaysSetType = 
+	All.FindByType(typeof(Catch)) +
+	All.FindByType(typeof(IfStmt)) +
+	All.FindByType(typeof(IterationStmt)) +
+	All.FindByType(typeof(Case)) +
+	Param +
+	All.FindByType(typeof(ForEachStmt));
+CxList notAlwaysSet = All.GetByAncs(notAlwaysSetType);
+
+CxList allTrueNotAlwaysSet = allTrue.GetByAncs(notAlwaysSetType);
+allTrueNotAlwaysSet -= allTrueNotAlwaysSet.GetByAncs(conditions);
+
+CxList undeclaredMethods = methods - methods.FindDefinition(All.FindAllReferences(methods));
+CxList parameters = All.GetByAncs(undeclaredMethods) - undeclaredMethods;
+
+CxList sanitizer = binaryExpr + unaryExpr + equal + parameters;
+CxList trueByInfluence = conditions.InfluencedByAndNotSanitized(allTrue - allTrueNotAlwaysSet, sanitizer);
+CxList ifStmt = All.FindByType(typeof(IfStmt));
+CxList assignInIf = assign.GetByAncs(ifStmt);
+trueByInfluence -= trueByInfluence.DataInfluencedBy(unknown.GetByAncs(assignInIf).FindByAssignmentSide(CxList.AssignmentSide.Left));
+
+True += trueByInfluence;
+
+True += conditions.FindAllReferences(allTrue.GetAncOfType(typeof(ConstantDecl)));
+CxList trueDef = allTrue.GetAncOfType(typeof(FieldDecl));
+CxList trueReferences = conditions.FindAllReferences(trueDef);
+
+// Find all true references that are influenced by something, thus might not always be false
+CxList unknownMethods = methods - methods.FindAllReferences(All.FindDefinition(methods));
+CxList unknownMethodsIs = unknownMethods.FindByShortName("is*", false);
+CxList unknownMethodsNotIs = unknownMethods - unknownMethodsIs;
+CxList influencing = 
+	unknownMethodsIs +
+	allFalse +
+	Find_Plain_Interactive_Inputs() +
+	Find_Plain_DB() +
+	Find_Plain_Read_DB() +
+	Find_Plain_Read_NonDB();
+CxList trueRefInfluenced = (trueReferences - trueDef).InfluencedByAndNotSanitized(influencing, unknownMethodsNotIs);
+True += trueReferences - trueRefInfluenced;
+//True += trueReferences - All.DataInfluencingOn(trueReferences - trueDef);
+
+CxList setters = All.FindByType(typeof(MethodDecl)).FindByShortName("set*");
+CxList inSetters = All.GetByAncs(setters);
+CxList paramInSetters = inSetters.FindByType(typeof(ParamDecl));
+CxList trueInSetters = inSetters.FindAllReferences(trueDef);
+trueInSetters = trueInSetters.DataInfluencedBy(paramInSetters);
+True -= True.FindAllReferences(trueInSetters);
+
+True -= True.DataInfluencedBy(allFalse);
+
+CxList intDecl =
+	integers.GetAncOfType(typeof(FieldDecl)) + 
+	integers.GetAncOfType(typeof(ConstantDecl)) +
+	integers.GetAncOfType(typeof(VariableDecl));
+
+intDecl = 
+	intDecl.FindByFieldAttributes(Modifiers.Private) +
+	intDecl.FindByFieldAttributes(Modifiers.Protected);
+
+intDecl -= integers.FindAllReferences(All.GetByAncs(assign).FindAllReferences(intDecl));
+
+CxList constantIntInCondition = All.FindAllReferences(intDecl).GetByAncs(conditions);
+inConstants += All.GetByAncs(intDecl);
+
+CxList bin = conditions.FindByType(typeof(BinaryExpr));
+CxList AllTry = All.GetAncOfType(typeof(TryCatchFinallyStmt));
+CxList AllFinally = All.GetFinallyClause(AllTry);
+bin -= bin.GetByAncs(AllFinally);
+CxList inBin = All.GetByAncs(bin);
+CxList binMethods = All.GetMethod(bin);
+CxList stringInMethods = strings.GetByAncs(binMethods);
+stringInMethods -= strings.GetByAncs(Param);
+CxList nullInMethods = nul.GetByAncs(binMethods);
+nullInMethods -= All.GetByAncs(Param);
+CxList unknownHere = unknown.FindByFathers(bin);
+CxList nullSanitizer = binaryExpr;
+nullSanitizer -= nullSanitizer.GetByAncs(conditions);
+nullSanitizer = nullSanitizer.GetByAncs(binMethods);
+CxList notAlwaysSetInMethod = notAlwaysSet.GetByAncs(binMethods).GetByAncs(assign).FindByAssignmentSide(CxList.AssignmentSide.Left);
+CxList paramOfMethods = ParamDecl.GetByAncs(binMethods);
+nullSanitizer += paramOfMethods;
+nullSanitizer -= unknownHere;
+CxList constantInAllConditions = inBin.FindAllReferences(constants + constantIntInCondition);
+CxList constantInLeftSideOfAssignment = All.FindAllReferences(inConstants).FindByAssignmentSide(CxList.AssignmentSide.Left) - inConstants;
+constantInAllConditions -= constantInLeftSideOfAssignment;
+
+foreach (CxList b in bin)
+{
+	try
+	{
+		BinaryExpr binary = b.data.GetByIndex(0) as BinaryExpr;
+		CSharpGraph rightExp = binary.Right;
+		CSharpGraph leftExp = binary.Left;
+		if (rightExp is NullLiteral)
+		{
+			CxList thisMethod = binMethods.GetMethod(b);
+			CxList unknownIsNull = unknownHere.FindByFathers(b);
+			//CxList paramHere = paramOfMethods.GetByAncs(thisMethod);
+			//CxList sanitizerHere = nullSanitizer.GetByAncs(thisMethod) + paramHere - unknownIsNull;
+			//CxList sanitizerHere = nullSanitizer + paramOfMethods - unknownIsNull;
+			//CxList sanitizerHere = nullSanitizer;// -unknownIsNull;
+			CxList notAlwaysSetHere = notAlwaysSetInMethod.GetByAncs(thisMethod);
+			if (binary.Operator == BinaryOperator.IdentityInequality)
+			{
+				CxList stringsHere = stringInMethods.GetByAncs(thisMethod);
+				CxList affectedByString = unknownIsNull * unknownIsNull.InfluencedByAndNotSanitized(stringsHere, nullSanitizer);
+				affectedByString -= affectedByString.DataInfluencedBy(notAlwaysSetHere);
+				if (affectedByString.Count &gt; 0)
+				{
+					True += b;
+				}
+			}
+			else if (binary.Operator == BinaryOperator.IdentityEquality)
+			{
+				CxList nullHere = nullInMethods.GetByAncs(thisMethod);
+				CxList affectedByNull = unknownIsNull * unknownIsNull.InfluencedByAndNotSanitized(nullHere, nullSanitizer);
+				affectedByNull -= affectedByNull.DataInfluencedBy(notAlwaysSetHere);
+				if (affectedByNull.Count &gt; 0)
+				{
+					True += b;
+				}
+			}
+		}
+		else
+		{
+			CxList right = All.FindById(rightExp.NodeId);
+			CxList left = All.FindById(leftExp.NodeId);
+			int leftNum = -1;
+			bool leftIsNum = int.TryParse(leftExp.Text, out leftNum);
+			int rightNum = -1;
+			bool rightIsNum = int.TryParse(rightExp.Text, out leftNum);
+		
+			bool isNumber = rightIsNum &amp;&amp; leftIsNum;
+			bool isUnknown = left is UnknownReference &amp;&amp; right is UnknownReference;
+		
+			CxList constantInCondition = constantInAllConditions.GetByAncs(b);
+			if (constantInCondition.Count &gt; 0 &amp;&amp; (leftIsNum || rightIsNum))
+			{
+				constantInCondition = inConstants.GetByAncs(inConstants.FindDefinition(left + right)).FindByType(typeof(IntegerLiteral));
+				//constantInCondition = constantInCondition.GetByAncs(constants);
+				if (constantInCondition.Count &gt; 0)
+				{
+					CSharpGraph il = constantInCondition.data.GetByIndex(0) as IntegerLiteral;
+					if (leftIsNum)
+					{
+						rightExp = il;
+					}
+					if (rightIsNum)
+					{
+						leftExp = il;
+					}
+				}
+			}
+		
+			if (isUnknown || isNumber || constantInCondition.Count &gt; 0)
+			{
+				if (binary.Operator == BinaryOperator.IdentityEquality)
+				{
+					if (leftExp.Text == rightExp.Text)
+					{
+						True += b;
+					}
+				}
+				else if (isNumber)
+				{
+					if (binary.Operator == BinaryOperator.IdentityInequality)
+					{
+						if (leftExp.Text != rightExp.Text)
+						{
+							True += b;
+						}
+					}
+					if (binary.Operator == BinaryOperator.GreaterThanOrEqual)
+					{
+						if (leftNum &gt;= rightNum)
+						{
+							True += b;
+						}
+					}
+					else if (binary.Operator == BinaryOperator.GreaterThan)
+					{
+						if (leftNum &gt; rightNum)
+						{
+							True += b;
+						}
+					}
+					else if (binary.Operator == BinaryOperator.LessThanOrEqual)
+					{
+						if (leftNum <_3d_ _rightnum29_="" _7b_="" _7d_="" _28_leftnum="" _binaryoperator.lessthan29_="" if="" else="" _28_binary.operator="=" true="" _2b_="b;"></_3d_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

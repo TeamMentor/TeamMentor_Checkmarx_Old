@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000806ea9</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Connection String Injection</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Connection String Injection</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Applications use connection strings to specify credentials used to access databases. If the application includes unvalidated user input in connection strings, an attacker may be able to change what databases the application connects to. Connection string injection vulnerabilities apply to applications that connect to databases. To prevent connection string injection vulnerabilities, validate all input, store connection strings securely, and don't use user input in connection strings. To check for connection string injection vulnerabilities, find all connection strings used by the application and verify that unvalidated user input is not included in them. Ideally, user input should not be included in connection strings at all.
+
+
+==Impact==
+
+By manipulating the connection string, an attacker is able to cause the application to connect to an unintended data source. The attacker may be able to bypass authentication by re-routing the application to use his own database. The attacker may also get data from another database by re-routing the application to use it. The exact impact of a connection string injection vulnerability is difficult to predict because it is heavily dependent on application logic. Overall, the connection string vulnerability is difficult to use for an attacker, but it is still a serious vulnerability.
+
+==Countermeasures==
+
+Validate all input:
+
+Store connection strings securely:
+
+Don't use user input in connection strings:
+
+==Checklists==
+
+All input is validated:
+
+Connection strings are stored securely:
+
+User input is not used in connection strings:
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

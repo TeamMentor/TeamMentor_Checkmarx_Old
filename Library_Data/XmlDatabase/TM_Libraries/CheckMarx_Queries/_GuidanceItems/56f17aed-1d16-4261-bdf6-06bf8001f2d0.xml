@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>56f17aed-1d16-4261-bdf6-06bf8001f2d0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1049 - Get Permission</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1049
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 3
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+(1) Account.fields.Name.getDescribe().isUpdateable()
+(2) Account.fields.getMap().get('Name').getDescribe().isUpdateable()
+
+(3) Schema.getGlobalDescribe.get('Account').getDescribe().fields.Name.isUpdateable()
+(4) Schema.getGlobalDescribe.get('Account').getDescribe().fields.getMap().get('Name').getDescribe().isUpdateable()
+
+(5) Schema.sObjectType.Account.Name.isUpdateable()
+(6) Schema.sObjectType.Account.getMap().get('Name').getDescribe().isUpdateable()
+(7) Schema.sObjectType.Account.fields.Name.isUpdateable()
+(8) Schema.sObjectType.Account.getMap().fields.get('Name').getDescribe().isUpdateable()
+*/
+
+int start = Environment.TickCount / 100;
+if ((param.Length == 5) || (param.Length == 3))
+{
+	string permission = param[0] as string;
+	string obj = param[1] as string; 
+	string obj1 = "\"'" + obj + "'\"";
+	string field = param[2] as string; 
+	string field1 = "\"'" + field + "'\"";
+	
+	CxList fieldList = All.NewCxList();
+	CxList objList = All.NewCxList();
+	if (param.Length == 5)
+	{
+		fieldList = param[3] as CxList;
+		objList = param[4] as CxList;
+	}
+	else
+	{
+		objList = Find_Apex_Files().FindByShortName(obj, false);
+		fieldList = Find_Apex_Files().FindByShortName(field, false);
+	}
+	
+	CxList strings = Find_Strings();
+	CxList getParams = Find_Parameters_of_get();
+	CxList getVarParams = getParams - getParams.FindByShortName("\"'*") - getParams.FindByShortName("'*");
+	CxList objList1 = getVarParams + getParams.FindByShortName(obj1, false);
+	CxList fieldList1 = getVarParams + getParams.FindByShortName(field1, false);
+
+	CxList allPer = Find_General_Permissions().FindByShortName(permission, false);
+
+	foreach (CxList per in allPer)
+	{
+		if ((per //1
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(field, false)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(obj, false).Count &gt; 0)
+			||
+			(per //2
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByParameters(fieldList1)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(obj, false).Count &gt; 0)
+			||
+			(per //3
+			.GetTargetOfMembers().FindByShortName(field, false)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByParameters(objList1).Count &gt; 0)
+			||
+			(per //4
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByParameters(fieldList1)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers()
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByParameters(objList1).Count &gt; 0)
+			||
+			(per //5
+			.GetTargetOfMembers().FindByShortName(field, false)
+			.GetTargetOfMembers().FindByShortName(obj, false).Count &gt; 0)
+			||
+			(per //6
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(field)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(obj, false).Count &gt; 0)
+			||
+			(per //7
+			.GetTargetOfMembers().FindByShortName(field, false)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(obj, false).Count &gt; 0)
+			||
+			(per //8
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(field, false)
+			.GetTargetOfMembers()
+			.GetTargetOfMembers()
+			.GetTargetOfMembers().FindByShortName(obj, false)
+			.Count &gt; 0)
+			)
+		{
+			result += per;
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

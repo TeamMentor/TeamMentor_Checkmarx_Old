@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f276f452-af48-4016-af47-c25eb5a694c2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1449 - Find DB Out PDO</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1449
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+// 1 - Explicite DB function names
+
+// 2.1 - Implicit DB function names influenced by PDO
+CxList PDO = All.FindByShortName("PDO");
+CxList PrepareMethods = methods.FindByShortName("prepare");
+CxList QueryMethods = methods.FindByShortName("query");
+CxList PreparePDO = PrepareMethods.DataInfluencedBy(PDO);
+CxList QueryPDO = QueryMethods.DataInfluencedBy(PDO);
+
+// 2.2 - Implicit DB function names influenced by PDO
+CxList ExecuteMethods = methods.FindByShortName("execute");
+CxList ExecutePDOStmt = ExecuteMethods.InfluencedBy(PreparePDO);
+//return ExecutePDOStmt;
+// 2.3 - Implicit DB functions names related to PDOStatement
+CxList FetchMethods = 
+	methods.FindByShortName("fetch") +
+	methods.FindByShortName("fetchAll") +
+	methods.FindByShortName("fetchColumn") +
+	methods.FindByShortName("fetchObject");
+
+CxList PDOStmtMethods = FetchMethods.InfluencedBy(PreparePDO);
+
+result += QueryPDO + PDOStmtMethods;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

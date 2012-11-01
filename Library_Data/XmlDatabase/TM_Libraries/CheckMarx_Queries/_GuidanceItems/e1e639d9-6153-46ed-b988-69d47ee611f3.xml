@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e1e639d9-6153-46ed-b988-69d47ee611f3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1284 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1284
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList variables = All.FindByType(typeof(Dom.UnknownReference));
+result = variables.FindByShortName("HTTP_GET_VARS") +
+	variables.FindByShortName("HTTP_POST_VARS") +
+	variables.FindByShortName("HTTP_ROW_GET_DATA") +
+	variables.FindByShortName("HTTP_ROW_POST_DATA") +
+	variables.FindByShortName("HTTP_COOKIE_VARS") +
+	variables.FindByShortName("HTTP_POST_FILES") +
+	variables.FindByShortName("_POST") +
+	variables.FindByShortName("_GET") +
+	variables.FindByShortName("_REQUEST") + 
+	variables.FindByShortName("_FILES") +
+	variables.FindByShortName("_COOKIE")
+	- Find_Left_Side_Sanitize();
+
+//finds all $_SERVER['argv'][]
+CxList allServer = All.FindByShortName("_SERVER").FindByType(typeof(IndexerRef));
+CxList first = All.NewCxList();
+foreach(CxList cur in allServer)
+{
+	try
+	{
+		IndexerRef r = cur.data.GetByIndex(0) as IndexerRef;
+		if(r != null &amp;&amp; r.Indices != null &amp;&amp; r.Indices.Count &gt; 0 &amp;&amp; r.Target != null)
+		{
+			Expression ex = r.Indices[0];
+			if( All.FindById(ex.NodeId).FindByName("argv").Count &gt; 0)
+			{
+				first += All.FindById(r.Target.NodeId);
+			}
+		}
+	}
+	catch(Exception e)
+	{
+		CxDebug(e);
+	}
+}
+result += All.GetByAncs(All.FindByParameters(first)).FindByType(typeof(UnknownReference));
+
+CxList argv = All.FindByShortName("argv").FindByType(typeof(IndexerRef));
+result += All.FindAllReferences(argv).FindByType(typeof(UnknownReference));
+
+
+// Joomla: locate methods that read from HTML variables
+
+CxList get_of_JRequest = All.FindByMemberAccess("JRequest.get*") - 
+	All.FindByMemberAccess("JRequest.getMethod") - 
+	All.FindByMemberAccess("JRequest.getURI");
+
+result += get_of_JRequest + Find_Zend_Interactive_Inputs() + Find_Kohana_Interactive_Inputs() + Find_Cake_Interactive_Inputs();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

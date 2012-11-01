@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4443a6cb-2c59-4dbf-b28f-14b7fc81cdbc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1957 - Find Plain Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1957
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methodDecl = All.FindByType(typeof(MethodDecl));
+
+CxList inputs = All.FindByMemberAccess("request.getCharacterEncoding") +
+	All.FindByMemberAccess("request.getContentType") +
+	All.FindByMemberAccess("request.getInputStream") +
+	All.FindByMemberAccess("request.getParameter") +
+	All.FindByMemberAccess("request.getParameterValues") +
+	All.FindByMemberAccess("request.getReader") +
+	All.FindByMemberAccess("request.getParameterNames") +
+	All.FindByMemberAccess("request.getParameterMap") +				
+	All.FindByMemberAccess("request.getHeader") +
+	All.FindByMemberAccess("request.getHeaders") +
+	All.FindByMemberAccess("request.getHeaderNames") +
+	All.FindByMemberAccess("request.getQueryString") +
+	All.FindByMemberAccess("request.getRequestedSessionId") +	
+	All.FindByMemberAccess("request.getPathInfo") +
+	All.FindByMemberAccess("request.getRemoteUser") +
+	All.FindByMemberAccess("request.getRequestURI") +
+	All.FindByMemberAccess("request.getRequestURL") +
+	All.FindByMemberAccess("MultipartHttpServletRequest.getFile") +
+	All.FindByMemberAccess("RequestContext.get*") +
+	All.FindByMemberAccess("Text.getText") +
+	All.FindByMemberAccess("TextComponent.getText") +	
+	All.FindByMemberAccess("Socket.getInputStream") +
+	All.FindByMemberAccess("JTextComponent.get*") +	
+	All.FindByMemberAccess("TextArea.getText") + 
+	All.FindByMemberAccess("TextField.getText") +
+	All.FindByMemberAccess("wmgetRequestedSessionId.getRequestedSessionId*");
+
+CxList cookiesInput = 
+	All.FindByMemberAccess("Cookie.get*") + 
+	All.FindByMemberAccess("request.getCookies");
+
+inputs += cookiesInput - cookiesInput.DataInfluencingOn(cookiesInput);
+
+CxList ThisBaseMembers = (All.FindByType(typeof(ThisRef)) + 
+	All.FindByType(typeof(BaseRef))).GetMembersOfTarget();
+
+inputs = inputs - ThisBaseMembers;
+
+CxList methods = Find_Methods();
+inputs += methods.FindByShortName("getRawParameter");
+
+//if(!All.isWebApplication)
+//{
+inputs += All.GetParameters(methodDecl.FindByName("*.main")
+	.FindByFieldAttributes(Modifiers.Public | Modifiers.Static));	
+//}
+
+if(!All.isWebApplication){
+	CxList inCommand = All.FindByName("System.in.*");
+	CxList parameters = All.GetParameters(inCommand, 0);
+	inputs += parameters + All.FindByName("System.in") + 
+		//		All.FindByName("System.getenv") + 
+		//		All.FindByMemberAccess("Properties.getProperty") + 
+		All.FindByMemberAccess("URLConnection.getInputStream");
+}
+
+
+/* struts */
+CxList executes = Find_Execute();
+
+CxList actionFormParam = All.GetParameters(executes);
+actionFormParam = actionFormParam.FindByType("HttpServletRequest") + actionFormParam.FindByType("ActionForm");
+
+CxList classes = Find_Class_Decl();
+CxList actionFormClasses = classes.InheritsFrom("ActionForm");
+foreach(CxList currFormClass in actionFormClasses)
+{
+	CSharpGraph gr = currFormClass.data.GetByIndex(0) as CSharpGraph;
+	actionFormParam += All.FindByMemberAccess(gr.ShortName + ".get*");                
+}
+/* end struts */
+
+/* struts 2 */
+CxList jspTags = Find_Input_Tags();
+CxList jspTagsInputs =
+	jspTags.FindByMemberAccess("_checkbox.name_", false) +
+	jspTags.FindByMemberAccess("_checkboxlist.name_", false) +
+	jspTags.FindByMemberAccess("_combobox.name_", false) +
+	jspTags.FindByMemberAccess("_doubleselect.name_", false) +
+	jspTags.FindByMemberAccess("_file.name_", false) +
+	jspTags.FindByMemberAccess("_hidden.name_", false) +
+	jspTags.FindByMemberAccess("_optiontransferselect.name_", false) +
+	jspTags.FindByMemberAccess("_param.name_", false) +
+	jspTags.FindByMemberAccess("_param.value_", false) +
+	jspTags.FindByMemberAccess("_password.name_", false) +
+	jspTags.FindByMemberAccess("_radio.name_", false) +
+	jspTags.FindByMemberAccess("_select.name_", false) +
+	jspTags.FindByMemberAccess("_submit.name_", false) +
+	jspTags.FindByMemberAccess("_textarea.name_", false) +
+	jspTags.FindByMemberAccess("_textfield.name_", false) +
+	jspTags.FindByMemberAccess("_updownselect.name_", false);
+
+CxList struts2Inputs = Find_Strings().GetByAncs(jspTagsInputs);
+/* end struts 2 */
+
+/* spring */
+CxList action = All.FindByShortName("onSubmit") + 
+	All.FindByShortName("onBind") + 
+	All.FindByShortName("validatePage") + 
+	All.FindByShortName("processFinish") + 
+	All.FindByShortName("processCancel") + 
+	All.FindByShortName("doSubmitAction") + 
+	All.FindByShortName("onFormChange") + 
+	All.FindByShortName("processFormSubmission") + 
+	All.FindByShortName("referenceData");
+
+CxList controller = Find_Controllers();
+
+action = action.GetByAncs(controller);	
+CxList submitParam = All.GetParameters(action).FindByType("object");
+
+CxList ThrowAwayController = All.InheritsFrom("ThrowAwayController");
+CxList ThrowAwayControllerMembers = All.GetByAncs(ThrowAwayController);
+CxList ThrowAwayControllerFields = ThrowAwayControllerMembers.FindAllReferences(ThrowAwayControllerMembers.FindByType(typeof(FieldDecl)));
+
+CxList springAnnotations = Find_Request_Mapping_Params();
+CxList annotatedMethods = All.FindByCustomAttribute("RequestMapping").GetFathers();
+springAnnotations = springAnnotations.GetByAncs(annotatedMethods);
+
+CxList pathAttributes = All.FindByCustomAttribute("Path");
+CxList pathClasses = pathAttributes.GetAncOfType(typeof(ClassDecl));
+CxList pathMethods = pathAttributes.GetAncOfType(typeof(MethodDecl));
+pathMethods += All.GetByAncs(pathClasses).FindByType(typeof(MethodDecl));
+
+CxList designatorsMethods = 
+	All.FindByCustomAttribute("GET") + 
+	All.FindByCustomAttribute("POST") + 
+	All.FindByCustomAttribute("PUT") + 
+	All.FindByCustomAttribute("DELETE") + 
+	All.FindByCustomAttribute("HEAD") + 
+	All.FindByCustomAttribute("OPTIONS");
+designatorsMethods = designatorsMethods.GetAncOfType(typeof(MethodDecl));
+
+CxList paramAnnotations = 
+	All.FindByCustomAttribute("MatrixParam") + 
+	All.FindByCustomAttribute("QueryParam") + 
+	All.FindByCustomAttribute("PathParam") + 
+	All.FindByCustomAttribute("CookieParam") + 
+	All.FindByCustomAttribute("HeaderParam") + 
+	All.FindByCustomAttribute("FormParam") +
+	All.FindByCustomAttribute("Context");
+paramAnnotations = paramAnnotations.GetAncOfType(typeof(ParamDecl));
+
+springAnnotations += All.GetParameters(pathMethods * designatorsMethods) + 
+	paramAnnotations.GetParameters(pathMethods);
+
+/* end spring */
+
+/* GWT */
+CxList public_methods = methodDecl.FindByFieldAttributes(Modifiers.Public);
+CxList remoteService = All.InheritsFrom("RemoteServiceServlet");
+public_methods = public_methods.GetByAncs(remoteService);
+CxList remote_methods_Params = All.GetParameters(public_methods);
+/* end GWT */
+
+/* jstl */
+CxList jspCode = Find_Jsp_Code();
+CxList jspParam = jspCode.FindByMemberAccess("param.*");
+
+/* end jstl */
+//
+inputs += All.FindByMemberAccess("SwingInputField.getText") + 
+	All.FindByMemberAccess("HyperlinkEvent.getURL");
+
+CxList socket = All.FindByMemberAccess("socket.get*");
+CxList inputStreamReader = All.FindByShortName("InputStreamReader").GetAncOfType(typeof(ObjectCreateExpr));
+CxList In = All.FindAllReferences(All.FindByType("BufferedReader"));
+In = In.DataInfluencedBy(socket + inputStreamReader);
+In = In.GetMembersOfTarget();
+CxList bufferReader_read = In.FindByMemberAccess("BufferedReader.read*");
+inputs -= inputs.GetByAncs(inputStreamReader).DataInfluencingOn(bufferReader_read);
+
+inputs += bufferReader_read;
+//
+
+/* ibatis */
+CxList ibatis = All.FindByShortName("$*").FindByShortName("*$");
+/* end ibatis */
+
+/* dwr inputs */
+CxList dwr = All.FindByFileName("*dwr.xml");
+CxList strings = Find_Strings();
+CxList dwrClasses = strings.DataInfluencingOn(dwr.FindByName("DWR.ALLOW.CREATE.PARAM.VALUE"));
+
+CxList dwrInputs = All.NewCxList();
+foreach (CxList cls in dwrClasses)
+{
+	CSharpGraph g = cls.data.GetByIndex(0) as CSharpGraph;
+	string pathName = g.Text.Trim(new char[] {'"'});
+	int lastDot = pathName.LastIndexOf(".");
+	string className = pathName.Substring(lastDot + 1);	
+	CxList relevantFile = All.FindByFileName("*" + pathName.Replace('.', '\\') + ".java");
+	relevantFile += All.FindByFileName("*" + pathName.Replace('.', '/') + ".java");
+	CxList dwrMethods = relevantFile.FindByType(typeof(MethodDecl));
+	dwrMethods = dwrMethods.GetByAncs(relevantFile.FindByType(typeof(ClassDecl)).FindByShortName(className));
+	dwrInputs += relevantFile.GetParameters(dwrMethods);
+}
+/* end dwr inputs */
+
+result = inputs + 
+	actionFormParam + 
+	remote_methods_Params + 
+	submitParam + 
+	ThrowAwayControllerFields + 
+	struts2Inputs +
+	springAnnotations + 
+	ibatis +
+	dwrInputs +
+	jspParam -
+	Not_Interactive_Inputs();
+
+/* getAttribute */
+result += Add_Get_Attribute(result);
+/* end getAttribute */</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

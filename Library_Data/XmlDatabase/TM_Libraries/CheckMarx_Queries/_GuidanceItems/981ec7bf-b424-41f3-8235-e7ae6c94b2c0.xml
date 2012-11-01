@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>981ec7bf-b424-41f3-8235-e7ae6c94b2c0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>319 - Double Free</Title>
+    <Category>CWE: 415</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  415</h1>
+  <iframe height="500" src="/content/415" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 319
+Cwe : 415
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methodInvoke = Find_Methods();
+CxList freeAndDelete = methodInvoke.FindByShortName("free", false) + 
+	methodInvoke.FindByShortName("delete");
+
+if(freeAndDelete.Count &gt; 250)//performance issue
+{
+	return result;
+}
+
+CxList firstParam = All.GetByAncs(freeAndDelete) - freeAndDelete;
+firstParam -= All.GetByAncs(All.FindByType(typeof(IndexerRef))) + All.FindByType(typeof(UnaryExpr)).FindByShortName("Pointer");
+// Remove TargetOfMembers to avoid false positives in case of delete x.m()
+firstParam -= firstParam.GetTargetOfMembers();
+
+CxList malloc = methodInvoke.FindByShortName("malloc");
+CxList firstParamMalloc = All.GetParameters(malloc,0);
+malloc += firstParamMalloc;
+CxList realloc = methodInvoke.FindByShortName("realloc");
+CxList secondParamRealloc = All.GetParameters(realloc,1);
+realloc += secondParamRealloc;
+
+CxList calloc = methodInvoke.FindByShortName("calloc");
+CxList secondParamCalloc = All.GetParameters(calloc,1);
+calloc += secondParamCalloc;
+
+CxList allMemoryMethods = malloc + realloc + calloc;
+
+result = firstParam.InfluencedByAndNotSanitized(firstParam, allMemoryMethods);
+CxList result2 = firstParam * firstParam.InfluencingOnAndNotSanitized(result, allMemoryMethods);;
+
+// Remove free's that exist in the same line
+// ("free((void *)p)" would find "void" and "p" and they affect each other)
+foreach(CxList s1 in result)
+{
+	CxList s1Free = freeAndDelete.FindByParameters(s1).FindByShortName("free");
+	foreach(CxList s2 in result)
+	{
+		CxList s2Free = freeAndDelete.FindByParameters(s2).FindByShortName("free");
+		if (((s1*s2).Count==0) &amp;&amp; (s2Free == s1Free))
+		{
+			result -= s2;
+		}
+	}
+}
+
+// Remove the cases of "free(x.a); free(x)"
+foreach(CxList secondMethod in result)
+{
+	CSharpGraph ch1 = secondMethod.data.GetByIndex(0) as CSharpGraph;
+	string second = ch1.FullName;
+	foreach(CxList firstMethod in firstParam)
+	{
+		CSharpGraph ch2 = firstMethod.data.GetByIndex(0) as CSharpGraph;
+		string first = ch2.FullName;
+		if(first.StartsWith(second + "."))
+		{
+			result -= secondMethod;
+		}		
+	}
+}
+
+CxList firstRegex = firstParam.FindByRegex(@"\[\]");
+CxList secondRegex = result2.FindByRegex(@"\[\]");
+
+// Remove the cases of "delete [] x; delete x;"
+foreach(CxList secondMethod in result)
+{
+	int secondCount = (secondMethod * secondRegex).Count;
+	foreach(CxList firstMethod in firstParam * firstParam.DataInfluencingOn(secondMethod))
+	{
+		int firstCount = (firstMethod * firstRegex).Count;
+		if ((firstCount &gt; 0 &amp;&amp; secondCount == 0)
+			||
+			(firstCount == 0 &amp;&amp; secondCount &gt; 0))
+		{
+			result -= secondMethod;
+		}
+	}
+}
+
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d7190abd-93e4-4cb3-906d-04cdae40e33c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1599 - Malicious Program</Title>
+    <Category>CWE: 265</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  265</h1>
+  <iframe height="500" src="/content/265" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1599
+Cwe : 265
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Malicious_Program
+// -----------------------
+// In case the program not required  user permission to access sensitive resources but used them
+// this vulnerability should be found
+
+CxList permissionInternet = All.FindByShortName("*android.permission.INTERNET*", false);
+CxList usingNetwork = All.FindByShortName("HttpGet") + 
+	All.FindByMemberAccess("url.openConnection", false) + 
+	All.FindByMemberAccess("Connector.open") +
+	All.FindByShortName("HTTPConnection");
+
+if ((permissionInternet.Count == 0) &amp;&amp; (usingNetwork.Count &gt; 0)){
+	result += usingNetwork;
+}
+
+CxList permissionSMS = All.FindByShortName("*android.permission.SEND_SMS*", false) + 
+	All.FindByShortName("*android.permission.RECEIVE_SMS*", false);
+CxList usingSMS = All.FindByName("*SmsManager*");
+
+if ((permissionSMS.Count == 0) &amp;&amp; (usingSMS.Count &gt; 0)){
+	result += usingSMS;
+}
+
+// Using phone without permission
+CxList permissionPhone = All.FindByShortName("*android.permission.MODIFY_PHONE_STATE*", false) + 
+	All.FindByShortName("*android.permission.PROCESS_OUTGOING_CALLS*", false);
+All.FindByShortName("*android.permission.CALL_PHONE*", false);
+CxList usingPhone = All.FindByShortName("*TelephonyManager*");
+
+if ((permissionPhone.Count == 0) &amp;&amp; (usingPhone.Count &gt; 0)){
+	result += usingPhone;
+}
+
+// using GPS without permission
+CxList permissionGPS = All.FindByShortName("*android.permission.ACCESS_FINE_LOCATION*", false);	
+CxList usingGPS = All.FindByShortName("*LocationManager*", false) + All.FindByShortName("*LocationListener*", false)+
+	All.FindByMemberAccess("*MapView.*", false) + All.FindByMemberAccess("*MapActivity.*", false) + 
+	All.FindByMemberAccess("*GeoPoint.*", false) + 
+	All.FindByMemberAccess("*MyLocationOverlay.*", false);;
+
+if ((permissionGPS.Count == 0) &amp;&amp; (usingGPS.Count &gt; 0)){
+	result += usingGPS;
+}
+
+CxList permissionContacts = All.FindByShortName("*android.permission.READ_CONTACTS*", false) +
+	All.FindByShortName("*android.permission.WRITE_CONTACTS*", false);	
+CxList usingContacts = All.FindByShortName("*ContactsContract*") + All.FindByName("*android.provider.CallLog*") + 
+					   All.FindByName("*Contacts.People*") + 
+	                   All.FindByName("*Contacts.Phones*") + 
+	                   All.FindByName("*Contacts.Photos*") + 
+	                   All.FindByName("*Contacts.Organizations*");
+
+if ((permissionContacts.Count == 0) &amp;&amp; (usingContacts.Count &gt; 0)){
+	result += usingContacts;
+}
+
+CxList permissionExternalStorage = All.FindByShortName("*android.permission.WRITE_EXTERNAL_STORAGE*", false);
+CxList usingExternalStorage = All.FindByName(@"*/sdcard/*") + 
+	All.FindByMemberAccess("Environment.getExternalStorageDirectory");
+
+if ((permissionExternalStorage.Count == 0) &amp;&amp; (usingExternalStorage.Count &gt; 0)){
+	result += usingExternalStorage;
+}
+
+//
+CxList permissionCamera = All.FindByShortName("*android.permission.CAMERA*", false);
+CxList usingCamera = All.FindByMemberAccess("*Camera.open*");
+if ((permissionCamera.Count == 0) &amp;&amp; (usingCamera.Count &gt; 0)){
+	result += usingCamera;
+}
+
+// Application Requiered access to Record Audio
+CxList permissionRecordAudio = All.FindByShortName("*android.permission.RECORD_AUDIO*", false);
+CxList usingMicrophone = All.GetParameters(All.FindByName("*MediaRecorder.AudioSource.MIC*"), 0);
+
+if ((permissionRecordAudio.Count == 0) &amp;&amp; (usingMicrophone.Count &gt; 0)){
+	result += usingMicrophone;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

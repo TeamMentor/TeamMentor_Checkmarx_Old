@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c7d716ff-4068-4513-8368-efb1e367c3a6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1639 - Channel Accessible by NonEndpoint</Title>
+    <Category>CWE: 300</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  300</h1>
+  <iframe height="500" src="/content/300" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1639
+Cwe : 300
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all outputs that have "print*" or "write*"
+CxList outputs = Find_Interactive_Outputs();
+outputs = 
+	outputs.FindByShortName("print*") + 
+	outputs.FindByShortName("write*");
+
+/*
+Bypassing:
+// When the output is response, it will be checked response.write will be checked if it is not secured
+CxList response = All.FindByType("HttpServletResponse").FindByType(typeof(ParamDecl));
+CxList isSecure = Find_Conditions().FindByMemberAccess("HttpServletRequest.isSecure");
+CxList secureIf = isSecure.GetFathers();
+CxList outputsResponse = outputs - outputs.GetByAncs(secureIf);
+// Find insecured response, influenced by inputs
+outputsResponse = response.DataInfluencingOn(outputsResponse);
+*/
+
+// When the output is Socket, it is not secured (not SSLSocket)
+CxList Socket = All.FindByMemberAccess("Socket.getOut*").GetTargetOfMembers();
+// Find Socket influenced by inputs
+CxList outputsSocket = Socket.DataInfluencingOn(outputs);
+
+result = outputsSocket;// +outputsResponse;
+
+// Remove multiple paths that end with the same output
+result -= result.DataInfluencingOn(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

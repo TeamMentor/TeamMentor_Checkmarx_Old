@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4df7f56e-bd9c-4df7-bbfc-ce8fe2703269</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>353 - Unchecked Error Condition</Title>
+    <Category>CWE: 391</Category>
+    <Phase>CSharp Best Coding Practice</Phase>
+    <Technology>CSharp</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Unchecked Error Condition</h1>
+  <iframe height="300" src="/html/Unchecked_Error_Condition" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  391</h1>
+  <iframe height="500" src="/content/391" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 353
+Cwe : 391
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 23
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList AllExc = All.FindByType(typeof(Catch));
+
+CxList notGenExc = 	All.FindAllReferences(AllExc) - 
+					All.FindByName("Exception").GetFathers() - 
+					All.FindByName("System.Exception").GetFathers();
+
+CxList genExc = AllExc - notGenExc;
+
+result = AllExc.GetFathers()  - (AllExc.GetFathers() * genExc.GetFathers());</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

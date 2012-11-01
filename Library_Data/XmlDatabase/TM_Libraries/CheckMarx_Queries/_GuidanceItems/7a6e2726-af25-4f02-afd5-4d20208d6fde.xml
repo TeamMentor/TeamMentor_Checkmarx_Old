@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7a6e2726-af25-4f02-afd5-4d20208d6fde</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1905 - R07 03 04 Find Using Directives</Title>
+    <Category>CWE: 10789</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10789</h1>
+  <iframe height="500" src="/content/10789" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1905
+Cwe : 10789
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 7-3-4
+ ------------------------------
+ This query searches for using-directives usage.
+
+ The Example below shows code with vulnerability: 
+
+        namespace NS1{
+          int i1;
+		}
+		namespace NS2{
+	        int i2;
+		}
+		namespace NS4{
+          int i2;
+          namespace NS5 {
+                    int i3;
+          };
+		}
+		using namespace NS1; 		//Non-compliant
+		using NS2::i2; 				//Compliant
+		using namespace NS4::NS5; 	//Non-compliant
+
+*/
+
+CxList imports = All.FindByType(typeof(Import));
+result = imports.FindByRegex(@"using namespace\s", false, false,false);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ccca7cc7-c9eb-4a4c-ac1d-1cb3db94b20a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1461 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1461
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList allParams = All.FindByType(typeof(UnknownReference));
+allParams = 
+	allParams.FindByShortName("params") + 
+	allParams.FindByShortName("cookies");
+
+allParams -= All.FindAllReferences(All.FindDefinition(allParams));
+allParams -= allParams.GetByAncs(All.FindByShortName("id").GetFathers());
+allParams -= allParams.GetByAncs(All.FindByShortName("*_id").GetFathers());
+CxList paramsAssign = allParams.GetAncOfType(typeof(AssignExpr));
+CxList leftAssign = All.GetByAncs(paramsAssign).FindByAssignmentSide(CxList.AssignmentSide.Left);
+allParams -= allParams.GetByAncs(leftAssign);
+//allParams -= allParams.GetByAncs(All.FindByAssignmentSide(CxList.AssignmentSide.Left)); // not optimized
+allParams += All.FindByShortName("__query_parameters");
+
+CxList objectCreate = All.GetAncOfType(typeof(ObjectCreateExpr));
+CxList leftaroundRegex = 
+	objectCreate.FindByRegex(@"\.new\((params\[|cookies\[|gets\W|\$_)");
+
+result = allParams +
+	All.FindAllReferences(All.FindDefinition(allParams)) +
+	Find_Console_Inputs() +
+	leftaroundRegex;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2a1ee81c-2206-492f-a3d8-81b432b9a962</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1251 - Buffer Overflow sizeof</Title>
+    <Category>CWE: 120</Category>
+    <Phase>CPP Buffer Overflow</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  120</h1>
+  <iframe height="500" src="/content/120" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1251
+Cwe : 120
+IsExecutable : false
+IsEncrypted : false
+Severity : 3
+PackageId : 15
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Buffer_Overflow_sizeof
+//  ----------------------
+//  Find all "sizeof"s in arrays that have different type of the array
+///////////////////////////////////////////////////////////////////////
+
+// Find all arrays
+CxList indx = All.FindByType(typeof(IndexerRef));
+
+// Find all sizeof methods in arrays
+CxList sizeofList = Find_Methods().GetByAncs(indx).FindByName("sizeof");
+
+// Prepare a list to be used in the loop
+CxList param1 = All.NewCxList();
+
+// Helpers to improve performance
+CxList parameters = All.GetParameters(sizeofList);
+CxList paramsDef1 = All.FindDefinition(parameters);
+CxList paramsDef2 = All.FindByFathers(paramsDef1);
+CxList indexDef1 = All.FindDefinition(sizeofList.GetAncOfType(typeof(IndexerRef)));
+CxList indexDef2 = All.FindByFathers(indexDef1);
+
+// Check each sizeof element
+foreach(CxList sizeofElement in sizeofList)
+{
+	// Find the array itself (indexer ref)
+	indx = sizeofElement.GetAncOfType(typeof(IndexerRef));
+
+	// Get the parameters of the element
+	param1 = parameters.GetParameters(sizeofElement);
+	
+	// Get the relevant graphs, so we can check the name and type
+	CSharpGraph p1 = param1.data.GetByIndex(0) as CSharpGraph;
+	CSharpGraph p2 = indx.data.GetByIndex(0) as CSharpGraph;
+	String name1 = p1.ShortName;
+	String name2 = p2.ShortName;
+
+	CxList typeResults = indx.FindByType(name1);
+	CxList othersType = param1.FindByType(name1);
+	
+	// See if the array type differs from the parameter
+	if (name1 != name2 &amp;&amp; typeResults.Count == 0)
+	{
+		// Ignore cases of different variables of the same type
+		CxList paramType = paramsDef2.FindByFathers(paramsDef1.FindDefinition(param1));
+		if (paramType.Count &gt; 0)
+		{
+			CSharpGraph p3 = paramType.data.GetByIndex(0) as CSharpGraph;
+			CxList indxType = indexDef2.FindByFathers(indexDef1.FindDefinition(indx));
+			if (indxType.FindByShortName(p3.ShortName).Count &gt; 0)
+			{
+				continue;
+			}
+		}
+		// Show the complete dependency between the parameter and the sizeof.
+		result += sizeofElement.DataInfluencedBy(param1);
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1538d387-fc65-4fb0-9b29-b706f0e9d749</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1941 - R15 03 02 Catch All In Main</Title>
+    <Category>CWE: 10766</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10766</h1>
+  <iframe height="500" src="/content/10766" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1941
+Cwe : 10766
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 15-3-2
+ ------------------------------
+ This query finds all statements that are outside of try - catch all general statement in main
+
+ The following example shows what main code should look like: 
+     int main()
+     {
+          try
+          {
+           program code
+          }
+          catch(...)        
+          {
+            handle unexpected Exceptions
+          }
+          return 0;
+     }
+
+
+  The Example below shows code with vulnerability:
+     int main()
+     {
+      ofstream myfile;                        //non-compliant
+      myfile.open("example.txt");             //non-compliant -might throw an Exception
+      myfile  0)
+		{
+			Catch c = t.CatchClauses[t.CatchClauses.Count - 1];
+			if(c != null)
+			{
+				lastCatches += All.FindById(c.NodeId);
+			}
+		}
+	
+	}
+	CxList notOkCatch = All.NewCxList();
+
+	foreach(CxList cur in lastCatches)
+	{
+		CxList references = All.FindByFathers(cur).FindByType(typeof(TypeRef));
+		if(references.Count &gt; 0){
+			notOkCatch += cur;
+		}
+	}
+	//get all statements
+	CxList stmt = All.FindByType(typeof(Statement));
+	CxList retstmt = stmt.GetByAncs(mainMeth).FindByType(typeof(ReturnStmt));
+CxList foundResults=All.GetByAncs(stmt.GetByAncs(mainMeth)) * stmt.GetByAncs(mainMeth) -
+		All.GetByAncs(stmt.GetByAncs(tryCatch)) + notOkCatch.GetFathers() - retstmt;
+	result += foundResults.GetAncOfType(typeof(MethodDecl)).FindByShortName("main");
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

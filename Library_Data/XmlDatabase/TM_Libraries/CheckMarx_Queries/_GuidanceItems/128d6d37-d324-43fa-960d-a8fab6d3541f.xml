@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>128d6d37-d324-43fa-960d-a8fab6d3541f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1253 - Heuristic NULL Pointer Dereference1</Title>
+    <Category>CWE: 476</Category>
+    <Phase>CPP Heuristic</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  476</h1>
+  <iframe height="500" src="/content/476" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1253
+Cwe : 476
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 17
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+CxList methodInvoke = Find_Methods();
+
+CxList malloc = methodInvoke.FindByShortName("malloc");
+CxList leftSide = All.GetByAncs(malloc.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+	+ All.GetByAncs(malloc.GetAncOfType(typeof(Declarator))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList realloc = methodInvoke.FindByShortName("realloc");
+leftSide += All.GetByAncs(realloc.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+	+ All.GetByAncs(realloc.GetAncOfType(typeof(Declarator))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList calloc = methodInvoke.FindByShortName("calloc");
+leftSide += All.GetByAncs(calloc.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+	+ All.GetByAncs(calloc.GetAncOfType(typeof(Declarator))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList allMemoryMethods = malloc + realloc + calloc;
+
+CxList conditions = Get_Conditions();
+	
+CxList IfStmts = conditions.DataInfluencedBy(leftSide).GetAncOfType(typeof(IfStmt));
+	
+CxList IfStmtsInside = All.GetByAncs(IfStmts);
+
+CxList assert = methodInvoke.FindByName("assert");
+CxList assertParam = All.GetByAncs(assert);
+assertParam -= assertParam.FindByShortName("assert");
+
+CxList toCheck = Find_Methods() +
+	All.FindByType(typeof(MemberAccess)) + 
+	All.FindByType(typeof(UnknownReference))
+	- leftSide - IfStmtsInside - assertParam;
+
+result = toCheck.InfluencedByAndNotSanitized(allMemoryMethods, IfStmtsInside + assertParam);
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

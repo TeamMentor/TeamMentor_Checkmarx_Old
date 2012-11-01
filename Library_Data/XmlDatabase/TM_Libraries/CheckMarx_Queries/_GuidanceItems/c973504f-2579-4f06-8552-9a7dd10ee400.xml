@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c973504f-2579-4f06-8552-9a7dd10ee400</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>263 - Find Uninitialized Pointer Decl</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 263
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find Uninitialized Pointer Declarators
+
+// Find Pointer Declarators
+CxList declarators = Find_Pointer_Decl();
+
+// // Find initialized
+CxList references = All.FindByType(typeof(Reference)) + All.FindByType(typeof(PrimitiveExpr))
+				  + All.FindByType(typeof(MethodInvokeExpr));
+CxList initialized = declarators.FindByInitialization(references);
+
+
+// Add pointer initialization by Array Creation e.g. char* str = new char [30];
+//CxList declaratorsAncs = All.GetByAncs(declarators);
+//CxList CreateExprInDecl = declaratorsAncs.FindByType(typeof(ArrayCreateExpr))
+//		 + declaratorsAncs.FindByType(typeof(ObjectCreateExpr));
+//CxList initialized2 = CreateExprInDecl.GetAncOfType(typeof(Declarator));
+//initialized += initialized2;
+//return declarators.FindByRegex(@"=|\[");
+result = declarators - declarators.FindByRegex(@"=|\[");
+result -= initialized;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

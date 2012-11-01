@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>66b805f7-ba2b-434b-bc0b-175ecb92d48b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>169 - Server Code In Client Comment</Title>
+    <Category>CWE: 10702</Category>
+    <Phase>ASP Low Visibility</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10702</h1>
+  <iframe height="500" src="/content/10702" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 169
+Cwe : 10702
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 11
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Server-code in client-comment
+// -----------------------------
+// In this case one might expect the comment to be ignored, but actually
+// it is part of the fully-functional server side
+//////////////////////////////////////////////////////////////////////////////
+
+CxList js = AllJs();
+CxList vbs = AllVbs();
+
+CxList potential = All.FindByRegex(@"'\s*&lt;%");// - vbs - js;
+
+foreach (CxList problem in potential)
+{
+	CSharpGraph gr = problem.data.GetByIndex(0) as CSharpGraph;
+	string name = gr.LinePragma.FileName;
+	int line = gr.LinePragma.Line;
+	if((vbs.FindByPosition(name, line) +
+		vbs.FindByPosition(name, line - 1) + 
+		vbs.FindByPosition(name, line + 1)).Count &gt; 0)
+	{
+		result += problem;
+	}
+}
+
+potential = All.FindByRegex(@"[^p]//\s*&lt;%");// -js - vbs;
+
+foreach (CxList problem in potential)
+{
+	CSharpGraph gr = problem.data.GetByIndex(0) as CSharpGraph;
+	string name = gr.LinePragma.FileName;
+	int line = gr.LinePragma.Line;
+	if((js.FindByPosition(name, line) +
+		js.FindByPosition(name, line - 1) + 
+		js.FindByPosition(name, line + 1)).Count &gt; 0)
+	{
+		result += problem;
+	}
+}&lt;/pre&gt;&lt;/div&gt;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

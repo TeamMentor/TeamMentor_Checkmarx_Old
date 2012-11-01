@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>572c0f0f-fd3c-4a99-888d-2fbbe6dd774e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1406 - XPath Injection</Title>
+    <Category>CWE: 643</Category>
+    <Phase>PHP High Risk</Phase>
+    <Technology>PHP</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: XPath Injection</h1>
+  <iframe height="300" src="/html/XPath_Injection" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  643</h1>
+  <iframe height="500" src="/content/643" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1406
+Cwe : 643
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1272
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+CxList inputs = Find_Interactive_Inputs();
+CxList sanitized = Find_Sanitize() + Find_XPath_Replace();
+
+// Methods which get a filter (possibly tainted) in their first patameter.
+CxList XPath_parm1 = 
+	methods.FindByMemberAccess("DOMXPath.evaluate") +
+	methods.FindByMemberAccess("DOMXPath.query") + 
+	methods.FindByMemberAccess("XPathContext.xpath_eval_expression") +
+	methods.FindByMemberAccess("XPathContext.xpath_eval") +
+	methods.FindByMemberAccess("XPathContext.xptr_eval") +
+	methods.FindByMemberAccess("SimpleXMLElement.xpath");
+
+CxList memberMethods = 
+	methods.FindByShortName("evaluate") +
+	methods.FindByShortName("query") + 
+	methods.FindByShortName("xpath_eval_expression") +
+	methods.FindByShortName("xpath_eval") +
+	methods.FindByShortName("xptr_eval") +
+	methods.FindByShortName("xpath");
+CxList unknownReferanceObj = All.FindByType(typeof(UnknownReference));
+XPath_parm1 += unknownReferanceObj.GetMembersOfTarget() * memberMethods;
+
+CxList tainted_parm1 = All.GetParameters(XPath_parm1, 0);
+CxList other_params1 = All.GetParameters(XPath_parm1) - tainted_parm1;
+other_params1 += XPath_parm1.GetTargetOfMembers();
+result = XPath_parm1.InfluencedByAndNotSanitized(inputs, sanitized + other_params1);
+	
+// Methods which get a filter (possible tainted) in their second parameter.
+// As some are stand-alone functions with same name as class methods of the previous group, 
+// remove the instances of the first group members from the second group.
+CxList XPath_parm2 =  
+	methods.FindByShortName("xpath_eval_expression") +
+	methods.FindByShortName("xpath_eval") +
+	methods.FindByShortName("xptr_eval") +
+	methods.FindByShortName("xpath") +
+	methods.FindByMemberAccess("SDO_DAS_Relational.executeQuery") -
+	XPath_parm1;
+
+CxList tainted_parm2 = All.GetParameters(XPath_parm2, 1);
+CxList other_params2 = All.GetParameters(XPath_parm2) - tainted_parm2;
+other_params2 += XPath_parm2.GetTargetOfMembers();
+result += XPath_parm2.InfluencedByAndNotSanitized(inputs, sanitized + other_params2);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

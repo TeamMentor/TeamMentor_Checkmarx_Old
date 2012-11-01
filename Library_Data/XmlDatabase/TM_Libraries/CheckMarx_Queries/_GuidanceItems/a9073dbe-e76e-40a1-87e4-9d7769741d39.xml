@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a9073dbe-e76e-40a1-87e4-9d7769741d39</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>516 - Failure to Catch All Exceptions in Servlet</Title>
+    <Category>CWE: 600</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  600</h1>
+  <iframe height="500" src="/content/600" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 516
+Cwe : 600
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList servlets = Find_Class_Decl().InheritsFrom("HttpServlet");
+
+CxList ServletsMethods = All.GetByAncs(servlets).FindByType(typeof(MethodDecl));
+
+CxList typeRef = All.FindByType(typeof(TypeRef));
+CxList throwable = typeRef.FindByShortName("Throwable");
+CxList exception = typeRef.FindByShortName("Exception");
+CxList throwableTry = (throwable + exception).GetAncOfType(typeof(TryCatchFinallyStmt));
+
+CxList inTry = All.GetByAncs(ServletsMethods).GetByAncs(throwableTry);
+CxList outOfTry = All.GetByAncs(ServletsMethods) - inTry;
+CxList stmtOfTry = outOfTry.FindByType(typeof(StatementCollection));
+outOfTry = 
+	outOfTry.GetByAncs(stmtOfTry) - 
+	outOfTry.FindByType(typeof(StatementCollection)) -
+	outOfTry.FindByType(typeof(ExprStmt));
+
+CxList okMethods = ServletsMethods - All.GetMethod(outOfTry);
+okMethods -= okMethods.FindByFieldAttributes(Modifiers.Abstract);
+
+int count = 0;
+while (count++  0)
+	{
+		outOfTry += additions;
+		okMethods += additions;
+		additions = All.NewCxList();
+	}
+	else
+	{
+		break;
+	}
+}
+
+CxList Top_Level_Servlet_Methods = 
+	ServletsMethods.FindByShortName("doGet") +
+	ServletsMethods.FindByShortName("doPost");
+
+result = Top_Level_Servlet_Methods - okMethods;
+
+/*
+//CxList throws = All.FindByRegex(@"\)(\s)+throws(\s)+");
+CxList paramDeclCollection = All.FindByType(typeof(ParamDeclCollection));
+CxList throws = paramDeclCollection.FindByRegex(@"throws\s+(Exception|Throwable)");
+
+result = Top_Level_Servlet_Methods - Top_Level_Servlet_Methods.GetMethod(throws);
+//result = Top_Level_Servlet_Methods.GetMethod(throws);
+*/</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

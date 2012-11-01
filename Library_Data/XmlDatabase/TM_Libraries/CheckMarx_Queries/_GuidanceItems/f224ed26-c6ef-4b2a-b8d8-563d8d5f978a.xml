@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f224ed26-c6ef-4b2a-b8d8-563d8d5f978a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>251 - Find Open Files Methods</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 251
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methodInvokes = Find_Methods();
+CxList openMethods = methodInvokes.FindByShortName("fopen") + 
+	methodInvokes.FindByShortName("open") + 
+	methodInvokes.FindByShortName("creat") + 
+	methodInvokes.FindByShortName("OpenDocumentFile") +
+	methodInvokes.FindByMemberAccess("CFile.Open"); //to open a file
+
+CxList parameters = All.GetParameters(openMethods);
+foreach (CxList openMethod in openMethods)
+{
+	int numParams = parameters.GetParameters(openMethod).Count;
+	if ((numParams&gt;0) || (openMethod.GetTargetOfMembers().Count&gt;0))
+	{
+		result += openMethod;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

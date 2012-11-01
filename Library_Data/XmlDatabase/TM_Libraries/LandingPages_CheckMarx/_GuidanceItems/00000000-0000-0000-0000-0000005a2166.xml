@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000005a2166</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Client-Side Only Validation</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Client-Side Only Validation</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Input and data validation for security purposes should be implemented on the server. Client-side validation can be easily bypassed leading to vulnerabilities that impact server functionality and data integrity. Client-side validation is appropriate if you need to provide the user immediate feedback on their input for usability purposes, but should never be used to make security decisions. This vulnerability impacts web applications and applications that use a client-server architecture. To protect your code against this problem, ensure that your input and data validation architecture is implemented in server-side code. To check your own code, review client-side code for validation and ensure the application is not reliant upon client-side security checks. It’s ok to perform data validation on the client for performance reasons as long as it is backed up by equivalent or more stringent server-side checks.
+
+==Impact==
+
+The exact impact of this vulnerability depends exactly on what kind of data is being validated. Usually client-side only validation will allow the attacker to submit malicious input that exploits other vulnerabilities. In some cases, the data validated has immediate security implications. For example, if authentication is somehow implemented on the client-side, the attacker is able to authenticate as any user of his choosing. One common scenario is validating submitted files on the client-side - in that case the attacker is able to send in malicious files by bypassing client-side validation. Being able to send malicious files often allows an attacker to upload a script that will give him full control of the application. 
+
+==Countermeasures==
+
+Implement security controls on the server-side:
+* [[14d4d65c-8bba-4fef-8261-e76895882942|Do Not Rely on Client-side Validation]]
+* [[8774a92a-2008-488d-8bcf-20b365b8a752|Perform Authentication on the Server]]
+
+==Checklists==
+
+Security controls are implemented on the server-side:
+* [[eda2c482-6e7f-4370-9d2f-deeca845c82b|Client-side Validation Is Not Relied On]]
+* [[dc03ac19-d8b9-4af2-b821-93766afa23d3|Authentication Is Performed on the Server]]
+
+==Additional Resources==
+* For more information about this vulnerability type, please see https://www.owasp.org/index.php/Validation_performed_in_client]]></Data>
+  </Content>
+</TeamMentor_Article>

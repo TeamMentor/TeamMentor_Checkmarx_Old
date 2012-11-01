@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1092ed59-99c2-4978-96cc-9a7528b4fa02</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>543 - Find General Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 543
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = Find_Integers() + 
+	All.FindByMemberAccess("ResultSetMetaData.*") +	  
+	All.FindByShortName("getClass*") +
+	All.FindByName("compareTo") + 
+	All.FindByName("decode") + 
+	All.FindByType("Date") +
+	All.FindByType("Locale") +
+	All.FindByShortName("size", false) + 
+	All.FindByShortName("length", false) + 			
+	All.FindByShortName("intValue", false) + 
+	All.FindByShortName("Index*", false) +
+	//	All.FindByMemberAccess("Map.get")
+	All.FindByMemberAccess("Hashtable.get") +
+	All.FindByMemberAccess("URL.getProtocol") + 
+	All.FindByMemberAccess("URL.getPort") +
+	All.FindByMemberAccess("FileInputStream.markSupported") +
+	All.FindByShortName("File") + 
+	All.FindByMemberAccess("*.setContentLength") + 
+	All.FindByShortName("indexOf") + 
+	All.FindByMemberAccess("Cookie.setMaxAge") +
+	All.GetParameters(All.FindByMemberAccess("EntityManager.find"), 1) +
+	All.GetParameters(All.FindByMemberAccess("EntityManager.find"), 1)
+	;
+
+CxList HashSanitise = 
+	All.FindByMemberAccess("MessageDigest.digest") + 
+	All.FindByMemberAccess("MessageDigest.update") +
+	All.FindByMemberAccess("MD5.getHash*") +
+	All.FindByMemberAccess("MD5.update*") +
+	Find_Methods().FindByShortName("md5", false) +
+	All.FindByMemberAccess("Cipher.doFinal");
+
+CxList ESAPI = Find_ESAPI_Sanitizer();
+
+// getAttribute
+CxList getAttr = Get_Attribute();
+result += All.GetParameters(getAttr);
+
+result += HashSanitise + ESAPI;
+result += Find_Dead_Code_Contents();
+
+
+//Methods that cut the flow of data
+CxList getMethod = All.FindByMemberAccess(".get");
+CxList elementAtMethod = All.FindByMemberAccess(".elementAt");
+CxList removeMethod = All.FindByMemberAccess(".remove");
+
+CxList dataStractureGet = 
+	//.get
+	getMethod.FindByMemberAccess("Attributes.get") + 
+	getMethod.FindByMemberAccess("Collection.get") + 
+	getMethod.FindByMemberAccess("List.get") + 
+	getMethod.FindByMemberAccess("Map.get") + 
+	getMethod.FindByMemberAccess("Table.get") +
+	getMethod.FindByMemberAccess("Vector.get") + 
+	//.remove
+	removeMethod.FindByMemberAccess("Attributes.remove") + 
+	removeMethod.FindByMemberAccess("Collection.remove") + 
+	removeMethod.FindByMemberAccess("List.remove") + 
+	removeMethod.FindByMemberAccess("Map.remove") + 
+	removeMethod.FindByMemberAccess("Table.remove") +
+	removeMethod.FindByMemberAccess("Vector.remove") + 
+	//.elementAt
+	elementAtMethod.FindByMemberAccess("Collection.elementAt") + 
+	elementAtMethod.FindByMemberAccess("Vector.elementAt");
+	
+
+result += dataStractureGet;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

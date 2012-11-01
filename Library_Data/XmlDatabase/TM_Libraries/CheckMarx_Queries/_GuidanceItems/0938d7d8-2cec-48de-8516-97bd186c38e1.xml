@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0938d7d8-2cec-48de-8516-97bd186c38e1</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>724 - Find Console Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 724
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 43
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList outputs = 	All.FindByMemberAccess("console.write*") +
+	 				All.FindByMemberAccess("console.out*");
+
+CxList fathersWithoutAssignment = 	outputs.GetFathers() - 
+									outputs.GetFathers().FindByType(typeof(AssignExpr));
+
+result = 	outputs.FindByAssignmentSide(CxList.AssignmentSide.Left) + 
+			outputs.FindByFathers(fathersWithoutAssignment);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

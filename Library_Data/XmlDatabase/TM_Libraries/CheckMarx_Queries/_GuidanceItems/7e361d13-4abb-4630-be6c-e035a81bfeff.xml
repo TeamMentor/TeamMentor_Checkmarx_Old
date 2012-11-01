@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7e361d13-4abb-4630-be6c-e035a81bfeff</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>597 - XPath Injection</Title>
+    <Category>CWE: 643</Category>
+    <Phase>Java High Risk</Phase>
+    <Technology>Java</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: XPath Injection</h1>
+  <iframe height="300" src="/html/XPath_Injection" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  643</h1>
+  <iframe height="500" src="/content/643" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 597
+Cwe : 643
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 35
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList XPath = All.FindByMemberAccess("XPath.compile") +
+	All.FindByMemberAccess("XPath.evaluate");
+CxList inputs = Find_Interactive_Inputs();
+CxList sanitized = Find_Sanitize();
+
+result = XPath.InfluencedByAndNotSanitized(inputs, sanitized);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

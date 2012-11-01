@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>436686a2-06dd-4741-b217-2b3405a6feaf</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1968 - Find ESAPI Sanitizer</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1968
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList ESAPI = All.NewCxList();
+
+// Encrypt
+ESAPI += Get_ESAPI().FindByMemberAccess("Encryptor.encrypt");
+
+// Random numbers/names
+ESAPI += Get_ESAPI().FindByMemberAccess("Randomizer.get*");
+
+// getValid*
+ESAPI += Get_ESAPI().FindByMemberAccess("Validator.getValid*");
+ESAPI += Get_ESAPI().FindByMemberAccess("ValidationRule.getValid");
+
+//// Validation rules:
+ESAPI += Get_ESAPI().FindByMemberAccess("ValidationRule.getSafe");
+ESAPI += Get_ESAPI().FindByMemberAccess("ValidationRule.sanitize");
+ESAPI += Get_ESAPI().FindByMemberAccess("ValidationRule.whitelist");
+
+// isValid*
+CxList isValid = 
+	Get_ESAPI().FindByMemberAccess("Validator.isValid*") +
+	Get_ESAPI().FindByMemberAccess("ValidationRule.isValid*");
+
+// Find all "isValid* methods in conditions, or conditions influenced by isValid*
+CxList conditions = Find_Conditions();
+CxList isValidInCondition = isValid.GetByAncs(conditions) + conditions.DataInfluencedBy(isValid);
+isValidInCondition += All.GetParameters(Get_ESAPI().FindByShortName("assert*"), 1);
+
+CxList unknown = All.FindByType(typeof(UnknownReference));
+
+// All unknown references that influence the isValid* inside the condition, and all their references
+ESAPI += All.FindAllReferences(unknown.DataInfluencingOn(isValidInCondition));
+
+result = ESAPI;
+
+
+
+
+
+
+
+
+// OLD ESAPI:
+/* start ESAPI */
+// 
+// CxList ESAPI = All.NewCxList();
+// 
+// // Encrypt
+// ESAPI += ESAPI().FindByMemberAccess("Encryptor.encrypt");
+// 
+// // Random numbers/names
+// ESAPI += ESAPI().FindByMemberAccess("Randomizer.get*");
+// 
+// // In the following sanitizer I check 2 things:
+// // 1. The use of getValid* methods (this is done via simple data flow)
+// // 2. The use of isValid* methods - this is supposed to be done via control flow, that I try to simulate
+// 
+// // General needed data
+// CxList conditions = Find_Conditions(); // All if conditions
+// 
+// // 1. getValid*
+// ESAPI += ESAPI().FindByMemberAccess("Validator.getValid*");
+// 
+// 
+// // 2. isValid*
+// 
+// // Get all isValid* methods
+// CxList isValid = ESAPI().FindByMemberAccess("Validator.isValid*");
+// 
+// // 2.1 Add the parameters of the isValid* methods that are in an if statement:
+// //  inp = getInput();
+// //	if (validator.isValidSomething("name", inp))
+// //	{
+// //		setOutput(inp); // This inp is a sanitizer
+// //	}
+// 
+// // All the isValid* methods that are directly in a condition
+// CxList isYesValid = conditions * isValid;
+// // isValid* parameter 1 (the relevant tested parameter)
+// CxList isValidParam = All.GetParameters(isYesValid, 1);
+// 
+// // All references of this parameter (needed for performance, so we do not use "All" in the following loop)
+// CxList validParams = All.FindAllReferences(isValidParam);
+// 
+// // Loop over all parameters(1) of isValid* and find their references inside the loop statement
+// foreach (CxList isValidP in isValidParam)
+// {
+// 	// The relevant if statement
+// 	CxList ifStmt = isValidP.GetAncOfType(typeof(IfStmt));
+// 	// Add the references of isValidP in the if statement
+// 	ESAPI += validParams.FindAllReferences(isValidP).GetByAncs(ifStmt) - isValidP;
+// }
+// 
+// 
+// // 2.2 Add the parameters of the !isValid* methods that are after the if statement:
+// //  inp = getInput(); // This inp is not a sanitizer (it's before the "if" statement
+// //	if (!validator.isValidSomething("name", inp))
+// //	{
+// //		exit; // or return; or throuw exception.
+// //	}
+// //	setOutput(inp); // This inp is a sanitizer
+// 
+// // Find all "negative" if statements [ if (!something()) {...} ]
+// CxList negativeIfCondition = conditions.FindByShortName("Not").FindByType(typeof(UnaryExpr));
+// // Find the isValid* methods that are in these "negative" if statements
+// CxList isNotValid = isValid.GetByAncs(negativeIfCondition);
+// // Get the parameters of the above isValid* methods
+// CxList isNotValidParam = All.GetParameters(isNotValid, 1);
+// 
+// // Get all the relevant statement collections (needed for performance, so we do not use "All" in the following loop)
+// CxList isNotValidParamStmts = isNotValidParam.GetAncOfType(typeof(StatementCollection));
+// // Find all references of the parameters of the above isValid* in the relevant methods
+// // (needed for performance, so we do not use "All" in the following loop)
+// CxList notValidParams = All.FindAllReferences(isNotValidParam).GetByAncs(isNotValidParamStmts);
+// 
+// // Loop over all parameters and set all their references after the loop as sanitizers
+// foreach (CxList isNotValidP in isNotValidParam)
+// {
+// 	// Find the containing if statement
+// 	CxList ifStmt = isNotValidP.GetAncOfType(typeof(IfStmt));
+// 	try
+// 	{
+// 		CSharpGraph gSource = isNotValidP.data.GetByIndex(0) as CSharpGraph;
+// 		// Potentially add the relevant references of this parameter - in the method, not in the if stmt
+// 		CxList addition =  
+// 			notValidParams.FindAllReferences(isNotValidP).GetByAncs(isNotValidParamStmts) -
+// 			notValidParams.FindAllReferences(isNotValidP).GetByAncs(ifStmt);
+// 		// Leave only references after the if statement
+// 		foreach (CxList a in addition)
+// 		{
+// 			CSharpGraph gTarget = a.data.GetByIndex(0) as CSharpGraph;
+// 			if (gTarget.NodeId &gt; gSource.NodeId)
+// 			{
+// 			
+// 				ESAPI += a;
+// 			}
+// 		}
+// 	}
+// 	catch (Exception ex)
+// 	{
+// 		// just in case there is any problem with the CSharpGraph objects
+// 	}
+// }
+// 
+// /* end ESAPI */
+// 
+// result = ESAPI;
+//</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6fd085d8-86fa-428a-8ac3-a36bf55d19d7</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1694 - Uncontrolled Recursion</Title>
+    <Category>CWE: 674</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  674</h1>
+  <iframe height="500" src="/content/674" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1694
+Cwe : 674
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+
+This query will look for a method calling itself, when there is no "return" statement inside a loop
+that is not affected by the recursive call.
+
+The query is a bit of heuristic.
+
+Before passing on all the methods to see if they are recursive (for which we need a loop on the methods)
+we only keep the methods with that call other methods, and do not contain the above return statement. This
+is important for performance issues, because this way we have a shorter list of potential methods..
+
+*/
+
+// Get only methods that are defined and used
+CxList methods = Find_Methods();
+methods = methods.FindAllReferences(All.FindDefinition(methods));
+// Find all methods that contain other methods
+CxList methodOfMethod = All.GetMethod(methods);
+
+// If statement in these methods.
+CxList IfStmt = All.FindByType(typeof(IfStmt));
+IfStmt = IfStmt.GetByAncs(methodOfMethod);
+
+// A return statement inside the above "if" statements, that is not affected by a recursive method call
+CxList ret = All.FindByType(typeof(ReturnStmt));
+ret = ret.GetByAncs(IfStmt);
+ret -= All.GetByAncs(ret).DataInfluencedBy(methods).GetAncOfType(typeof(ReturnStmt));
+
+// Leave only relevant methods
+methodOfMethod -= methodOfMethod.GetMethod(ret);
+
+// Loop on all remaining methods and leave only the ones calling themselves (=&gt; recursive)
+foreach (CxList method in methodOfMethod)
+{
+	// The actual use of recursion
+	CxList useRecursion = methods.FindAllReferences(method).GetByAncs(method);
+	// The method that calls the recursion
+	CxList methodDecl = methodOfMethod.GetMethod(useRecursion);
+	// If there exists such a method/call - add it to the result
+	if (methodDecl.Count &gt; 0)
+	{
+		result += methodDecl.Concatenate(useRecursion);
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

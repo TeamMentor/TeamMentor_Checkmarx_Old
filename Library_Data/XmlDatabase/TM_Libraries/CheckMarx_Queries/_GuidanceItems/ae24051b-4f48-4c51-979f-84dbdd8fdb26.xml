@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ae24051b-4f48-4c51-979f-84dbdd8fdb26</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2079 - Find Kohana XSS Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2079
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //Kohana sanitizers:
+CxList methods = Find_Methods();
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList methodsParams = All.GetParameters(methods);
+
+CxList checkMethods = methods.FindByShortName("check");
+CxList references = All.FindAllReferences(checkMethods.GetTargetOfMembers());
+CxList getInst = 
+	All.FindByMemberAccess("Validation.factory") + 
+	All.FindByMemberAccess("Validate.factory");
+
+CxList createExp = All.FindByType(typeof(ObjectCreateExpr));
+getInst += createExp.FindByShortName("Validate") + createExp.FindByShortName("Validation");
+
+
+CxList isValidMethods = All.NewCxList();
+CxList ur = All.FindByType(typeof(UnknownReference));
+
+//finds only the invokes of a Kohana validation/validate
+foreach(CxList cur in checkMethods)
+{
+	CxList rf = cur.GetTargetOfMembers();		
+	CxList refer = references * rf;
+	if (((getInst * rf).Count &gt; 0) || (getInst.DataInfluencingOn(rf).Count &gt; 0)){
+		isValidMethods += cur;
+	}
+}
+
+//handling if-statement with check() method
+CxList output = Find_Interactive_Outputs();
+
+CxList ifStmt = (All.FindByType(typeof(IfStmt)));
+CxList exp = All.FindByType(typeof(Expression));
+CxList isValidMethodAsCond = isValidMethods.GetByAncs(exp.FindByFathers(ifStmt));
+CxList relevantIfStmt = isValidMethodAsCond.GetAncOfType(typeof(IfStmt));
+
+CxList isNOTValidMethodAsCond = isValidMethodAsCond.GetByAncs(All.FindByShortName("Not").FindByType(typeof(UnaryExpr)));
+
+CxList sanitizedOutput = (All.DataInfluencingOn(output)).GetByAncs(relevantIfStmt - isNOTValidMethodAsCond.GetAncOfType(typeof(IfStmt)));
+
+result += sanitizedOutput;
+
+
+
+//Kohana dedicated sanitizers
+CxList KohanaSanitize = 
+	All.FindByMemberAccess("Kohana.sanitize") + 
+	All.FindByMemberAccess("Kohana_Core.sanitize") + 
+	All.FindByMemberAccess("Security.encode_php_tags") +
+	All.FindByMemberAccess("Security.strip_image_tags");
+	
+KohanaSanitize += methods.FindByShortName("xss_clean"); //deprecated since Kohana 3.0
+	
+result += KohanaSanitize;
+
+result = All * result;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

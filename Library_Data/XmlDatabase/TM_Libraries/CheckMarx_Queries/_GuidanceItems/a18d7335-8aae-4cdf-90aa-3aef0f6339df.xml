@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a18d7335-8aae-4cdf-90aa-3aef0f6339df</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>540 - Find Evil Strings</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 540
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find evil strings
+string maybe = @"[*?]\??\s*";
+string numRep = @"\{\d(,\d)?(\d)+\}";
+string rep = @"(\*\??|\+\??|" + numRep + @")\s*";
+string brack = @"\[([^\\\]\[]?(\\.)?)+\]";
+brack = @"(" + brack + @"|" + @"\(" + brack + @"\))";
+string paren = @"\([^()]+\)";
+paren = @"(" + paren + @"|" + @"\(" + paren + @"\))";
+string component = @"([\w.,:;@#$%&amp;-+=~/!]|" + brack + @"|\s|\\\s|\\\\\s|" + paren + @"|\\\w|\\\\\w)"; 
+component = @"(" + component + @"|" + @"\(" + component + @"\))";
+String[] evilStringsList1 = { // Wrapped with (...)*
+	@"[^()\.]*\." + rep,
+	component + rep,
+	@"\." + component + rep,
+	component + rep + @"\.",
+	@"(.+)(" + rep + @"|\?)*(" + component + maybe + @")*\|(" + component + @"[?*]|\2[?*+]?)*(\2[?*+]?)+(" + component + @"[?*]|\2[?*+]?)*",
+	@"\[[^\]\\w]*\\\\w\]" + rep + @"\[[\-0-9a-zA-Z]+\]",
+	@"\.\*[^()+*\\]+",
+	@"\[[^\\\[\]]*((\\)?[^\\])[^\[\]]*\][+*?]\2",
+	@"\[[^\\\[\]]*((\\\\)?[^\\])[^\[\]]*\][+*?]\2",
+	@"(" + component + maybe + @")*" + @"(" + component + rep + @")(" + component + maybe + @")*",
+	@"(" + component + maybe + @")*" + @"\((" + component + rep + @"\))(" + component + maybe + @")*",
+	@"\[([^\\\[\]]?(\\[^w])?)*(\\)?\\w[^\[\]]*\]\[[^\w\[\]]*\w+[^\[\]]*\]" + rep,
+	@"\[([^\\\[\]]?(\\[^w])?)*(\\)?\\w[^\[\]]*\]" + rep + @"\[[^\w\[\]]*\w+[^\[\]]*\]",
+	@"\[[^\w\[\]]*\w+[^\[\]]*\]\[([^\\\[\]]?(\\[^w])?)*(\\)?\\w[^\[\]]*\]" + rep,
+	@"\[[^\w\[\]]*\w+[^\[\]]*\]" + rep + @"\[([^\\\[\]]?(\\[^w])?)*(\\)?\\w[^\[\]]*\]",
+	@"((\\)?.)\[\2[^\[\]]*\]" + rep,
+	@"((\\)?.)\[[^\[\]\^][^\[\]]*\2[^\[\]]*\]" + rep,
+	@"((\\)?.)\(\[\2[^\[\]]*\]" + rep + @"\)",
+	@"((\\)?.)\(\[[^\[\]\^][^\[\]]*\2[^\[\]]*\]" + rep + @"\)",
+	@"[^|]+\|" + component + rep,
+	component + rep + @"\|[^)]*"                
+	};
+
+String[] evilStringsList2 = { // Not wrapped with (...)*
+	@"(" + component + @")" + rep + @"(" + component + maybe + @")?\2" + rep,
+	@"[[\-0-9a-zA-Z]" + rep + @"(" + component + maybe + @")?\\w" + rep,
+	@"[[\-0-9a-zA-Z]+\]" + rep + @"(" + component + maybe + @")?\\w" + rep,
+	@"\\w" + rep + @"(" + component + maybe + @")?[[\-0-9a-zA-Z]" + rep,
+	@"\\w" + rep + @"(" + component + maybe + @")?[[\-0-9a-zA-Z]+\]" + rep
+	};
+
+string preEvil = @"\((\?\:)?";
+string postEvil = @"\)" + rep;
+
+CxList strings = Find_Strings();
+
+foreach (string evilString in evilStringsList1)
+{
+	System.Text.RegularExpressions.Regex evil = new System.Text.RegularExpressions.Regex(preEvil + evilString + postEvil);
+
+	foreach (CxList suspectedString in strings)
+	{
+		CSharpGraph gr = suspectedString.data.GetByIndex(0) as CSharpGraph;
+		if (gr.ShortName.Length </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

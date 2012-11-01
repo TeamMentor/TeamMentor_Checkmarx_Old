@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>bfc7c4a1-ded9-4acd-b9ea-e6c338f4a451</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1530 - Use Of raw</Title>
+    <Category>CWE: 116</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  116</h1>
+  <iframe height="500" src="/content/116" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1530
+Cwe : 116
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList viewMethods = Find_View_Methods();
+
+result = viewMethods.FindByShortName("raw");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a61ec66d-30ae-4a95-8947-fa97c19f8f60</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>855 - Find Outputs CodeInjection</Title>
+    <Category>CWE: 0</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 855
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Alll = AllVbs();
+CxList methods = Alll.FindByType(typeof(MethodInvokeExpr));
+
+result = Alll.FindByMemberAccess("window.location") + 
+	methods.FindByMemberAccess("window.execscript") + 
+	methods.FindByMemberAccess("window.execcommand") + 
+	methods.FindByShortName("eval") +
+	methods.FindByShortName("execute") +
+	methods.FindByShortName("executeglobal") +
+
+	Find_Member_With_Target("WScript.Shell", "Run") +
+	Find_Member_With_Target("WScript.Shell", "Exec") +
+	Find_Member_With_Target("WScript.Shell", "AppActivate")
+	;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>43ba410b-212f-4e33-a0df-6db492cac17d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2110 - Find Cake Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2110
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if(All.FindByFileName("*.ctp").Count == 0)
+{
+	return result;
+}
+//find all underneath the controller
+CxList controller = All.FindByType(typeof(ClassDecl)).FindByShortName("*Controller");
+CxList ma = All.FindByType(typeof(MemberAccess));
+CxList sl = All.FindByType(typeof(StringLiteral));
+CxList tr = All.FindByType(typeof(ThisRef));
+CxList mie = All.FindByType(typeof(MethodInvokeExpr));
+CxList controllerAncs = (sl + ma + tr + mie).GetByAncs(controller);
+
+
+CxList thisRef = controllerAncs.FindByType(typeof(ThisRef));
+
+//find phpRequest element
+CxList CakePHPRequest = thisRef.GetMembersOfTarget().FindByShortName("request");
+
+
+//$this-&gt;request['someValue'], $this-&gt;request-&gt;params[....]
+CxList paramsList = controllerAncs.FindByType(typeof(StringLiteral)) + controllerAncs.FindByType(typeof(MemberAccess)) +
+	controllerAncs.FindByType(typeof(MethodInvokeExpr));
+//all allowed array literals
+paramsList = paramsList.FindByShortName("named") + paramsList.FindByShortName("pass") +
+	paramsList.FindByShortName("pass") + paramsList.FindByShortName("url") +
+	paramsList.FindByShortName("data");
+
+CxList paramsMA = (CakePHPRequest + thisRef).GetMembersOfTarget().FindByShortName("params");
+
+CxList temp = paramsList.GetByAncs((CakePHPRequest + paramsMA).GetFathers().FindByType(typeof(IndexerRef)));
+CxList input = CakePHPRequest.GetByAncs(temp.GetAncOfType(typeof(IndexerRef)));
+
+input += thisRef.GetByAncs(temp.GetAncOfType(typeof(IndexerRef))) - input.GetTargetOfMembers();
+temp = (input * CakePHPRequest).GetMembersOfTarget();
+input -= temp.GetTargetOfMembers() * CakePHPRequest;
+input += temp;
+
+
+//$this-&gt;request-&gt;data[...] $this-&gt;request-&gt;pass
+input += CakePHPRequest.GetMembersOfTarget() * paramsList;
+
+//$this-&gt;request-&gt;query[....]
+CxList additionalFuntions = (controllerAncs.FindByShortName("query")).FindByType(typeof(MemberAccess)) * CakePHPRequest.GetMembersOfTarget();
+input += additionalFuntions;
+
+
+//$this-&gt;passedArgs $this-&gt;passedArgs[
+CxList newParams = controllerAncs.FindByShortName("data") + controllerAncs.FindByShortName("passedArgs");
+newParams = newParams * ma;
+input += thisRef.GetMembersOfTarget() * newParams;
+
+
+/*/controllers/action/param1/param2 corresponds to
+ControllersController::action($param1, $param2)
+*/
+//input as action parameter : public function delete($id){....}
+CxList action = All.FindByType(typeof(MethodDecl)).GetByAncs(controller);
+CxList actionParam = All.FindByType(typeof(ParamDecl)).GetParameters(action) - All.FindByShortName("*_CX_*");
+input += actionParam;
+
+result = input;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

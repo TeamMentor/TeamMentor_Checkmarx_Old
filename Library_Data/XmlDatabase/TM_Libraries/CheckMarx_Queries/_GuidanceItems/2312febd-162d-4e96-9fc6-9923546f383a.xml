@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2312febd-162d-4e96-9fc6-9923546f383a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>243 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 243
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList cin = All.FindByShortName("cin");
+CxList exp = cin.GetAncOfType(typeof(BinaryExpr));
+CxList methodInvoke = Find_Methods();	
+CxList methodDecl = All.FindByType(typeof(MethodDecl));
+CxList main = methodDecl.FindByShortName("main")
+	+ methodDecl.FindByShortName("Main")
+	+ methodDecl.FindByShortName("_main")
+	+ methodDecl.FindByShortName("_tmain")
+	+ methodDecl.FindByShortName("Winmain")
+	+ methodDecl.FindByShortName("AfxWinMain")
+	;
+
+// Add the other inputs
+CxList interactiveInputs = 
+	All.GetByAncs(All.GetParameters(methodInvoke.FindByShortName("scanf")) -
+	All.GetParameters(methodInvoke.FindByShortName("scanf"), 0)) +
+	All.GetParameters(main) +
+	All.FindByShortName("m_lpCmdLine") +
+	methodInvoke.FindByShortName("getchar") + //the return value is input
+	methodInvoke.FindByShortName("getc") + // the return value is input
+	All.GetParameters(methodInvoke.FindByShortName("gets"), 0) + //the first param is input
+	methodInvoke.FindByShortName("getch") + //the return type is input 
+	methodInvoke.FindByShortName("getche") + //the return type is input
+	methodInvoke.FindByShortName("kbhit") + //the return type is input
+	methodInvoke.FindByShortName("getenv") + // the return type is input 			
+	methodInvoke.FindByShortName("getenv_s") +
+	methodInvoke.FindByShortName("_wgetenv") +
+	methodInvoke.FindByShortName("_wgetenv_s") +
+	methodInvoke.FindByShortName("catgets") + // the return type is input 			
+	methodInvoke.FindByShortName("getdlgtext") + // the return value is input
+	methodInvoke.FindByShortName("getpass") +
+	All.GetByAncs(All.GetParameters(methodInvoke.FindByShortName("getdlgtext"), 2)) + //the third param is input
+	All.FindByFathers(exp) - cin;
+
+result = interactiveInputs;
+
+result += 
+	All.GetByAncs(
+		All.GetParameters(methodInvoke.FindByMemberAccess("CEdit.Get*"), 1) +
+		All.GetParameters(methodInvoke.FindByMemberAccess("CRichEditCtrl.Get*"), 1) +
+		All.GetParameters(methodInvoke.FindByMemberAccess("CComboBox.Get*"), 1) +
+		All.GetParameters(methodInvoke.FindByShortName("GetWindowText*"), 1)
+	);
+
+result += cin.FindByType(typeof(UnknownReference));
+
+result += All.FindByShortName("stdin");
+
+
+// Add stream methods
+CxList inGet = methodInvoke.FindByMemberAccess("istream.get");
+CxList inGetline = methodInvoke.FindByMemberAccess("istream.getline");
+inGet += All.GetByAncs(All.GetParameters(inGet + inGetline, 0));
+
+CxList inPeek = methodInvoke.FindByMemberAccess("istream.peek");
+
+CxList inRead = methodInvoke.FindByMemberAccess("istream.read*");
+inRead = All.GetByAncs(All.GetParameters(inRead, 0));
+
+CxList inPutBack = methodInvoke.FindByMemberAccess("istream.putback");
+inPutBack = All.GetByAncs(All.GetParameters(inRead, 0));
+
+CxList inSbumpc = All.GetByAncs(All.GetParameters(methodInvoke.FindByMemberAccess("streambuf.sbumpc"), 0));
+CxList inSgetc = methodInvoke.FindByMemberAccess("streambuf.sgetc");
+CxList inSgetn = All.GetByAncs(All.GetParameters(methodInvoke.FindByMemberAccess("streambuf.sgetn"), 0));
+CxList inSnextc = methodInvoke.FindByMemberAccess("streambuf.snextc");
+CxList inSputbackc = All.GetByAncs(All.GetParameters(methodInvoke.FindByMemberAccess("streambuf.sputbackc"), 0));
+
+result += inGet + inPeek + inRead + inPutBack
+	+ inSbumpc + inSgetc + inSgetn + inSnextc + inSputbackc;
+
+// Add the SendMessage/PostMessage things when type is WM_GETTEXT
+CxList sendMessage = methodInvoke.FindByShortName("SendMessage") +
+	methodInvoke.FindByShortName("SendMessageCallback") +
+	methodInvoke.FindByShortName("SendNotifyMessage") +
+	methodInvoke.FindByShortName("PostMessage") +
+	methodInvoke.FindByShortName("PostThreadMessage");
+
+CxList sendMessageParams = All.GetParameters(sendMessage);
+CxList sendMessageSet = sendMessageParams.FindByType("WM_GETTEXT");
+sendMessage = sendMessage.FindByParameters(sendMessageSet);
+
+result += sendMessageParams.GetParameters(sendMessage, 2) 
+	+ sendMessageParams.GetParameters(sendMessage, 3);
+
+result += 
+	Find_Inputs_Sockets() + 
+	Find_Inputs_MFC();
+
+// Filter:
+result -= result.FindByType(typeof(Param)); // Remove the Param itself from the parameters. It is not needed. 
+
+result -= result.FindByType(typeof(UnaryExpr)); // Remove pointers and addresses characters (&amp;, *)</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

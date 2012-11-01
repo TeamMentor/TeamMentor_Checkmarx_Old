@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>cb9ff526-9a5e-419e-848c-fcbf1fd57e51</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>698 - Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>JavaScript Vulnerabilities</Phase>
+    <Technology>JavaScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 698
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 41
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = AllJs().FindByType(typeof(MethodInvokeExpr));
+
+CxList binary = AllJs().FindByType(typeof(BinaryExpr));
+CxList booleanConditions =
+	binary.FindByShortName("<_22_29_ _binary.findbyshortname28_22_="" _2b_="">") +
+	binary.FindByShortName("==") +
+	binary.FindByShortName("!=") +
+	binary.FindByShortName("") +
+	binary.FindByShortName("<_3d_22_29_ _binary.findbyshortname28_22_="" _2b_="">=") +
+	binary.FindByShortName("||") +
+	binary.FindByShortName("&amp;&amp;") +
+	AllJs().FindByType(typeof(UnaryExpr)).FindByShortName("!");
+
+CxList nonSanitizer = AllJs().FindByType(typeof(AssignExpr)).GetByAncs(booleanConditions);
+booleanConditions -= nonSanitizer.GetAncOfType(typeof(BinaryExpr));
+
+result = methods.FindByShortName("escape") +
+	methods.FindByShortName("*encode*") - methods.FindByShortName("*unencode*") +
+	methods.FindByShortName("count") +
+	methods.FindByShortName("indexOf") +
+	methods.FindByShortName("parseInt") +
+	methods.FindByShortName("parseFloat") +
+	methods.FindByShortName("Number") +
+	methods.FindByShortName("length") +
+	booleanConditions +
+	Find_Replace_Param();</_3d_22_29_></_22_29_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

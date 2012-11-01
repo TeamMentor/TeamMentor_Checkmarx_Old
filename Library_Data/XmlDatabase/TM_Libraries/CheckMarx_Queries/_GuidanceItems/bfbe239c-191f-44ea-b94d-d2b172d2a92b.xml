@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>bfbe239c-191f-44ea-b94d-d2b172d2a92b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>663 - Struts Form Field Without Validator</Title>
+    <Category>CWE: 105</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  105</h1>
+  <iframe height="500" src="/content/105" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 663
+Cwe : 105
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList validationXML = Find_Validation();
+CxList validationClasses = validationXML.FindByType(typeof(ClassDecl));
+CxList classDecl = Find_Class_Decl();
+CxList fieldDecl = Find_Field_Decl();
+foreach(CxList validationClass in validationClasses)
+{
+	CxList validationObjects = validationXML.GetByAncs(validationClass);
+	CxList properties = validationObjects.FindByName("FORM_VALIDATION.FORMSET.FORM.FIELD.PROPERTY");
+
+	CxList forms = validationObjects.FindByName("FORM_VALIDATION.FORMSET.FORM.NAME");
+
+	CxList formAssignments = forms.GetFathers();
+	CxList formNames = validationObjects.FindByFathers(formAssignments).FindByType(typeof(StringLiteral));
+
+	SortedList sortedForms = new SortedList();
+	foreach(CxList curForm in formNames)
+	{
+		CSharpGraph fromGraph = (CSharpGraph)curForm.data.GetByIndex(0);
+		sortedForms.Add(fromGraph.LinePragma.Line, fromGraph.ShortName);
+	}
+
+	DictionaryEntry formPair = new DictionaryEntry();
+	sortedForms.Add(10000000,"");
+	foreach(DictionaryEntry nextFormPair in sortedForms)
+	{
+		if (formPair.Key != null)
+		{                                              
+			CxList formProperties = All.NewCxList();
+			foreach(CxList curProperty in properties)
+			{
+				CSharpGraph propertyGraph = (CSharpGraph)curProperty.data.GetByIndex(0);
+				if ((propertyGraph.LinePragma.Line &gt; (int)formPair.Key) &amp;&amp;
+					(propertyGraph.LinePragma.Line <_3d_ string="" _28_int29_nextformpair.key29_29_="" formproperties="" _7b_="" cxlist="" _7d_="" if="" classobject="classDecl.FindByName(className);" classname="formPair.Value.ToString().Replace(&quot;\&quot;&quot;,&quot;&quot;);" validatorform="classObject.InheritsFrom(&quot;ValidatorForm&quot;);" _28_validatorform.count="" _2b_="curProperty;"> 0)
+			{
+				CxList validatorFormFields = fieldDecl.GetByAncs(validatorForm);
+				CxList propertyNames = validationObjects.DataInfluencingOn(formProperties);
+				foreach (CxList formField in validatorFormFields)
+				{
+					CSharpGraph fieldGraph = (CSharpGraph)formField.data.GetByIndex(0);
+					string graphName = fieldGraph.ShortName.Replace("\"","");
+					if (propertyNames.FindByName("*" + graphName + "*").Count == 0)
+					{
+						result += formField;
+					}
+				}
+			}
+		}
+ 		formPair = nextFormPair;
+	}
+}</_3d_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

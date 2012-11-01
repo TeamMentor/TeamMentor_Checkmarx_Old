@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9ea805d2-9189-4919-b7e1-9852d7c7609a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>853 - Find Member With Target</Title>
+    <Category>CWE: 0</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 853
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length == 2)
+{
+	string memberAccess = param[0] as string;
+	string type = param[0] as string;
+	string command = param[1] as string;
+	string serverobj = "server.createobject";
+	
+	CxList Alll = AllVbs();
+	CxList rightSide1 = Alll.FindByAssignmentSide(CxList.AssignmentSide.Right);
+	rightSide1 = rightSide1.FindByMemberAccess(serverobj);
+	
+	CxList relevantParam = Alll.FindByName(type, false);
+	CxList relevantParamFunc = Alll.FindByParameters(relevantParam);
+	CxList rightSide = rightSide1 * relevantParamFunc;
+	
+	CxList leftSide = rightSide.GetAncOfType(typeof(AssignExpr));
+	leftSide = Alll.GetByAncs(leftSide).FindByAssignmentSide(CxList.AssignmentSide.Left);
+	leftSide = Alll.FindAllReferences(leftSide);
+	
+	CxList findCommand = leftSide.GetMembersOfTarget().FindByShortName(command);
+	result = findCommand;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

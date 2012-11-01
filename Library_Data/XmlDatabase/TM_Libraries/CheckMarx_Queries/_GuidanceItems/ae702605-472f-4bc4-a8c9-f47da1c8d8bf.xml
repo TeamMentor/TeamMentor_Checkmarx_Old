@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ae702605-472f-4bc4-a8c9-f47da1c8d8bf</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1928 - R06 05 04 Incremental Modified</Title>
+    <Category>CWE: 10757</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10757</h1>
+  <iframe height="500" src="/content/10757" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1928
+Cwe : 10757
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 6-5-4
+ ------------------------------
+ This query finds all for loops that the incremental part is of a form that has an assignment of n and n is being modified
+ inside the for.
+
+ The following example shows what main code should look like: 
+     
+     for(int j=0; j<_1003b_ _j2b_="foo());" _for28_int="" k="0;" non-compliant=""></_1003b_><_1803b_k2b_3d_2a_p29_ non-compliant="" i="" _bar28_p29_3b_="" for="" _7d_="" _7b_="" _28_int=""></_1803b_k2b_3d_2a_p29_> 0)
+	{
+		result += cur;
+	}
+	CxList thisExpr = thisRef.GetByAncs(pointerRefInIncr.GetAncOfType(typeof(IterationStmt)));
+	allRefToRs = thisExpr.FindAllReferences(pointerRefInIncr) - pointerRefInIncr;
+	CxList allRefsStmt = allRefToRs - thisRef.GetByAncs(increment) - thisRef.GetByAncs(init);
+	CxList prm = allRefsStmt.GetFathers().FindByType(typeof(Param));
+	if(prm.Count &gt; 0)
+	{
+		result += cur;
+	}
+	CxList ptrToRf = allRefsStmt.GetFathers().FindByType(typeof(UnaryExpr)).FindByName("Pointer");
+	CxList ris = thisRef.FindByFathers(ptrToRf).GetFathers();
+	operation = ris.GetFathers();
+	edit = operation.FindByType(typeof(ExprStmt)) +
+		operation.FindByType(typeof(UnaryExpr)).FindByName("Increment") +
+		operation.FindByType(typeof(UnaryExpr)).FindByName("Decrement");
+	edit += ris.FindByAssignmentSide(CxList.AssignmentSide.Left);
+	
+	if(edit.Count &gt; 0)
+	{
+		result += cur;
+	}
+	
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

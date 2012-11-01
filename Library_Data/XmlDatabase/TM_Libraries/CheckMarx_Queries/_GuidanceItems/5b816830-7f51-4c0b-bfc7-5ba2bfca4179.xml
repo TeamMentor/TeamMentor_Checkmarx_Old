@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5b816830-7f51-4c0b-bfc7-5ba2bfca4179</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1868 - R19 02 Non Standard Chars In Header File Name</Title>
+    <Category>CWE: 11056</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11056</h1>
+  <iframe height="500" src="/content/11056" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1868
+Cwe : 11056
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 19-2
+------------------------------
+This query searches for include statements with
+(' \ " /*) chars in a  header file name, or (' \ /*) in a " " header file name
+
+	The Example below shows code with vulnerability: 
+
+#include <_mc2_190227_.h>
+#include <_.5c_mc2_1902.h>
+#include "mc2_1902'.h"
+#include ".\mc2_1902.h"
+
+*/
+
+CxList includes = All.FindByType(typeof(StringLiteral)).GetParameters(Find_Methods()
+	.FindByShortName("CX_INCL"));
+
+// check for the illegal name flag
+foreach (CxList cur in includes){
+	StringLiteral g = (StringLiteral) cur.data.GetByIndex(0);
+	if (g == null || g.Value == null) {
+		continue;
+	}
+	string curFileName = g.Value;
+	if (curFileName.Contains("INVALID_INCLUDE_FILE_NAME_") &amp;&amp; 
+	(String.Compare(curFileName, "INVALID_INCLUDE_FILE_NAME_") != 0)){
+		result += cur;
+	}
+}</_.5c_mc2_1902.h></_mc2_190227_.h></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

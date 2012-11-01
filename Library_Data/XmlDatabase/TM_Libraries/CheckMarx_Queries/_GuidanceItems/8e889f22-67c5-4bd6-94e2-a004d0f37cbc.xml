@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8e889f22-67c5-4bd6-94e2-a004d0f37cbc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1512 - Connection String Injection</Title>
+    <Category>CWE: 99</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Connection String Injection</h1>
+  <iframe height="300" src="/html/Connection_String_Injection" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  99</h1>
+  <iframe height="500" src="/content/99" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1512
+Cwe : 99
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList dbDef = 
+	All.FindByName("*Mongo.Connection") + 
+	All.FindByName("*Driver.Mongo");
+CxList http = dbDef.GetMembersOfTarget().FindByShortName("from_uri");
+http = All.GetByAncs(All.GetParameters(http));
+CxList input = Find_Interactive_Inputs();
+CxList sanitize = Find_Integers();
+
+result = http.InfluencedByAndNotSanitized(input, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

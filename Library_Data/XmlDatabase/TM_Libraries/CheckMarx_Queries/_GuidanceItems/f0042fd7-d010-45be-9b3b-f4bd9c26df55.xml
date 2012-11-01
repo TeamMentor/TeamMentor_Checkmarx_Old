@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f0042fd7-d010-45be-9b3b-f4bd9c26df55</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1601 - Side Channel Data Leakage</Title>
+    <Category>CWE: 359</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  359</h1>
+  <iframe height="500" src="/content/359" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1601
+Cwe : 359
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Side Chanel Data Leakage (Privacy_Violation)
+// -----------------------
+
+// The following cases will be classifies as Privace Violation
+// 1) Not encrypted information is kept ot external storage
+// 2) GPS information is sent out from the mobile device
+// 3) Contact information sent out from the mobile device
+// 4) Personal information kept in log file 
+//
+// The handled output methods are:
+// 1) Through e-mail
+// 2) Through SMS
+// 3) Through Bluetooth
+// 4) Through HTTP protocol
+// 
+
+CxList sd = All.FindByName(@"*/sdcard/*");
+CxList outputs = Find_Write().DataInfluencedBy(sd);
+CxList personal_info = Find_Personal_Info(); 
+CxList sanitize = All.FindByShortName("*Encrypt*", false);
+
+// The encrypted information will not be detected as vulnerability
+CxList pathResult = personal_info.InfluencingOnAndNotSanitized(outputs, sanitize);
+result = pathResult - pathResult.DataInfluencedBy(pathResult);
+
+// If application send out user location information it may be
+// spy software
+
+// Send GSP info over network
+CxList http = All.FindByName(@"*http*");
+CxList outInfluencedByHttp = Find_Write() * Find_Write().DataInfluencedBy(http);
+CxList GPSInfo =  All.FindByMemberAccess("Location.getLatitude") + 
+	              All.FindByMemberAccess("Location.getLongitude");
+
+result += GPSInfo.DataInfluencingOn(outInfluencedByHttp);
+
+// Send info over E-Mail
+// There two  e-mail communication methods handled by query
+// The first one is sending e-mail by gmail interface
+CxList email = All.FindByMemberAccess("Transport.send");
+
+CxList putExtra =  All.FindByMemberAccess("Intent.putExtra");
+CxList extraTextParam = All.FindByName("*Intent.EXTRA_TEXT*");
+CxList extraSubjectParam = All.FindByName("*Intent.EXTRA_SUBJECT*");
+CxList putExtraText= (extraTextParam + extraSubjectParam).GetByAncs(putExtra).GetAncOfType(typeof(MethodInvokeExpr));
+CxList emailTextParam = All.GetParameters(putExtraText, 1);
+email += emailTextParam;
+
+result += GPSInfo.DataInfluencingOn(email);
+
+
+// Send GPS info over SMS
+CxList SMSsendMessage = All.FindByMemberAccess("SMSManager.sendTextMessage");
+result += GPSInfo.DataInfluencingOn(SMSsendMessage);
+
+
+// Send Contact info out
+CxList getStrCursor = All.FindByMemberAccess("Cursor.getString");
+CxList peopleInParam =  All.FindByName("*Contacts.People*");
+CxList contactInfoInput = peopleInParam.GetByAncs(getStrCursor);
+
+result += contactInfoInput.DataInfluencingOn(outInfluencedByHttp);
+result += contactInfoInput.DataInfluencingOn(SMSsendMessage);
+result += contactInfoInput.DataInfluencingOn(email);
+
+// Keep personal info in logger file
+CxList logOutput = Find_Log_Outputs();
+result += personal_info.DataInfluencingOn(logOutput);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

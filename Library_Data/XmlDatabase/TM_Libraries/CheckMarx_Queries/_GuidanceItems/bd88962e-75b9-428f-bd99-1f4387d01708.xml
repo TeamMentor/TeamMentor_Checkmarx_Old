@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>bd88962e-75b9-428f-bd99-1f4387d01708</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>611 - Information Leak Through Persistent Cookies</Title>
+    <Category>CWE: 539</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  539</h1>
+  <iframe height="500" src="/content/539" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 611
+Cwe : 539
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList psw = Find_Passwords();
+
+CxList cookie = All.FindByName("*.setCookies*", false);
+
+result = cookie.InfluencedBy(psw);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

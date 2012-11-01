@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c0b6ade6-2680-4e31-9d67-5fb5d232e3bc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>180 - Path Traversal</Title>
+    <Category>CWE: 36</Category>
+    <Phase>ASP Medium Threat</Phase>
+    <Technology>ASP</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: Path Traversal</h1>
+  <iframe height="300" src="/html/Path_Traversal" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  36</h1>
+  <iframe height="500" src="/content/36" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 180
+Cwe : 36
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 12
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Inputs = Find_Interactive_Inputs();
+
+CxList files = Find_Member_With_Target("Scripting.FileSystemObject", "OpenTextFile") +
+	Find_Member_With_Target("Scripting.FileSystemObject", "CreateTextFile") +
+	Find_Member_With_Target("Scripting.FileSystemObject", "GetFile") +
+	Find_Member_With_Target("Scripting.FileSystemObject", "GetFolder");
+
+CxList sanitized = Find_Integers();
+
+result = files.InfluencedByAndNotSanitized(Inputs, sanitized);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

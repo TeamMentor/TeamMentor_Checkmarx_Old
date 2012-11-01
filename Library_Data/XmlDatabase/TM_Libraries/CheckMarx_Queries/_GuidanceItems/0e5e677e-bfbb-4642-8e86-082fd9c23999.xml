@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0e5e677e-bfbb-4642-8e86-082fd9c23999</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1016 - Use Of Ajax Toolkit</Title>
+    <Category>CWE: 10543</Category>
+    <Phase>Apex Force com Code Quality</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10543</h1>
+  <iframe height="500" src="/content/10543" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1016
+Cwe : 10543
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1001
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = Find_Methods().FindByName("sforce.connection.query");
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

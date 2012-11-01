@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2608f947-4395-4b9a-bbdc-a8fe01b83ca3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1840 - R12 12 Floating Point Bit Underlying Representation Used</Title>
+    <Category>CWE: 11028</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11028</h1>
+  <iframe height="500" src="/content/11028" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1840
+Cwe : 11028
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 12-12
+------------------------------
+This query searches for instances of bitwise operators (~, <_2c_></_2c_><_3d_2c_>&gt;, &gt;&gt;=, &amp;, &amp;=, ^, ^=, |, |=) 
+used on an operand with underlying signed type 
+
+	The Example below shows code with vulnerability: 
+
+float32_t mc2_1212_b;
+uint32_t mc2_1212_c;
+mc2_1212_c = * (uint32_t *) &amp;mc2_1212_b;
+
+union{
+float32_t real;
+uint32_t decimal;
+} mc2_1212_a;
+
+*/
+
+// first we build a list of all floating point typedefs
+CxList typedefDecls = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF").GetFathers();
+CxList typedefFloatDecls = typedefDecls.FindByType("float") + typedefDecls.FindByType("double");
+
+ArrayList floatTypes = new ArrayList();
+floatTypes.Add("float");
+floatTypes.Add("*.float");
+floatTypes.Add("double");
+floatTypes.Add("*.double");
+foreach(CxList cur in typedefFloatDecls){
+	Declarator g = (Declarator) cur.data.GetByIndex(0);
+	if(g == null || g.Name == null) {
+		continue;
+	}
+	string typeName = g.Name;
+	if (!floatTypes.Contains(typeName)){
+		floatTypes.Add(typeName);
+		floatTypes.Add("*." + typeName);
+	}
+}
+
+// now build a list of all floating point declarators
+
+// first get add all declarators of type that is a typedefs of floating point
+string[] floatTypeStrings = (string[]) floatTypes.ToArray(typeof(string));
+CxList floatDecls = All.FindByType(typeof(Declarator)).FindByTypes(floatTypeStrings);
+
+// then add all declarators of a floating point
+floatDecls += All.FindByType(typeof(Declarator)).FindByType("float") + typedefDecls.FindByType("double");
+floatDecls -= typedefDecls;
+
+// create strings with all floating declaration informations
+string allFloatDeclNames = "";
+string allFloatDeclTypeAndNames = "";
+foreach (CxList cur in floatDecls){
+	CSharpGraph g = cur.data.GetByIndex(0) as CSharpGraph;
+	if (g == null || g.ShortName == null || g.TypeName == null) {
+		continue;
+	}
+	allFloatDeclNames += "|" + g.ShortName;
+	allFloatDeclTypeAndNames += "|" + g.TypeName + @"\s+?" + g.ShortName;
+}
+
+// if we had any float decls, add all their names to the regex we search
+if (allFloatDeclNames.Length &gt; 0){
+	allFloatDeclNames = "(" + allFloatDeclNames.Substring(1) + ")";
+	allFloatDeclTypeAndNames = "(" + allFloatDeclTypeAndNames.Substring(1) + ")";
+}
+
+// add floating unions containing floating points
+result += All.FindByRegex(@"union[^{]*{[^}]*" + allFloatDeclTypeAndNames + "[^}]*}", false, false, false, All.NewCxList());
+
+// add floating point pointers casted to other pointer type
+CxList casts = All.FindByType(typeof(CastExpr));
+casts -= casts.FindByTypes(floatTypeStrings).GetFathers();
+result += casts.FindByRegex(@"\*\s*\)[\(\s*]\&amp;" + allFloatDeclNames, false, false, false);</_3d_2c_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d3eb64cc-5054-4724-94ef-3c5c35e8f861</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>856 - Find Outputs Redirection</Title>
+    <Category>CWE: 0</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 856
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Alll = AllVbs();
+CxList methods = Alll.FindByType(typeof(MethodInvokeExpr));
+
+result = 
+	methods.FindByMemberAccess("window.navigate") + 
+	Alll.FindByMemberAccess("navigate.href") + 
+	methods.FindByMemberAccess("window.open") + 
+	
+	methods.FindByMemberAccess("document.open") + 
+	Alll.FindByMemberAccess("document.url") +
+	Alll.FindByMemberAccess("document.urlunencoded") +
+	Alll.FindByShortName("location.href");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

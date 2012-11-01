@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>78a8d56f-83b6-4f7f-9e6b-f2ed4c4c3714</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1652 - Missing Password Field Masking</Title>
+    <Category>CWE: 549</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  549</h1>
+  <iframe height="500" src="/content/549" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1652
+Cwe : 549
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all strings that contain "password"
+CxList passwordString = Find_Password_Strings();
+// Find all outputs to file
+CxList outputs = Find_Write();
+
+// Choose only relevant password strings - that affect output
+CxList passwordStringToOutput = passwordString.DataInfluencingOn(outputs);
+
+// Get the strings that contain "type=" and also contain ""text", 
+// so that there's a good chance that the type is text
+CxList typeText = 
+	passwordStringToOutput.FindByShortName(@"*type=*")
+	+ passwordStringToOutput.FindByShortName(@"*type =*");
+typeText = typeText.FindByShortName(@"*""text*");
+
+// Then remove "type=password", just to clean possible mistakes/FP.
+result = typeText - typeText.FindByShortName(@"*type=\""password*");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

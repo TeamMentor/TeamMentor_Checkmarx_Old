@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0d5243cf-9734-4db9-8f02-0e3febfa00e1</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1594 - Failure To Implement Least Privilege</Title>
+    <Category>CWE: 265</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  265</h1>
+  <iframe height="500" src="/content/265" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1594
+Cwe : 265
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Failure_to_Implement_Least_Privilege 
+// ------------------------------------------
+// For the local side of things only request permissions you absolutely need.
+// Does your application *really* need access to the user’s GPS?
+// The key issue at hand is that applications, especially thick-client oriented applications, 
+// may contain a great deal of functionality that is not available to lower privilege users. 
+// The server is responsible for checking that a user can perform a requested action. 
+// Even if the functionality is accessed in the application, the server must not allow lower 
+// privileged users to access and execute higher privileged server side functionality. 
+// Vertical privilege escalation is a constant risk to server side applications.
+// Horizontal privilege flaws allow users of mobile applications to easily circumvent 
+// authorization controls and access the data of other users at the same privilege level. 
+// Care must be taken to only allow a mobile application to access server side data that belongs 
+// to the currently authenticated user.
+
+// Application Requiered Network access but not uses it
+CxList permissionInternet = All.FindByShortName("*android.permission.INTERNET*", false);
+CxList usingNetwork = All.FindByShortName("HttpGet") + 
+	All.FindByMemberAccess("URL.openConnection", false) + 
+	All.FindByMemberAccess("Connector.open") +
+	All.FindByShortName("HTTPConnection") +
+	All.FindByMemberAccess("Transport.send");
+
+if ((permissionInternet.Count &gt; 0) &amp;&amp; (usingNetwork.Count == 0)){
+	result += permissionInternet;
+}
+ 
+// Application Requiered SMS access but not uses it
+CxList permissionSMS = All.FindByShortName("*android.permission.SEND_SMS*", false) + 
+	                   All.FindByShortName("*android.permission.RECEIVE_SMS*", false);
+CxList usingSMS = All.FindByShortName("*SmsManager*");
+
+if ((permissionSMS.Count &gt; 0) &amp;&amp; (usingSMS.Count == 0)){
+	result +=  permissionSMS;
+}
+
+// Application Requiered Telephony access but not uses it
+CxList permissionPhone = All.FindByShortName("*android.permission.MODIFY_PHONE_STATE*", false) + 
+	All.FindByShortName("*android.permission.PROCESS_OUTGOING_CALLS*", false);
+	All.FindByShortName("*android.permission.CALL_PHONE*", false);
+CxList usingPhone = All.FindByShortName("*TelephonyManager*");
+
+if ((permissionPhone.Count &gt; 0) &amp;&amp; (usingPhone.Count == 0)){
+	result += permissionPhone;
+}
+
+// Application Requiered GPS access but not uses it
+// The direct access to the GPS is bases on Location manager or Location Listener Class
+// But if application includes com.google.android.maps.* class
+// the access to the GPS will be performed throught it
+CxList permissionGPS = All.FindByShortName("*android.permission.ACCESS_FINE_LOCATION*", false) + 
+					   All.FindByShortName("*android.permission.ACCESS_COARSE_LOCATION*", false);	
+
+CxList usingGPS = All.FindByShortName("*LocationManager*", false) + 
+	All.FindByShortName("*LocationListener*", false) +
+	All.FindByMemberAccess("*MapView.*", false) + All.FindByMemberAccess("*MapActivity*.*", false) + 
+	All.FindByMemberAccess("*GeoPoint.*", false) + 
+	All.FindByMemberAccess("*MyLocationOverlay.*", false);
+
+if ((permissionGPS.Count &gt; 0) &amp;&amp; (usingGPS.Count == 0)){
+	result += permissionGPS;
+}
+
+// Application Requiered Contacts access but not uses it
+CxList permissionContacts = All.FindByShortName("*android.permission.READ_CONTACTS*", false) +
+ 		All.FindByShortName("*android.permission.WRITE_CONTACTS*", false);	
+CxList usingContacts = All.FindByShortName("*ContactsContract*") +
+	                   All.FindByName("*android.provider.CallLog*")+
+					   All.FindByName("*Contacts.People*") + 
+					   All.FindByName("*Contacts.Phones*") + 
+	                   All.FindByName("*Contacts.Photos*") + 
+	                   All.FindByName("*Contacts.Organizations*");											 
+
+if ((permissionContacts.Count &gt; 0) &amp;&amp; (usingContacts.Count == 0)){
+	result += permissionContacts;
+}
+
+// Application Required to be able to disable the device (very dangerous!).
+CxList permissionBrick = All.FindByShortName("*android.permission.BRICK*", false);
+if (permissionBrick.Count &gt; 0){
+	result += permissionBrick;
+}
+
+// Application Requiered access to write on external storage but not uses it
+CxList permissionExternalStorage = All.FindByShortName("*android.permission.WRITE_EXTERNAL_STORAGE*", false);
+CxList usingExternalStorage = All.FindByShortName(@"*/sdcard/*") + 
+	All.FindByMemberAccess("Environment.getExternalStorageDirectory");
+if ((permissionExternalStorage.Count &gt; 0) &amp;&amp; (usingExternalStorage.Count == 0)){
+	result += permissionExternalStorage;
+}
+// Application Requiered access to use camera but not uses it
+CxList permissionCamera = All.FindByShortName("*android.permission.CAMERA*", false);
+CxList usingCamera = All.FindByMemberAccess("*Camera.open*");
+if ((permissionCamera.Count &gt; 0) &amp;&amp; (usingCamera.Count == 0)){
+	result += permissionCamera;
+}
+
+// Application Requiered access to Record Audio
+CxList permissionRecordAudio = All.FindByShortName("*android.permission.RECORD_AUDIO*", false);
+CxList usingMicrophone = All.GetParameters(All.FindByName("*MediaRecorder.AudioSource.MIC*"),0);
+
+if ((permissionRecordAudio.Count &gt; 0) &amp;&amp; (usingMicrophone.Count == 0)){
+	result += permissionRecordAudio;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

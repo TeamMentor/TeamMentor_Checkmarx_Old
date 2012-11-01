@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b4e768a0-9f81-4301-8771-9fc12a0748e3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>240 - Find Inputs MFC</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 240
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+CxList outParams = 
+	// MFC DDX
+	// DDX_Control, DDX_Text, etc.
+	All.GetParameters(methods.FindByShortName("DDX_*"), 2) +
+
+	// preliminary - list to be extended/tested
+	All.GetParameters(methods.FindByMemberAccess("CEdit.GetLine"), 1) +
+	All.GetParameters(methods.FindByMemberAccess("CHtmlEditCtrl.GetDHtmlDocument"), 0) +
+	All.GetParameters(methods.FindByMemberAccess("CListBox.GetText"), 1) +
+	All.GetParameters(methods.FindByMemberAccess("CListCtrl.GetItemText"), 2) +
+	All.GetParameters(methods.FindByMemberAccess("CRichEditCtrl.GetLine"), 1) +
+
+	All.GetParameters(methods.FindByShortName("GetDlgItemText"), 1);
+	
+
+CxList inMethods = 
+	methods.FindByMemberAccess("CCheckListBox.GetCheck");	// int
+
+CxList methodDecl = All.FindByType(typeof(MethodDecl));
+CxList dispFunctions = All.GetByAncs(All.GetParameters(methodDecl.FindByShortName("DISP_FUNCTION"), 2));
+CxList dispPropertyEx = All.GetByAncs(All.GetParameters(methodDecl.FindByShortName("DISP_PROPERTY_EX"), 3));
+CxList inputMethods = methodDecl.FindByShortName(dispFunctions + dispPropertyEx);
+CxList dispatchMapInputs = All.GetParameters(inputMethods);
+
+result = inMethods + outParams + dispatchMapInputs;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

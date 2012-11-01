@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1c445d38-566f-4cd7-814d-a824e110b407</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1386 - Find ReDoS</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1386
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length == 3)
+{
+	try
+	{
+		bool isPotential = (bool) param[2];
+		
+		// Inputs
+		CxList inputs = Find_Inputs();
+
+		// Find evil strings
+		CxList evilStrings = param[0] as CxList;
+
+		// Find match command
+		CxList match = param[1] as CxList;//Find_Match() + Find_Replace();
+
+		// Find all regex patterns
+		CxList underMatch = All.GetByAncs(match);
+		CxList regexPatterns = underMatch.GetByAncs(underMatch.GetParameters(match, 0));
+		regexPatterns = regexPatterns.FindByType(typeof(UnknownReference)) +
+			regexPatterns.FindByType(typeof(StringLiteral)) +
+			regexPatterns.FindByType(typeof(MemberAccess));
+
+		// Sanitization
+		CxList sanitize = Find_Integers();
+		sanitize -= All.FindByShortName("matches");
+		sanitize += Find_Dead_Code_Contents();
+		
+		// Find regex commands that are influenced by evil strings
+		CxList activeEvilRegexes = (evilStrings * regexPatterns) + 
+			evilStrings.InfluencingOnAndNotSanitized(regexPatterns, sanitize);
+
+		// Leave only relevant matches (strings influenced by input)
+		match = match.FindByParameters(activeEvilRegexes);
+
+		if (isPotential)
+		{
+			match -= match.InfluencedByAndNotSanitized(inputs, sanitize);
+		}
+		else
+		{
+			match = match.InfluencedByAndNotSanitized(inputs, sanitize);
+		}
+		// Find relevant matches
+		result = match.InfluencedByAndNotSanitized(activeEvilRegexes, sanitize);
+		result -= result.DataInfluencedBy(result);
+
+	}
+	catch (Exception ex)
+	{
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

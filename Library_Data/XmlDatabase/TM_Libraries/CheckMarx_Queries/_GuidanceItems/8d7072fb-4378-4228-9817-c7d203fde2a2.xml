@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8d7072fb-4378-4228-9817-c7d203fde2a2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>666 - Struts Unvalidated Action Form</Title>
+    <Category>CWE: 108</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  108</h1>
+  <iframe height="500" src="/content/108" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 666
+Cwe : 108
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList strings = Find_Strings();
+
+CxList formBeanName = All.FindByMemberAccess("FORM_BEAN.NAME").FindByFileName("*struts-config.xml");
+CxList formBeans = strings * strings.DataInfluencingOn(formBeanName);
+CxList validationFormName = All.FindByMemberAccess("FORM.NAME").FindByFileName("*validation.xml");
+CxList validationForms = strings * strings.DataInfluencingOn(validationFormName);
+
+foreach (CxList formBean in formBeans)
+{
+	StringLiteral str = formBean.data.GetByIndex(0) as StringLiteral;
+	string strName = str.ShortName.Trim(new char[] {'"'});
+	if (validationForms.FindByShortName('"' + strName + '"').Count == 0)
+	{
+		result += formBean;
+	}
+}
+
+
+
+/*
+/// Old version ---
+CxList validationXML = Find_Validation();
+CxList validationClasses = validationXML.FindByType(typeof(ClassDecl));
+CxList classDecl = Find_Class_Decl();
+
+foreach(CxList validationClass in validationClasses)
+{
+	CxList validationObjects = validationXML.GetByAncs(validationClass);
+
+	CxList forms = validationObjects.FindByName("FORM_VALIDATION.FORMSET.FORM.NAME");
+
+	CxList formAssignments = forms.GetFathers();
+	CxList formNames = validationObjects.FindByFathers(formAssignments).FindByType(typeof(StringLiteral));
+
+	foreach(CxList curForm in formNames)
+	{
+		CSharpGraph fromGraph = (CSharpGraph)curForm.data.GetByIndex(0);
+		string className = fromGraph.ShortName.Replace("\"","");
+		CxList classObject = classDecl.FindByName(className);
+		CxList validatorForm = classObject.InheritsFrom("ValidatorForm");
+		if (validatorForm.Count == 0)
+		{
+			result += curForm;
+		}
+	}
+}
+*/</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

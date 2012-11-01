@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6d09b95c-95b2-493f-872e-ddb45eb93987</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1934 - R08 05 01 Uninitialized Variable Use</Title>
+    <Category>CWE: 10761</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10761</h1><iframe src='/content/10761' width="100%" height="500"></iframe><h1>Checkmarx Rule</h1>
+<div style='padding:10px'><pre>QueryId : 1934
+Cwe : 10761
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre></div><h3>Source</h3><div style='padding:10px'><pre> /* MISRA CPP RULE 8-5-1
+ ------------------------------
+ This query finds all variables that are used before they are assigned a value
+
+void bar(int p)
+{
+     int  a;  //non-compliant
+     cout<<a;
+     int j;   //non-compliant
+	 foo(j);       
+}
+
+public:
+       int z;
+       int x;
+    
+       A()    //non-compliant neither z or x are initialized 
+       {  
+           z+=10;   
+       }
+       A(int p):z(p) //non-compliant - x is not initialized 
+       {   
+             
+       }      
+};
+
+*/
+CxList decl = All.FindByType(typeof(Declarator));
+CxList typedefs = All.FindByType(typeof(StringLiteral)).FindByName("CX_TYPEDEF");
+CxList exprStmt = All.FindByType(typeof(ExprStmt));
+typedefs = typedefs.GetAncOfType(typeof(VariableDeclStmt))
+	+ typedefs.GetAncOfType(typeof(FieldDecl));
+typedefs += decl.GetByAncs(typedefs);
+CxList unrf = All.FindByType(typeof(UnknownReference));
+
+CxList basicCreates = All.NewCxList();
+CxList creates = All.FindByType(typeof(ObjectCreateExpr));
+CxList strTyperef = All.FindByType(typeof(TypeRef)).FindByName("*.string");
+
+basicCreates += strTyperef.GetByAncs(All.GetAncOfType(typeof(VariableDeclStmt)))
+	+ strTyperef.GetByAncs(All.GetAncOfType(typeof(FieldDecl)));
+	
+foreach(CxList td in typedefs)
+{	
+	CSharpGraph curTd = td.data.GetByIndex(0) as CSharpGraph;
+	if(curTd != null)
+	{
+		basicCreates += creates.FindByShortName(curTd.ShortName);
+	}
+	
+}
+
+// Leave only basic creates (all these have artificial "= new type();" added to their declarator
+// In C++ "istringstream" can be handled as basic one
+// This is very popular way to get input and initilize by variable of this type other variables
+basicCreates += 	
+	creates.FindByShortName("bool") +
+	creates.FindByShortName("short") +
+	creates.FindByShortName("char") +
+	creates.FindByShortName("int") +
+	creates.FindByShortName("long") +
+	creates.FindByShortName("double") +
+	creates.FindByShortName("float") +
+	creates.FindByShortName("string") +
+	creates.FindByName("*.string") +
+	creates.FindByShortName("istringstream");
+
+//now we leave only the creations that are of form int a; and remove all that are being directly assigned 
+//such as int a=90;
+//we don't need to take into account static variables
+Modifiers mod = new Modifiers();
+mod = Dom.Modifiers.Static;
+CxList stMod = All.FindByType(typeof(Declarator)).GetByAncs(All.FindByFieldAttributes(mod));
+
+
+CxList bcp = All.GetParameters(basicCreates, 0);
+basicCreates -= basicCreates.FindByParameters(bcp);
+CxList addStdStrings = basicCreates.FindByType(typeof(TypeRef));
+CxList declarators = decl.GetByAncs(addStdStrings.GetAncOfType(typeof(VariableDeclStmt)));
+declarators += basicCreates.GetFathers() - basicCreates.GetFathers().FindByType(typeof(VariableDeclStmt));
+
+declarators -= stMod;
+CxList toCheck = unrf.FindAllReferences(declarators) - declarators - decl;
+CxList tempList = All.NewCxList();
+
+
+CxList toRemove = toCheck.GetMembersOfTarget().FindByShortName("str").GetTargetOfMembers();
+CxList refToRemove = unrf.FindAllReferences(toRemove);
+toCheck -= refToRemove;
+declarators -= refToRemove;
+
+/*
+the following is under the assumption than when I pass an address to a variable 
+in a method,it is being assigned at the method.
+to change in recursion in case many flase positives.
+
+void foo(int* a, int *b)
+{
+	*a=10;
+ //notice that b is not being assigned and can be passed by ref to another method
+}
+
+int main()
+{
+    int a;
+	int b;
+	foo(&a,&b)  // a and b are currently added to the sanitizer.
+	foo(a);     //non-compliant
+}
+*/
+//remove those that are sanitized by scanf of any type
+CxList scanf = toCheck.GetAncOfType(typeof(MethodInvokeExpr)).FindByShortName("*scanf"); //returns the scan
+CxList scannedIntoParam = toCheck.GetByAncs(scanf) * toCheck; //checks if the parameters ae of toCheck
+CxList paramDecl = decl.FindDefinition(scannedIntoParam); //finds the declarations of the toCheck
+CxList dest = (toCheck - scannedIntoParam).DataInfluencedBy(paramDecl); //finds the flow to the update of the toCheckParam
+toCheck -= dest.DataInfluencedBy(scannedIntoParam); //checks if the update is being influenced by scan
+
+CxList addresses = All.FindByType(typeof(UnaryExpr)).FindByShortName("Address");
+CxList sanitize = toCheck.GetByAncs(addresses);
+
+/*
+check if there is  regular assignment after defintion and add it to the sanitizer
+*/
+CxList assnExpr = toCheck.GetAncOfType(typeof(AssignExpr));
+foreach(CxList exp in assnExpr)
+{
+	AssignExpr curExpr = exp.data.GetByIndex(0) as AssignExpr;
+	if(curExpr != null && curExpr.Operator != null && curExpr.Left != null )
+	{
+		String oper = curExpr.Operator.ToString();
+		
+		if(oper.Equals("Assign"))
+		{
+			sanitize += All.FindById(curExpr.Left.NodeId);
+		
+		}
+	}
+}
+
+foreach(CxList prm in toCheck)
+{
+	CxList temp = prm.GetAncOfType(typeof(MethodInvokeExpr));
+	if(temp.Count > 0)
+	{
+		sanitize += prm;
+	}
+}
+
+
+CxList operand = All.NewCxList();
+CxList istrStream = toCheck.GetFathers().FindByType(typeof(BinaryExpr));
+foreach(CxList issm in istrStream)
+{
+	BinaryExpr be = issm.data.GetByIndex(0) as BinaryExpr;
+	if(be != null)
+	{
+		if(be.Operator == BinaryOperator.ShiftRight && be.Right != null)
+		{
+			sanitize += All.FindById(be.Right.NodeId);
+			operand += All.FindById(be.Right.NodeId);
+		}
+	}
+}
+
+
+
+
+//handles shifts
+CxList removeShifts = All.NewCxList();
+CxList binaryExp = toCheck.DataInfluencedBy(declarators).GetAncOfType(typeof(BinaryExpr));
+CxList shiftR = All.NewCxList();
+foreach(CxList be in binaryExp)
+{
+	BinaryExpr b = be.data.GetByIndex(0) as BinaryExpr;
+	if(b != null && b.Operator != null && b.Right != null & b.Left != null)
+	{
+		if(b.Operator == BinaryOperator.ShiftRight)
+		{
+			CxList right = All.FindById(b.Right.NodeId);
+			if((right * toCheck).Count > 0)
+			{
+				removeShifts += right;
+			}
+			
+		}
+		
+		if(b.Operator == BinaryOperator.ShiftLeft)
+		{
+			CxList left = All.FindById(b.Left.NodeId);
+			if((left * toCheck).Count > 0)
+			{
+				removeShifts += left;
+			}	
+		}		
+	}	
+}
+
+declarators -= declarators.FindDefinition(removeShifts);
+
+sanitize += toCheck.GetMembersOfTarget().GetTargetOfMembers();
+
+
+
+
+
+
+
+result = toCheck.InfluencedByAndNotSanitized(declarators, sanitize);
+result -= result.DataInfluencedBy(result);
+
+//handle parameters;
+CxList methParams = All.NewCxList();
+foreach(CxList temp in toCheck)
+{
+	CxList cur = temp.GetAncOfType(typeof(MethodInvokeExpr));
+	if(cur.Count > 0)
+	{
+		methParams += temp;
+	}
+}
+
+
+CxList methParam = methParams.DataInfluencingOn(result).DataInfluencedBy(declarators);
+
+result -= result.DataInfluencedBy(methParam);
+
+
+
+string s = "(dfgdfg)";
+Hashtable h = new Hashtable();
+result = All.FindDefinition(result);
+foreach(CxList findAssign in result)
+{
+	CSharpGraph fa = findAssign.data.GetByIndex(0) as CSharpGraph;
+	
+	if(fa != null && fa.ShortName != null && h[fa.ShortName] == null)
+	{
+		s += "|(" + fa.ShortName + ")";
+		h[fa.ShortName] = findAssign;
+		
+	}
+}
+
+
+
+CxList extendedResult = All.NewCxList();
+CxList dummy = All.FindByRegex(@"((" + s + @"))\s*=\s*[^=]", false, false, false, extendedResult);
+
+
+foreach(CxList cur in extendedResult){
+	Comment curCom = cur.data.GetByIndex(0) as Comment;
+	bool hasDomEl = false;
+	foreach(CxList dum in dummy)
+	{
+		CSharpGraph d = dum.data.GetByIndex(0) as CSharpGraph;
+		if(d.LinePragma.ToString() == curCom.LinePragma.ToString())
+		{	
+			hasDomEl = true;
+			break;
+		}
+	}
+	if(!hasDomEl)
+	{
+		int eqPos = curCom.FullName.LastIndexOf("=");
+		string declName = curCom.FullName.Substring(0, eqPos).Trim();
+		if (h[declName] != null)
+		{
+			result -= result.FindByShortName(declName);
+			CxList foundDef = All.FindDefinition((CxList) h[declName]);
+			result -= foundDef;
+		}
+	}
+}
+
+
+CxList initialized = All.NewCxList();
+
+foreach(CxList r in result)
+{
+	if( All.FindInitialization(r).Count > 2)
+	{
+		initialized += r;
+	}
+}
+return result - initialized;</pre></div>]]></Data>
+  </Content>
+</TeamMentor_Article>

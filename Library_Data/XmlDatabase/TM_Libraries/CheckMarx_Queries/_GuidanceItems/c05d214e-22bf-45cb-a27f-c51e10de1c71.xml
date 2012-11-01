@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c05d214e-22bf-45cb-a27f-c51e10de1c71</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1052 - Find Potential Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1052
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList classes = Find_Class_Decl();
+CxList interfaces = All.FindByType(typeof(InterfaceDecl));
+
+CxList actionClass = Find_Action_Classes();
+ 
+CxList setMethods = All.FindByType(typeof(MethodDecl)).FindByShortName("set*");
+setMethods = setMethods.FindByFieldAttributes(Modifiers.Public);
+CxList secondParameter = All.GetParameters(setMethods, 1);
+setMethods -= secondParameter.GetFathers().GetFathers();
+
+CxList mySetMethods = setMethods.GetByAncs(actionClass);
+CxList struts2Inputs = All.GetParameters(mySetMethods, 0);
+CxList inputsToSearch = struts2Inputs;
+
+CxList classList = All.NewCxList();
+CxList inputTypes;
+int counter = 0;
+do {
+	inputTypes = All.NewCxList();
+	foreach(CxList myInput in inputsToSearch)
+	{
+		CSharpGraph gr = myInput.data.GetByIndex(0) as CSharpGraph;
+		CxList myClassList = (classes + interfaces).FindByShortName(gr.TypeName);
+		inputTypes = myClassList - classList;
+		classList += inputTypes;
+	}
+	if (inputTypes.Count &gt; 0)
+	{
+		mySetMethods = setMethods.GetByAncs(inputTypes);
+		inputsToSearch = All.GetParameters(mySetMethods, 0);
+		struts2Inputs += inputsToSearch;
+	}
+}
+while (inputTypes.Count &gt; 0 &amp;&amp; counter++ </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

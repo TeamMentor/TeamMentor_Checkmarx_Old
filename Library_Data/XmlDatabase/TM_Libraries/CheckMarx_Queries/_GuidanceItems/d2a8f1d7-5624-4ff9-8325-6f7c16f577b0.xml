@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d2a8f1d7-5624-4ff9-8325-6f7c16f577b0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>35 - Find Unsafe Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 35
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 3
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList vf = Find_VF_Pages();
+
+// Find unsafe outptuts
+CxList outputs = Find_Interactive_Outputs() * vf;
+CxList escapeFalse = vf.FindByType("cx__protoff__o") +
+	vf.FindByType("cx__protoff__i");
+escapeFalse = outputs * outputs.DataInfluencingOn(escapeFalse);
+
+CxList classOutputs = Find_Interactive_Outputs() * Find_Apex_Files();
+
+CxList unsafeOutputs = classOutputs + escapeFalse +
+	outputs.FindByName("*.script") + 
+	outputs.FindByShortName("*style") +
+	outputs.FindByShortName("style*") +
+//	outputs.FindByName("*.src") +
+//	outputs.FindByName("*.url") +
+	outputs.FindByShortName("on*") +
+	outputs.FindByName("*.apex.sectionheader.help") +
+	outputs.FindByName("*script.value");
+
+// Ignore id outputs
+CxList dollarOutputs = Find_VF_I() + Find_VF_O();
+
+CxList id = Find_Id();
+CxList idOutputs = id.GetAncOfType(typeof(AssignExpr)) + 
+	id.GetAncOfType(typeof(Declarator));
+idOutputs = dollarOutputs.GetByAncs(idOutputs);
+CxList componentParams = unsafeOutputs.GetByAncs(vf.FindByType(typeof(AssignExpr)));
+
+CxList filter = All.FindByShortName("$o*") + All.FindByShortName("$i*");
+filter = filter.GetMembersOfTarget() +
+	idOutputs +
+	componentParams
+	- 
+	outputs.FindByName("*.script");
+
+
+result = unsafeOutputs - filter;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

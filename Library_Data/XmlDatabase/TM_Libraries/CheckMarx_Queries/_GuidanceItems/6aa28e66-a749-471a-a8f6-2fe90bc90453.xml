@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6aa28e66-a749-471a-a8f6-2fe90bc90453</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2097 - Reliance on DNS Lookups in a Decision</Title>
+    <Category>CWE: 247</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  247</h1>
+  <iframe height="500" src="/content/247" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2097
+Cwe : 247
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList cond = Find_Conditions();
+
+CxList ip = All.FindByMemberAccess("request.getRemoteAddr");
+CxList inetAddress = 
+	All.FindByMemberAccess("InetAddress.getByName") +
+	All.FindByMemberAccess("InetAddress.getByAddress");
+
+result = cond.DataInfluencedBy(inetAddress).DataInfluencedBy(ip);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

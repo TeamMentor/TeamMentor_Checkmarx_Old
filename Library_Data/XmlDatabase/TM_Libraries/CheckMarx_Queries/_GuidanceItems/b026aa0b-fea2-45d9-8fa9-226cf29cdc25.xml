@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b026aa0b-fea2-45d9-8fa9-226cf29cdc25</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1973 - Find Conditions</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1973
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find all conditions of if statements and loops
+
+CxList ifStmt = All.FindByType(typeof(IfStmt));
+CxList iteration = All.FindByType(typeof(IterationStmt));
+
+CxList conditions = All.NewCxList();
+foreach (CxList singleIf in ifStmt)
+{
+	try
+	{
+		IfStmt stmt = singleIf.data.GetByIndex(0) as IfStmt;
+		if (stmt.Condition != null)
+		{
+			conditions += All.FindById(stmt.Condition.NodeId);
+		}
+	}
+	catch (Exception ex)
+	{
+		//		MessageBox.Show(ex.ToString());
+	}
+}
+
+foreach (CxList iter in iteration)
+{
+	try
+	{
+		IterationStmt stmt = iter.data.GetByIndex(0) as IterationStmt;
+		if (stmt.Test != null)
+		{
+			conditions += All.FindById(stmt.Test.NodeId);
+		}
+	}
+	catch (Exception ex)
+	{
+		//		MessageBox.Show(ex.ToString());
+	}
+}
+
+result = conditions;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

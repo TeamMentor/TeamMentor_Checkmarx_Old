@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>03758433-1dfc-4a09-93f8-d9a9ce38c2cc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>725 - Find DB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 725
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 43
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList db = 
+	methods.FindByMemberAccess("dataadapter.update") +
+	methods.FindByMemberAccess("dataadapter.fill") +
+	methods.FindByMemberAccess("dataadapter.fillschema") +
+	
+	methods.FindByMemberAccess("idataadapter.update") +
+	methods.FindByMemberAccess("idataadapter.fill") +
+	methods.FindByMemberAccess("idataadapter.fillschema") +
+
+	methods.FindByMemberAccess("idbdataadapter.update") +
+	methods.FindByMemberAccess("idbdataadapter.fill") +
+	methods.FindByMemberAccess("idbdataadapter.fillschema") +
+
+	methods.FindByMemberAccess("sqldataadapter.update") +
+	methods.FindByMemberAccess("sqldataadapter.fill") +
+	methods.FindByMemberAccess("sqldataadapter.fillschema") +
+
+	methods.FindByMemberAccess("sqlcedataadapter.update") +
+	methods.FindByMemberAccess("sqlcedataadapter.fill") +
+	methods.FindByMemberAccess("sqlcedataadapter.fillschema") +
+
+	methods.FindByMemberAccess("odbcdataadapter.update") +
+	methods.FindByMemberAccess("odbcdataadapter.fill") +
+	methods.FindByMemberAccess("odbcdataadapter.fillschema") +
+
+	methods.FindByMemberAccess("oledbdataadapter.update") +
+	methods.FindByMemberAccess("oledbdataadapter.fill") +
+	methods.FindByMemberAccess("oledbdataadapter.fillschema") +
+
+	methods.FindByMemberAccess("oracledataadapter.update") +
+	methods.FindByMemberAccess("oracledataadapter.fill") +
+	methods.FindByMemberAccess("oracledataadapter.fillschema") +
+
+	methods.FindByMemberAccess("sqldatasource.select") +
+	methods.FindByMemberAccess("sqldatasource.update") +
+	methods.FindByMemberAccess("sqldatasource.insert") +
+	methods.FindByMemberAccess("sqldatasource.delete") +
+
+	methods.FindByMemberAccess("accessdatasource.select") +
+	methods.FindByMemberAccess("accessdatasource.update") +
+	methods.FindByMemberAccess("accessdatasource.insert") +
+	methods.FindByMemberAccess("accessdatasource.delete") +
+
+	methods.FindByMemberAccess("idbcommand.executereader") +
+	methods.FindByMemberAccess("idbcommand.executescalar") +
+	methods.FindByMemberAccess("idbcommand.executenonquery") +
+
+	methods.FindByMemberAccess("odbccommand.executereader") +
+	methods.FindByMemberAccess("odbccommand.executescalar") +
+	methods.FindByMemberAccess("odbccommand.executenonquery") +
+
+	methods.FindByMemberAccess("oledbcommand.executereader") +
+	methods.FindByMemberAccess("oledbdatareader.executereader") +
+	methods.FindByMemberAccess("oledbcommand.executescalar") +
+	methods.FindByMemberAccess("oledbcommand.executenonquery") +
+
+	methods.FindByMemberAccess("oraclecommand.executereader") +
+	methods.FindByMemberAccess("oraclecommand.executescalar") +
+	methods.FindByMemberAccess("oraclecommand.executenonquery") +
+	methods.FindByMemberAccess("oraclecommand.executeoraclenonquery") +
+	methods.FindByMemberAccess("oraclecommand.executeoraclescalar") +
+
+	methods.FindByMemberAccess("sqlcommand.executereader") +
+	methods.FindByMemberAccess("sqlcommand.executescalar") +
+	methods.FindByMemberAccess("sqlcommand.executenonquery") +
+	methods.FindByMemberAccess("sqlcommand.executexmlreader") +
+	methods.FindByMemberAccess("sqlcommand.beginexecutereader") +
+	methods.FindByMemberAccess("sqlcommand.beginexecutenonquery") +
+	methods.FindByMemberAccess("sqlcommand.beginexecutexmlreader") +
+		
+	methods.FindByMemberAccess("sqlcecommand.executereader") +
+	methods.FindByMemberAccess("sqlcecommand.executeresultset") +
+	methods.FindByMemberAccess("sqlcecommand.executescalar") +
+	methods.FindByMemberAccess("sqlcecommand.executenonquery") +
+	methods.FindByMemberAccess("sqlcecommand.executexmlreader") +
+	methods.FindByMemberAccess("sqlcecommand.beginexecutereader") +
+	methods.FindByMemberAccess("sqlcecommand.beginexecutenonquery") +
+	methods.FindByMemberAccess("sqlcecommand.beginexecutexmlreader") +
+
+	methods.FindByMemberAccess("updatecommand.execute*") + 
+	methods.FindByMemberAccess("insertcommand.execute*") + 
+	methods.FindByMemberAccess("deletecommand.execute*") + 
+	methods.FindByMemberAccess("selectcommand.execute*") + 
+	
+	methods.FindByMemberAccess("sqlpipe.executeandsend") + 
+
+	methods.FindByMemberAccess("qsqlquery.exec") +
+	methods.FindByMemberAccess("qsqlquery.execbatch") +
+
+	methods.FindByMemberAccess("db2command.execute*") + 
+
+	// Salesforce queries
+	methods.FindByMemberAccess("sforceservice.query") + 
+	methods.FindByMemberAccess("sforceservice.queryall") + 
+	methods.FindByMemberAccess("sforceservice.search") +
+	
+	// EntLib
+	methods.FindByMemberAccess("database.doexecutenonquery") +
+	methods.FindByMemberAccess("database.executereader") +
+	methods.FindByMemberAccess("database.executedataset") +
+	methods.FindByMemberAccess("database.executenonquery") +
+	methods.FindByMemberAccess("database.executescalar") +
+	methods.FindByMemberAccess("database.loaddataset") +
+	methods.FindByMemberAccess("database.updatedataset") +
+	
+	methods.FindByMemberAccess("oracledatabase.doexecutenonquery") +
+	methods.FindByMemberAccess("oracledatabase.executereader") +
+	methods.FindByMemberAccess("oracledatabase.executedataset") +
+	methods.FindByMemberAccess("oracledatabase.executenonquery") +
+	methods.FindByMemberAccess("oracledatabase.executescalar") +
+	methods.FindByMemberAccess("oracledatabase.loaddataset") +
+	methods.FindByMemberAccess("oracledatabase.updatedataset") +
+	
+	methods.FindByMemberAccess("sqldatabase.doexecutenonquery") +
+	methods.FindByMemberAccess("sqldatabase.executereader") +
+	methods.FindByMemberAccess("sqldatabase.executedataset") +
+	methods.FindByMemberAccess("sqldatabase.executenonquery") +
+	methods.FindByMemberAccess("sqldatabase.executescalar") +
+	methods.FindByMemberAccess("sqldatabase.loaddataset") +
+	methods.FindByMemberAccess("sqldatabase.updatedataset") +
+
+	methods.FindByMemberAccess("genericdatabase.doexecutenonquery") +
+	methods.FindByMemberAccess("genericdatabase.executereader") +
+	methods.FindByMemberAccess("genericdatabase.executedataset") +
+	methods.FindByMemberAccess("genericdatabase.executenonquery") +
+	methods.FindByMemberAccess("genericdatabase.executescalar") +
+	methods.FindByMemberAccess("genericdatabase.loaddataset") +
+	methods.FindByMemberAccess("genericdatabase.updatedataset");
+
+CxList ibatis = methods.FindByMemberAccess("sqlmapper.queryforobject") + 
+	methods.FindByMemberAccess("sqlmapper.queryforlist") + 
+	methods.FindByMemberAccess("sqlmapper.querywithrowhandler") + 
+	methods.FindByMemberAccess("sqlmapper.queryforpaginatedlist") + 
+	methods.FindByMemberAccess("sqlmapper.queryformap") + 
+	methods.FindByMemberAccess("sqlmapper.insert") + 
+	methods.FindByMemberAccess("sqlmapper.update") + 
+	methods.FindByMemberAccess("sqlmapper.delete");
+
+result = db + ibatis + Find_DB_Linq() + Find_DB_EF();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

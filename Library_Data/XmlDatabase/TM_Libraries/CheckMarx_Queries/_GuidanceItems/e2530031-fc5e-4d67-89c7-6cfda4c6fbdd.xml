@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e2530031-fc5e-4d67-89c7-6cfda4c6fbdd</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1879 - R20 09 Using Input Output From Stdio H</Title>
+    <Category>CWE: 11067</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11067</h1>
+  <iframe height="500" src="/content/11067" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1879
+Cwe : 11067
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 20-9
+------------------------------
+This query searches for usage of the input/output library <stdio.h>.
+
+	The Example below shows code with vulnerability: 
+
+#include <stdio.h>            
+
+void mc2_2009 ( void )
+{
+(void) printf("The library stdio shall not be used\n"); 
+}
+
+*/
+
+// Safety check for the violating h file
+CxList includes = All.FindByType(typeof(StringLiteral)).GetParameters(Find_Methods()
+	.FindByShortName("CX_INCL"));
+CxList hFile = includes.FindByShortName("stdio.h");
+if (hFile.Count == 0)
+	return result;
+
+// The functions defined by stdio.h
+CxList methodInvokes = All.FindByType(typeof(MethodInvokeExpr));
+
+//Operations on files:
+result += methodInvokes.FindByShortName("signal") +
+	methodInvokes.FindByShortName("remove") +
+	methodInvokes.FindByShortName("rename") +
+	methodInvokes.FindByShortName("tmpfile") +
+	methodInvokes.FindByShortName("tmpnam") +
+//File access:
+	methodInvokes.FindByShortName("fclose") +
+	methodInvokes.FindByShortName("fflush") +
+	methodInvokes.FindByShortName("fopen") +
+	methodInvokes.FindByShortName("freopen") +
+	methodInvokes.FindByShortName("setbuf") +
+	methodInvokes.FindByShortName("setvbuf") +
+//Formatted input/output:
+	methodInvokes.FindByShortName("fprintf") +
+	methodInvokes.FindByShortName("fscanf") +
+	methodInvokes.FindByShortName("printf") +
+	methodInvokes.FindByShortName("scanf") +
+	methodInvokes.FindByShortName("sprintf") +
+	methodInvokes.FindByShortName("sscanf") +
+	methodInvokes.FindByShortName("vfprintf") +
+	methodInvokes.FindByShortName("vprintf") +
+	methodInvokes.FindByShortName("vsprintf") +
+//Character input/output:
+	methodInvokes.FindByShortName("fgetc") +
+	methodInvokes.FindByShortName("fgets") +
+	methodInvokes.FindByShortName("fputc") +
+	methodInvokes.FindByShortName("fputs") +
+	methodInvokes.FindByShortName("getc") +
+	methodInvokes.FindByShortName("gets") +
+	methodInvokes.FindByShortName("putc") +
+	methodInvokes.FindByShortName("putchar") +
+	methodInvokes.FindByShortName("puts") +
+	methodInvokes.FindByShortName("ungetc") +
+//Direct input/output:
+	methodInvokes.FindByShortName("fread") +
+	methodInvokes.FindByShortName("fwrite") +
+//File positioning:
+	methodInvokes.FindByShortName("fgetpos") +
+	methodInvokes.FindByShortName("fseek") +
+	methodInvokes.FindByShortName("fsetpos") +
+	methodInvokes.FindByShortName("ftell") +
+	methodInvokes.FindByShortName("rewind") +
+//Error-handling:
+	methodInvokes.FindByShortName("clearerr") +
+	methodInvokes.FindByShortName("feof") +
+	methodInvokes.FindByShortName("ferror") +
+	methodInvokes.FindByShortName("perror");
+
+// The macros defined by stdio.h
+result += All.FindByShortName("_IOFBF") +
+	All.FindByShortName("_IOLBF") +
+	All.FindByShortName("_IONBF") +
+	All.FindByShortName("BUFSIZ") +
+	All.FindByShortName("EOF") +
+	All.FindByShortName("FOPEN_MAX") +
+	All.FindByShortName("FILENAME_MAX") +
+	All.FindByShortName("SEEK_CUR") +
+	All.FindByShortName("SEEK_END") +
+	All.FindByShortName("SEEK_SET") +
+	All.FindByShortName("TMP_MAX") +
+	All.FindByShortName("stderr") +
+	All.FindByShortName("stdin") +
+	All.FindByShortName("stdout");
+
+// Remove all locally defined instances
+CxList defs = All.FindDefinition(result);
+result -= result.FindAllReferences(defs);
+
+// the include
+result += hFile;
+
+// The types
+result += All.FindByType(typeof(TypeRef)).FindByShortName("size_t")+
+	All.FindByType(typeof(TypeRef)).FindByShortName("FILE")+
+	All.FindByType(typeof(TypeRef)).FindByShortName("fpos_t");</stdio.h></stdio.h></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

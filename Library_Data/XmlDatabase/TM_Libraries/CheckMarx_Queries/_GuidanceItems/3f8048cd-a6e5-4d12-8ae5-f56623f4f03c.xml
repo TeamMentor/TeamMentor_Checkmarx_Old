@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>3f8048cd-a6e5-4d12-8ae5-f56623f4f03c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>130 - Get Conditions</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 130
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 8
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // If stmt
+CxList ifStmts = All.FindByType(typeof(IfStmt));
+CxList conditions = All.FindByFathers(ifStmts);
+conditions = conditions.FindByType(typeof(Expression));
+
+// iterations stmt
+CxList iterationStmts = All.FindByType(typeof(IterationStmt));
+foreach (CxList iteration in iterationStmts)
+{
+	IterationStmt i = iteration.data.GetByIndex(0) as IterationStmt;
+	if (i.Test != null)
+	{
+		conditions += All.FindById(i.Test.NodeId);
+	}
+}
+
+result = All.GetByAncs(conditions);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

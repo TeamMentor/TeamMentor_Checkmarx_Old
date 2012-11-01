@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>69ceeff4-15f6-43c9-8853-db1a65601c79</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>71 - GetLastWin32Error Is Not Called After Pinvoke</Title>
+    <Category>CWE: 10018</Category>
+    <Phase>ASP Best Coding Practice</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10018</h1>
+  <iframe height="500" src="/content/10018" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 71
+Cwe : 10018
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 7
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList importedMethods = All.FindByCustomAttribute("dllimport").GetAncOfType(typeof(MethodDecl));
+CxList allImportedMethodsCalls = All.FindAllReferences(importedMethods) - importedMethods;
+CxList allGLWECalls = All.FindAllReferences(All.FindByName("*getlastwin32error"));
+CxList allMethodsThatCallGLWE = allGLWECalls.GetAncOfType(typeof(MethodDecl));
+CxList allMethodsThatCallImportedMethods = allImportedMethodsCalls.GetAncOfType(typeof(MethodDecl));
+
+result = allImportedMethodsCalls.GetByAncs(allMethodsThatCallImportedMethods - allMethodsThatCallGLWE);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

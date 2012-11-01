@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a0afaaac-c585-4fed-928f-531fe96b1421</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1372 - Find DB Out ODBC</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1372
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+// 1 - Explicite DB function names
+CxList directDbMethods = 
+	methods.FindByShortName("odbc_fetch_array") + 
+	methods.FindByShortName("odbc_fetch_object") + 
+	methods.FindByShortName("odbc_foreignkeys") +
+	methods.FindByShortName("odbc_result") ;
+result += directDbMethods;
+
+// identify methods which one of their parameters are used for output.
+// Then identify the paramenters themselves and then ...
+CxList variableUpdatedDbMethod = 
+	methods.FindByShortName("odbc_fetch_into") ;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

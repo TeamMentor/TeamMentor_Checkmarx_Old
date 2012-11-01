@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2c1da225-b471-4aba-89de-01bbf360280e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>461 - XSS Evasion Attack</Title>
+    <Category>CWE: 79</Category>
+    <Phase>CSharp Low Visibility</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  79</h1>
+  <iframe height="500" src="/content/79" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 461
+Cwe : 79
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 27
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if(All.isWebApplication)
+{
+	CxList decode = All.FindByName("*Server.HtmlDecode");
+	CxList sanitize = Find_XSS_Sanitize();
+	CxList output = Find_Interactive_Outputs();
+
+	result = output.InfluencedByAndNotSanitized(decode, sanitize);
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

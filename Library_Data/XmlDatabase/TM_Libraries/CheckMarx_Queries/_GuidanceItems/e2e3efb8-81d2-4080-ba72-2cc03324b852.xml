@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e2e3efb8-81d2-4080-ba72-2cc03324b852</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1399 - Find Get Set Connection</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1399
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* getAttribute */
+	CxList getAttr = Get_Attribute();
+/*		All.FindByMemberAccess("HttpServletRequest.getAttribute") +
+		All.FindByName("*request.getAttribute") +
+		All.FindByName("*Request.getAttribute");
+
+	CxList getSession = All.FindByMemberAccess("request.getSession") +
+		All.FindByName("*request.getSession") +
+		All.FindByName("*Request.getSession");
+
+	getAttr += getSession.GetMembersOfTarget().FindByShortName("getAttribute");
+	getAttr += All.FindByMemberAccess("Session.getAttribute");
+*/
+CxList setAttr = Set_Attribute();
+
+/*CxList setAttr = 
+	All.FindByMemberAccess("HttpServletResponse.setAttribute") +
+	All.FindByName("*response.setAttribute") +  
+	All.FindByName("*Response.setAttribute");
+setAttr += getSession.GetMembersOfTarget().FindByShortName("setAttribute");
+setAttr += All.FindByMemberAccess("HttpSession.setAttribute");*/
+
+/*if (allInputs.Count &gt; 0)
+{
+	setAttr = setAttr.DataInfluencedBy(allInputs);
+}
+*/
+CxList setStrings = Find_Strings().GetParameters(setAttr, 0);
+CxList getStrings = Find_Strings().GetParameters(getAttr, 0);
+CxList setConstants = All.GetParameters(setAttr, 0).FindAllReferences(All.FindByType(typeof(ConstantDecl)));
+CxList getConstants = All.GetParameters(getAttr, 0).FindAllReferences(All.FindByType(typeof(ConstantDecl)));
+
+char[] trimChars = new char[6] {' ', '\t', '"', '(', '\r', '\n'};
+//ArrayList str1 = new ArrayList();
+foreach (CxList setA in setStrings)
+{
+	CSharpGraph gr = setA.data.GetByIndex(0) as CSharpGraph;
+	string name = gr.ShortName.Trim(trimChars);
+	result += setA.ConcatenateAllTargets(getStrings.FindByShortName("\"" + name + "\""));
+/*	if (!str1.Contains(name))
+	{
+		str1.Add(name);
+	}*/
+}
+
+//ArrayList str2 = new ArrayList();
+foreach (CxList setA in setConstants)
+{
+	CSharpGraph gr = setA.data.GetByIndex(0) as CSharpGraph;
+	string name = gr.ShortName.Trim(trimChars);
+	result += setA.ConcatenateAllTargets(getConstants.FindByShortName(name));
+/*	if (!str2.Contains(name))
+	{
+		str2.Add(name);
+	}*/
+}
+/*
+CxList attrInput = All.NewCxList();
+foreach (String s in str1)
+{
+	attrInput += getStrings.FindByShortName("\"" + s + "\"");
+}
+
+foreach (String s in str2)
+{
+	attrInput += getConstants.FindByShortName(s);
+}
+*/
+//result = getAttr.FindByParameters(attrInput);
+/* end getAttribute */</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

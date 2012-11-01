@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>45260507-0384-4cb0-bb2a-bab7abfb0f0f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>718 - Unclosed Objects</Title>
+    <Category>CWE: 10031</Category>
+    <Phase>VbNet Best Coding Practice</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10031</h1>
+  <iframe height="500" src="/content/10031" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 718
+Cwe : 10031
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 42
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList close = Find_Methods().FindByName("*.close", false);
+CxList AllTrys = All.GetAncOfType(typeof(TryCatchFinallyStmt));
+CxList fin = new CxList();	
+
+foreach(CxList oneTry in AllTrys)
+{
+	TryCatchFinallyStmt t = oneTry.data.GetByIndex(0) as TryCatchFinallyStmt;
+	fin += All.FindById(t.Finally.NodeId);	
+}
+fin = All.GetByAncs(fin);
+
+CxList Try = close.GetAncOfType(typeof(TryCatchFinallyStmt));
+foreach(CxList oneTry in Try)
+{
+	TryCatchFinallyStmt TryGraph = oneTry.data.GetByIndex(0) as TryCatchFinallyStmt;
+	CxList curTry = All.FindById(TryGraph.Try.NodeId);
+	CxList TryClose = close.GetByAncs(curTry);
+	CxList AllClose = close.GetByAncs(oneTry);
+	
+	if( (AllClose - TryClose).Count == 0)
+	{
+		if (TryClose.GetAncOfType(typeof(UsingStmt)).Count == 0)
+		{
+			result += TryClose;
+		}
+	}	
+}
+ 
+result -= result.FindByFathers(fin);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

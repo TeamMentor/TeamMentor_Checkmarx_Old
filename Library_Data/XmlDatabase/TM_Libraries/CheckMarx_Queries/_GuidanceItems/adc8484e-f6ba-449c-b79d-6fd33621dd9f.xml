@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>adc8484e-f6ba-449c-b79d-6fd33621dd9f</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1207 - Find All Strlen</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1207
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+result = 
+	methods.FindByShortName("_mbslen") + 
+	methods.FindByShortName("_mbstrlen") + 
+	methods.FindByShortName("_tcsclen") + 
+	methods.FindByShortName("_tcslen") + 
+	methods.FindByShortName("lstrlen") + 
+	methods.FindByShortName("strlen") + 
+	methods.FindByShortName("StrLen") + 
+	methods.FindByShortName("strnlen_s") + 
+	methods.FindByShortName("tcslen") + 
+	methods.FindByShortName("wcslen")
+	;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

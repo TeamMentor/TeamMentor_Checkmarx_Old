@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>662d2ac3-0796-4d30-96e1-0dc5ea9dc70c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1922 - R02 10 05 Non Member Static Name Reuse</Title>
+    <Category>CWE: 10751</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10751</h1>
+  <iframe height="500" src="/content/10751" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1922
+Cwe : 10751
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 2-10-5
+ ------------------------------
+ This query checks if there is a reuse of the name of a non-member static object or  static function
+ 
+ The Example below shows code with vulnerability: 
+     
+ 
+     static char x='a';
+
+     static int  foo()   
+     {
+         int x=9;          //non-compliant - reuse of x
+     }
+         
+     class A   
+     {
+		    void foo()	   //non-compliant - reuse of foo
+          {        
+				some code
+          }
+     } 
+
+*/
+
+
+
+//all declarations
+CxList allDecl = All.FindByType(typeof(Declarator));
+//get all static declarations
+Modifiers mod = new Modifiers();
+mod = Dom.Modifiers.Static;
+CxList fd = All.FindByType(typeof(FieldDecl));
+CxList dcltr = All.FindByType(typeof(Declarator));
+
+CxList staticFields = All.FindByFieldAttributes(mod) - All.FindByType(typeof(MethodDecl));
+staticFields = (dcltr + fd).GetByAncs(staticFields);
+
+CxList classDecl = All.FindByType(typeof(ClassDecl));
+//get non- memebers declarations
+foreach(CxList cur in staticFields)
+{
+	CxList myClass = classDecl.GetClass(cur);
+	CSharpGraph d = myClass.data.GetByIndex(0) as CSharpGraph;
+	if (d!=null &amp;&amp; !d.ShortName.StartsWith("checkmarx"))
+	{
+		staticFields -= cur;
+	}
+}
+
+
+//compare names of all declarations
+
+foreach(CxList stat in staticFields)
+{
+	CxList totalApp = All.NewCxList();
+	CSharpGraph statName = stat.data.GetByIndex(0) as CSharpGraph;
+	if(statName != null)
+	{
+		totalApp = ((allDecl).FindByShortName(statName.ShortName));
+	}
+	if(totalApp.Count &gt; 1)
+	{
+		result += totalApp;
+	}
+}
+
+
+//for all non- members functions
+CxList allMethods = All.FindByType(typeof(MethodDecl));
+//get all non-members
+CxList stmtCol = All.FindByType(typeof(StatementCollection));
+foreach(CxList cur in allMethods)
+{
+	CxList myClass = classDecl.GetClass(cur);
+	CSharpGraph d = myClass.data.GetByIndex(0) as CSharpGraph;
+	if (d!=null &amp;&amp; (!d.ShortName.StartsWith("checkmarx") || stmtCol.FindByFathers(cur).Count == 0))
+	{
+		allMethods -= cur;
+	}
+}
+//get all static method declarations
+CxList staticMethods = allMethods.FindByType(typeof(MethodDecl));
+staticMethods = staticMethods.FindByFieldAttributes(mod);
+
+//compare their names
+foreach(CxList stat in staticMethods)
+{	
+	CxList totalApp = All.NewCxList();
+	CSharpGraph statName = stat.data.GetByIndex(0) as CSharpGraph;
+	if(statName != null)
+	{
+		 totalApp = (allMethods).FindByShortName(statName.ShortName);
+	}
+	if(totalApp.Count &gt; 1)
+	{
+		result += totalApp;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

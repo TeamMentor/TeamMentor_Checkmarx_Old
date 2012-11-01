@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>09d358a5-045e-4c4d-b6d7-55cd79dc22b3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>544 - Find Header Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 544
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = 
+	All.FindByMemberAccess("HttpServletResponse.addHeader") + 
+	All.FindByMemberAccess("HttpServletResponse.setHeader") + 
+	All.FindByMemberAccess("HttpServletResponse.setContentType") + 
+	All.FindByMemberAccess("HttpServletResponse.addCookie") +
+	All.FindByMemberAccess("HttpServletResponse.sendRedirect") +
+	
+	// ESAPI
+	All.FindByMemberAccess("HTTPUtilities.setContentType") +
+	All.FindByMemberAccess("HTTPUtilities.safeSendRedirect") +
+	All.FindByMemberAccess("HTTPUtilities.safeSetHeader") +
+	All.FindByMemberAccess("HTTPUtilities.safeAddCookie") +
+
+	All.FindByName("*response.addHeader") +  
+	All.FindByName("*response.setHeader") +
+	All.FindByName("*response.setContentType") +
+	All.FindByName("*response.addCookie") +
+	All.FindByName("*response.sendRedirect") +
+
+	All.FindByName("*Response.addHeader") +  
+	All.FindByName("*Response.setHeader") +
+	All.FindByName("*Response.setContentType") +
+	All.FindByName("*Response.addCookie") +
+	All.FindByName("*Response.sendRedirect")
+
+	;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>968bdb61-913c-4463-a205-bd6ed4881d99</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1829 - R07 01 Non Zero Octal Constant</Title>
+    <Category>CWE: 11017</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11017</h1>
+  <iframe height="500" src="/content/11017" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1829
+Cwe : 11017
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 7-1
+------------------------------
+This query searches for non-zero octal constants (numeric literals or escape sequences)
+
+	The Example below shows code with vulnerability:
+
+n_octal_const = 017;                                  
+n_octal_const = 00;                          
+n_octal_const = 0017;                       
+n_octal_escape = '\01';
+
+*/
+
+// Add numeric octal constants
+result += All.FindByType(typeof(IntegerLiteral)).FindByRegex(@"[^\w]0[0-7]+?[^\wuU]", false, false, false);
+
+// Add octal escape sequences
+result += (All.FindByType(typeof(StringLiteral)) + All.FindByType(typeof(CharLiteral))).FindByRegex(@"\\[1-7][0-7]{0,2}|\\0[0-7]{1,2}", false, true, false);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

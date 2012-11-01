@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d9c12319-3861-4133-936f-8940adf3cc76</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>811 - Hardcoded password in Connection String</Title>
+    <Category>CWE: 259</Category>
+    <Phase>VbNet Medium Threat</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  259</h1>
+  <iframe height="500" src="/content/259" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 811
+Cwe : 259
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 47
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find the string literals containig "password"
+CxList psw = Find_Password_Strings();
+
+// Find all the connections
+CxList createExpressions = All.FindByType(typeof(ObjectCreateExpr));
+CxList openConnection = createExpressions.FindByShortName("*connection") +
+						createExpressions.FindByShortName("*datacontext") +
+						All.FindByMemberAccess("connection.connectionstring");
+
+// Return the connections influenced by "passworded" strings.
+// Notice that since it's an ObjectCreateExpr ("new()"), only its parameters
+// can influence it.
+result = openConnection.DataInfluencedBy(psw);
+
+
+// Add connection strings that contain a password in their initialization
+CxList getConnection = All.FindByMemberAccess("drivermanager.getconnection");
+CxList connectionStrings = getConnection.DataInfluencedBy(All.GetParameters(getConnection, 2).FindByType(typeof(StringLiteral)));
+
+result += connectionStrings;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

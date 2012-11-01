@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>3d183c1f-5e1d-4fa9-8cc0-f44d3b2748bd</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1663 - Uncaught Exception</Title>
+    <Category>CWE: 248</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  248</h1>
+  <iframe height="500" src="/content/248" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1663
+Cwe : 248
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList catchStmt = All.FindByType(typeof(Catch));
+// Find (only) the try statements that have a catch statement
+CxList tryStmt = catchStmt.GetFathers();
+CxList throwStmt = All.FindByType(typeof(ThrowStmt));
+CxList allMethodsRef = Find_Methods();
+CxList allMethodsDecl = All.FindByType(typeof(MethodDecl));
+
+// Only throws that are not under try-catch
+CxList potentialThrows = throwStmt - throwStmt.GetByAncs(tryStmt);
+
+// pass on all the throws, and see if any of them is problematic
+foreach (CxList pt in potentialThrows)
+{
+	// Find all the methods that contain the problematic throw
+	CxList methodDecl = allMethodsDecl.GetMethod(pt);
+	// If it's the "main" method, it is a vulnerability
+	if (methodDecl.FindByShortName("main").Count &gt; 0)
+	{
+		result += pt.ConcatenateAllTargets(methodDecl);
+	}
+	else
+	{
+		// All the references of these methods
+		CxList methodReferences = allMethodsRef.FindAllReferences(methodDecl) - methodDecl;
+		// Remove the references under a try block with catch
+		methodReferences -= methodReferences.GetByAncs(tryStmt);
+		int loopCounter = 0; // limit the while, to be ready for an infinite loop bug
+		// Look recursively on all calls to the method that contains a throw statement
+		while (++loopCounter  0)
+		{
+			methodDecl = allMethodsDecl.GetMethod(methodReferences);
+			methodReferences = allMethodsRef.FindAllReferences(methodDecl) - methodDecl;
+			if (methodDecl.FindByShortName("main").Count &gt; 0)
+			{
+				result += pt.ConcatenateAllTargets(methodDecl);
+				break;
+			}
+			methodReferences -= methodReferences.GetByAncs(tryStmt);
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

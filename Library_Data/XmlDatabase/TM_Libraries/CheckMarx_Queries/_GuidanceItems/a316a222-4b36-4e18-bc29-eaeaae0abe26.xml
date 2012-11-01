@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a316a222-4b36-4e18-bc29-eaeaae0abe26</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1331 - Find All Targets</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1331
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 24
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length == 1)
+{
+	CxList member = param[0] as CxList;
+	member += member.GetTargetOfMembers();
+	member += member.GetTargetOfMembers();
+	member += member.GetTargetOfMembers();
+	member += member.GetTargetOfMembers();
+	member += member.GetTargetOfMembers();
+	member += member.GetTargetOfMembers();
+	result = member;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

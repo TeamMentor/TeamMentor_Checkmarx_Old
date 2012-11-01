@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ccfa1fc4-bcfc-4811-a9d4-7fbc6678e861</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>217 - Buffer Overflow scanf</Title>
+    <Category>CWE: 120</Category>
+    <Phase>CPP Buffer Overflow</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  120</h1>
+  <iframe height="500" src="/content/120" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 217
+Cwe : 120
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 15
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList FunctionsFormatFirstParam = 	Find_Methods().FindByShortName("scanf");
+CxList FirstParamFormat = All.GetParameters(FunctionsFormatFirstParam, 0);
+CxList SuspFirstParamFormat = FirstParamFormat.DataInfluencedBy(All.FindByShortName("*%s*")) +
+							  FirstParamFormat.FindByShortName("*%s*");
+CxList SuspFirstMethod = SuspFirstParamFormat.GetAncOfType( typeof (MethodInvokeExpr));
+CxList toRet = SuspFirstMethod;
+
+
+CxList FunctionsFormatSecondParam = Find_Methods().FindByShortName("sscanf");
+CxList SecondParamFormat = All.GetParameters(FunctionsFormatSecondParam, 1);
+CxList SuspSecondParamFormat = SecondParamFormat.DataInfluencedBy(All.FindByShortName("*%s*")) +
+	SecondParamFormat.FindByShortName("*%s*");
+CxList SuspSecondMethod = SuspSecondParamFormat.GetAncOfType( typeof (MethodInvokeExpr));
+CxList SuspSecondMethodInputParam = All.GetParameters(SuspSecondMethod, 0);
+toRet += SuspSecondMethodInputParam.DataInfluencedBy(Find_Interactive_Inputs());
+
+result = toRet;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

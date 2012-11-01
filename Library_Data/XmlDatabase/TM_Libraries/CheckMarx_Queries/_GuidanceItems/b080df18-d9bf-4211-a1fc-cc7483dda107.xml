@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b080df18-d9bf-4211-a1fc-cc7483dda107</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1434 - Find DB In MYSQL</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1434
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+CxList dbDef = methods.FindByMemberAccess("Mysql.real_connect") +
+	methods.FindByMemberAccess("Mysql.connect") +
+	methods.FindByMemberAccess("Mysql.new");
+
+CxList dbInit = All.FindByMemberAccess("Mysql.init");
+dbInit = methods.DataInfluencedBy(dbInit);
+dbInit += All.FindAllReferences(dbInit.GetTargetOfMembers()).GetMembersOfTarget();
+
+dbDef += dbInit.FindByShortName("real_connect") + 
+	dbInit.FindByShortName("connect") + 
+	dbInit.FindByShortName("new");
+dbDef = dbDef.GetTargetOfMembers();
+
+CxList dbAll = All * All.DataInfluencedBy(dbDef);
+
+string[] dbCommandsList = new string[] {
+	"query",
+	"real_query",
+	"prepare",
+	"execute"
+	};
+
+foreach (string s in dbCommandsList)
+{
+	result += dbAll.FindByShortName(s);
+}
+	
+result += Add_Second_Order_DB(result, dbCommandsList);
+
+CxList dbDefAssign = dbDef.GetAncOfType(typeof(AssignExpr));
+dbDefAssign = All.GetByAncs(dbDefAssign).FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList query = All.FindAllReferences(dbDefAssign).GetMembersOfTarget().FindByShortName("query");
+result += query;	
+
+
+
+
+
+
+
+
+
+// 1 - Explicite DB function names
+CxList directDbMethods = 
+	methods.FindByShortName("mysql_query") + 
+	methods.FindByShortName("mysql_db_query") + 
+	methods.FindByShortName("mysql_unbuffered_query") +
+	methods.FindByShortName("multi_query") + 
+	methods.FindByShortName("mysqli_multi_query") +
+	methods.FindByShortName("mysqli_prepare") +
+	methods.FindByShortName("mysqli_query") +
+	methods.FindByShortName("mysqli_real_query") +
+	methods.FindByShortName("mysqli_stmt_execute") +
+	methods.FindByShortName("mysqli_stmt_prepare") +
+	methods.FindByShortName("mysqli_bind_param") +
+	methods.FindByShortName("mysqli_stmt_bind_param") +
+	methods.FindByShortName("mysqli_master_query") +
+	methods.FindByShortName("mysqli_send_query") +
+	methods.FindByShortName("mysqli_slave_query");
+
+result += directDbMethods;
+
+CxList directDbMethods_Deprecated =
+	methods.FindByShortName("mysql_db_query");
+result += directDbMethods_Deprecated;
+
+// 2 - Find query\execute function calling on object initialize with DB.
+CxList pDbExecuteQuery = 
+	methods.FindByShortName("query", false) + 
+	methods.FindByShortName("real_query", false) + 
+	methods.FindByShortName("prepare", false) + 
+	methods.FindByShortName("execute", false);
+CxList pDbExecuteQueryMembers = pDbExecuteQuery.GetTargetOfMembers();
+
+CxList pDbCreation = All.FindByType(typeof(ObjectCreateExpr));
+
+pDbCreation = 
+	pDbCreation.FindByShortName("mysql", false) + 
+	pDbCreation.FindByShortName("mysqli", false) +
+	pDbCreation.FindByShortName("mysqli_stmt", false);
+
+
+CxList pDbCreationLeftSide = new CxList();
+foreach (CxList assign in pDbCreation.GetAncOfType(typeof(AssignExpr)))
+{
+	AssignExpr g = assign.data.GetByIndex(0) as AssignExpr;
+	pDbCreationLeftSide += All.FindById(g.Left.NodeId);
+}
+
+CxList dbFunctionByInstatniation = pDbExecuteQueryMembers.InfluencedBy(pDbCreationLeftSide).GetMembersOfTarget();
+
+result += dbFunctionByInstatniation;// -dbFunctionByInstatniation.InfluencedBy(directDbMethods);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

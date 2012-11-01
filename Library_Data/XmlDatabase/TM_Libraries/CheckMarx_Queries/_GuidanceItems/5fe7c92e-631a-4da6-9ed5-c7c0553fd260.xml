@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5fe7c92e-631a-4da6-9ed5-c7c0553fd260</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2116 - Find Smarty Interactive Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2116
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList smartyMethods = methods.FindByFileName("*.tpl");
+
+//smarty output tag from the sort : {$variable}
+CxList smartyVariableOutputs = smartyMethods.FindByShortName("smarty_output");
+
+CxList smartyOutputs = 
+	smartyMethods.FindByShortName("html_checkboxes") +
+	smartyMethods.FindByShortName("html_image") +
+	smartyMethods.FindByShortName("html_options") +
+	smartyMethods.FindByShortName("html_radios") + 
+	smartyMethods.FindByShortName("html_table") +
+	smartyMethods.FindByShortName("mailto");
+ 
+//finds the 'fetch' functions which contain only one parameter
+CxList fetchMathod = smartyMethods.FindByShortName("fetch");
+CxList allSmartyParams = All.GetParameters(smartyMethods);
+foreach (CxList singleMethod in fetchMathod)
+{
+	CxList methodsParams = allSmartyParams.GetParameters(singleMethod).FindByType(typeof(Param));
+	if (methodsParams.Count == 1)
+	{
+		smartyOutputs += singleMethod;
+	}
+}
+
+result += smartyVariableOutputs + smartyOutputs;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

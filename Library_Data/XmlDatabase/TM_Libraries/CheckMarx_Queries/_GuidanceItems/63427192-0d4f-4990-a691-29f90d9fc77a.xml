@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>63427192-0d4f-4990-a691-29f90d9fc77a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>560 - Find Personal Info</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 560
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = Find_Passwords() + 
+	All.FindByShortName("*Credit*", false) + 
+	All.FindByShortName("*Account*", false) + 
+	All.FindByShortName("*SSN*", false) +
+	All.FindByShortName("*SocialSecurity*", false) +
+	All.FindByShortName("\"auth*", false);
+
+//Exclude List
+// ClassName string has a sub string "ssN" that recognized by system as SSN - Social Security Number
+// That can cause to False Positive
+result -= result.FindByShortName("*ClassName*", false);
+
+result -= Find_Dead_Code_Contents();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

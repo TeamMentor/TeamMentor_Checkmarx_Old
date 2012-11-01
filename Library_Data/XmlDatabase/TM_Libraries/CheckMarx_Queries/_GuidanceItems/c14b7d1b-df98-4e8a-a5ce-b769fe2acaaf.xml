@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c14b7d1b-df98-4e8a-a5ce-b769fe2acaaf</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>545 - Find HTML Encode</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 545
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList encode = All.FindByName("*.htmlEncode") + 
+	All.FindByMemberAccess("HtmlEncoder.encode") + 
+	All.FindByName("*HtmlEncoder.encode") + 
+	All.FindByMemberAccess("ServletResponse.encode*") +
+	All.FindByShortName("*htmlEncode*", false);
+
+
+encode = encode.FindByType(typeof(MemberAccess)) + encode.FindByType(typeof(MethodInvokeExpr));
+
+result = encode;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

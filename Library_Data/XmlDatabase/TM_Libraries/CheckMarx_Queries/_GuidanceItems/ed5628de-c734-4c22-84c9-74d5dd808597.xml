@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ed5628de-c734-4c22-84c9-74d5dd808597</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1255 - Heuristic Unchecked Return Value</Title>
+    <Category>CWE: 252</Category>
+    <Phase>CPP Heuristic</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  252</h1>
+  <iframe height="500" src="/content/252" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1255
+Cwe : 252
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 17
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //	Use of uninitialized pointer
+//  ----------------------------
+//  In this query we look for NULL-initialized pointers, that the user
+//  tries to use although they have no actual value in this address.
+///////////////////////////////////////////////////////////////////////
+
+// Find undefined methods
+CxList empty = Find_Empty_Methods();
+CxList defs = All.FindDefinition(Find_Methods()) - empty;
+CxList undefinedMethods = Find_Methods() - All.FindAllReferences(defs);
+undefinedMethods -= undefinedMethods.FindByShortName("sizeof");
+
+// Find undefined methods in the right side of an assign expression
+CxList rightSide = All.FindByAssignmentSide(CxList.AssignmentSide.Right);
+CxList rightSideMethods = undefinedMethods * rightSide;
+
+// Which variables we want to check
+CxList testVars = All.FindByFathers(rightSideMethods.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left)
+	+ rightSideMethods.GetAncOfType(typeof(Declarator));
+
+// If statements conditions - to sanitize the check
+CxList conditions = Get_Conditions();
+
+// If statements that contain the vaviables to check
+CxList IfStmts = conditions.DataInfluencedBy(testVars).GetAncOfType(typeof(IfStmt));
+CxList IfStmtsInside = All.GetByAncs(IfStmts);
+
+// Assert is a sanitizer too
+CxList assert = Find_Methods().FindByName("assert");
+CxList assertParam = All.GetByAncs(assert);
+assertParam -= assertParam.FindByShortName("assert");
+
+// What we want to check for influence - the references of the variables
+// and all parameters of functions
+CxList toCheck = All.FindAllReferences(testVars) + All.GetParameters(All);
+
+// Find influence of relevant undefined methods on the things we want to check
+result = toCheck.InfluencedByAndNotSanitized(undefinedMethods, IfStmtsInside + assertParam);
+
+// Clean results that affect each other
+result -= result.DataInfluencedBy(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

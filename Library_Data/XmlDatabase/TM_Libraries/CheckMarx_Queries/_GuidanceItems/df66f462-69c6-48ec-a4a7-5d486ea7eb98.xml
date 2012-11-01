@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>df66f462-69c6-48ec-a4a7-5d486ea7eb98</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1517 - Use Of Hardcoded Password</Title>
+    <Category>CWE: 259</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  259</h1>
+  <iframe height="500" src="/content/259" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1517
+Cwe : 259
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //return new CxList();
+CxList emptyString = Find_Empty_Strings();
+CxList NULL = All.FindByName("null");
+CxList psw = Find_Passwords();
+
+// Lists preperation
+CxList psw_in_lSide = psw.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+CxList strLiterals = Find_Strings() - emptyString - NULL;
+// 	(when the hardcoded string includes a space or dot we believe it is not a password string)
+strLiterals -= strLiterals.FindByName("* *");
+strLiterals -= strLiterals.FindByName("*.*");
+CxList lit_in_rSide = strLiterals.FindByAssignmentSide(CxList.AssignmentSide.Right);
+
+// Find password in an initialization operation
+CxList eq = All.FindByShortName("==");
+eq += All.FindByShortName("===");
+eq += All.FindByShortName("!=");
+eq += All.FindByShortName("!==");
+eq += All.FindByShortName("|");
+eq += All.FindByShortName("&amp;");
+eq += All.FindByShortName("^");
+eq = eq.GetAncOfType(typeof(BinaryExpr));
+
+CxList equalsPassword = eq.InfluencedBy(psw);
+equalsPassword = strLiterals.InfluencingOn(equalsPassword);
+
+// Find password in as assignment
+CxList assignPassword = psw_in_lSide.GetAncOfType(typeof(AssignExpr));
+assignPassword = lit_in_rSide.GetByAncs(assignPassword);
+
+// Find password inside define methods
+CxList defineMethods = Find_Methods().FindByShortName("define");
+CxList pswParameter = All.GetParameters(defineMethods, 0).FindByType(typeof(StringLiteral));
+CxList pswLiteralParameter = All.GetParameters(defineMethods, 1).FindByType(typeof(StringLiteral));
+
+pswParameter = pswParameter * psw;
+pswLiteralParameter = pswLiteralParameter * strLiterals;
+CxList definePasswords = defineMethods.FindByParameters(pswParameter).FindByParameters(pswLiteralParameter);
+
+result = definePasswords + 
+//	equalsPassword + 
+	assignPassword;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

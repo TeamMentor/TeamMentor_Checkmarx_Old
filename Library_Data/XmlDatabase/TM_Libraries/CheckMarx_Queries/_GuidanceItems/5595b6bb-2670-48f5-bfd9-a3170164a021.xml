@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5595b6bb-2670-48f5-bfd9-a3170164a021</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1992 - Add Second Order DB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1992
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1292
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (param.Length == 2)
+{
+	try
+	{
+		CxList db = param[0] as CxList;
+		string[] dbCommands = param[1] as string[];
+	
+		CxList methods = Find_Methods();
+		db = db.GetTargetOfMembers();
+
+		//Block below looks for direct DB acccess by X variable
+		//for example:
+		// x.OnSubmit();
+		CxList dbRef = All.FindAllReferences(db);
+		CxList dbTarget = dbRef.GetMembersOfTarget();
+		CxList directDBAccess = All.NewCxList();
+		foreach (string str in dbCommands)
+		{
+			directDBAccess += dbTarget.FindByShortName(str, false);
+		}
+
+		//If X is returned value, it may be used after it
+		//we are looking who call the function that returns X
+		//Example z = foo()
+		// foo(){ Dim X = db(product); Return X}
+
+		CxList returnStmt = dbRef.GetAncOfType(typeof(ReturnStmt));// looks Anc that returns X
+		CxList returnStmtAncMethod = returnStmt.GetAncOfType(typeof(MethodDecl)); // Tooks just functions it self: foo()
+		CxList refDBAccessMethods = All.FindAllReferences(returnStmtAncMethod) - returnStmtAncMethod; //looks for z = foo()
+		//Build the methdos that applied 
+		// For example: 	Accessor.GetTopFiveOrdersById(OrderPosition).InsertOnSubmit(cust)
+		CxList theTarget = refDBAccessMethods.GetMembersOfTarget();
+		CxList DBAccessRightSide = All.NewCxList();
+		foreach (string str in dbCommands)
+		{
+			DBAccessRightSide += theTarget.FindByShortName(str, false);
+		}
+
+		// The block below looks for "second oreder"
+		// For example
+		// 1) 	Dim xxx
+		//		xxx = GetOrderById(1)
+		//		xxx.DeleteOnSubmit(cust)
+		//
+		// 2)  dataGridView1.DataSource = Accessor.GetTopFiveOrdersById(OrderPosition)	
+		//	   dataGridView1.DataSource.InsertOnSubmit(cust)
+
+		CxList secondOrderLinq = All.GetByAncs(refDBAccessMethods.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+		CxList secondOrderLinqRef = All.FindAllReferences(secondOrderLinq);
+		CxList secondOrderLinqTarget = secondOrderLinqRef.GetMembersOfTarget();
+
+		CxList secondOrderDBAccess = new CxList();
+		foreach (string str in dbCommands)
+		{
+			secondOrderDBAccess += secondOrderLinqTarget.FindByShortName(str, false);
+		}
+	
+		result = secondOrderDBAccess + DBAccessRightSide + directDBAccess;
+	}
+	catch (Exception ex)
+	{
+		
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

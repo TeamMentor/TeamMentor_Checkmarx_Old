@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>96b6bf3e-6d80-46d7-b43f-5d55d6a1f40a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1978 - Find Zend Interactive Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1978
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //every Zend application contains a Bootstrap class which extends Zend_Application_Bootstrap
+CxList trc = All.FindByType(typeof(TypeRefCollection));
+CxList extend = All.FindByType(typeof(TypeRef)).GetByAncs(trc);
+CxList extendZend = extend.FindByShortName("*Zend*");
+
+if (extendZend.Count == 0){
+	return result;
+}
+
+//finds Zend unique interactive outputs
+
+//handle Zend_Controller_Request
+CxList methods = Find_Methods();
+CxList extendActionController = extend.FindByShortName("*Action*");
+
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList zendControllerResponse = (methods + memberAccess).FindByShortName("sendResponse") +
+	(methods + memberAccess).FindByShortName("__toString") +
+	(methods + memberAccess).FindByShortName("append*") +
+	(methods + memberAccess).FindByShortName("setBody") +
+	(methods + memberAccess).FindByShortName("setHeader") +
+	(methods + memberAccess).FindByShortName("setRawHeader") +
+	(methods + memberAccess).FindByShortName("setRedirect") +
+	(methods + memberAccess).FindByShortName("sendHeaders") +
+	(methods + memberAccess).FindByShortName("prepend") +
+	(methods + memberAccess).FindByShortName("output*") +
+	(methods + memberAccess).FindByShortName("insert");
+
+
+CxList responseParams = memberAccess.FindByShortName("body") +
+	memberAccess.FindByShortName("header*");
+zendControllerResponse += responseParams;
+
+CxList ur = All.FindByType(typeof(UnknownReference));
+CxList thisR = All.FindByType(typeof(ThisRef));
+CxList myClass = All.FindByType(typeof(ClassDecl));
+CxList getInst = memberAccess.FindByShortName("getInstance") +
+	memberAccess.FindByShortName("instance");
+
+foreach(CxList cur in zendControllerResponse)
+{
+	CxList unrf = cur.GetTargetOfMembers() * ur;
+	CxList rightSideOfAsn = Find_Methods().DataInfluencingOn(unrf);
+	rightSideOfAsn += (cur.GetTargetOfMembers()) * memberAccess;
+	CxList ma = rightSideOfAsn.FindByShortName("getResponse")
+		+ rightSideOfAsn.FindByShortName("response")
+		+ rightSideOfAsn.FindByShortName("_response");
+	CxList GetClass = (cur.GetTargetOfMembers() + ma.GetTargetOfMembers()) * thisR;
+	GetClass = GetClass.FindByShortName("*Controller");
+	CxList fromAnywhere = (cur.GetTargetOfMembers() + ma.GetTargetOfMembers()) * getInst;
+	
+	CxList directAccess = ur.FindByShortName("*Controller*").FindByFathers(fromAnywhere);
+	
+	if(extendActionController.GetByAncs(trc.FindByFathers(myClass.FindDefinition(GetClass))).Count &gt; 0 || directAccess.Count &gt; 0)
+	{
+		result += cur;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

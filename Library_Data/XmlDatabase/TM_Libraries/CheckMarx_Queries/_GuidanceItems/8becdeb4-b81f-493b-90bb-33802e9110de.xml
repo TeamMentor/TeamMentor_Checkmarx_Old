@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8becdeb4-b81f-493b-90bb-33802e9110de</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1892 - R03 04 01 Obj Defined Outside Minimal Scope</Title>
+    <Category>CWE: 10815</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10815</h1>
+  <iframe height="500" src="/content/10815" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1892
+Cwe : 10815
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 3-4-1
+ ------------------------------
+ This query searches for declarations of identifiers outside their minimal scope.
+
+ The Example below shows code with vulnerability:
+
+	int foo(int k) 
+	{
+		int j = k++;	//Non-compliant
+		{
+			int i = j;	//Compliant
+		}
+	}
+
+*/
+
+CxList decls = All.FindByType(typeof(Declarator));
+CxList unknownRefs = All.FindByType(typeof(UnknownReference)).FindAllReferences(decls);
+decls = All.FindDefinition(unknownRefs);
+
+string oldfile = "";
+CxList oldUnknown = All.NewCxList();
+
+foreach (CxList decl in decls) {
+	CxList scope = decl.GetAncOfType(typeof(StatementCollection));
+	if (scope.Count == 0){
+		scope = decl.GetAncOfType(typeof(ClassDecl));
+		if (scope.Count == 0){
+			scope = decl.GetAncOfType(typeof(StructDecl));
+		}
+	}
+	string declFile = ((CSharpGraph) decl.data.GetByIndex(0)).LinePragma.FileName;
+	CxList refs = All.NewCxList();
+	if (!declFile.Equals(oldfile)) {
+		oldUnknown = unknownRefs.FindByFileName(declFile);
+	}
+	refs = oldUnknown.FindAllReferences(decl) - decl;
+	oldfile = declFile;
+	if (refs.Count == 0) {
+		continue;
+	}
+	int counter = 0;
+	CxList firstRef = All.NewCxList();
+	CxList refScope = All.NewCxList();
+	while (refScope.Count == 0 &amp;&amp; counter </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

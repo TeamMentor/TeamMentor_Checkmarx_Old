@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5aaa50f9-afdd-4e87-865c-e84a38a502a9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1967 - ESAPI Banned API</Title>
+    <Category>CWE: 676</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  676</h1>
+  <iframe height="500" src="/content/676" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1967
+Cwe : 676
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+The following APIs are banned when using ESAPI, because there are good ESAPI substitute for them:
+
+ System.out.println() -&gt; Logger.*
+ Throwable.printStackTrace() -&gt; Logger.*
+ Runtime.exec() -&gt; Executor.safeExec()
+ Reader.readLine() -&gt; Validator.safeReadLine()
+ Session.getId() -&gt; Randomizer.getRandomString() (better not to use at all)
+ ServletRequest.getUserPrincipal() -&gt; Authenticator.getCurrentUser()
+ ServletRequest.isUserInRole() -&gt; AccessController.isAuthorized*()
+ Session.invalidate() -&gt; Authenticator.logout()
+ Math.Random.* -&gt; Randomizer.*
+ File.createTempFile() -&gt; Randomizer.getRandomFilename()
+ ServletResponse.setContentType() -&gt; HTTPUtilities.setContentType()
+ ServletResponse.sendRedirect() -&gt; HTTPUtilities.sendSafeRedirect()
+ RequestDispatcher.forward() -&gt; HTTPUtilities.sendSafeForward()
+ ServletResponse.addHeader() -&gt; HTTPUtilities.addSafeHeader()
+ ServletResponse.addCookie() -&gt; HTTPUtilities.addSafeCookie()
+ ServletRequest.isSecure() -&gt; HTTPUtilties.isSecureChannel()
+ Properties.* -&gt; EncryptedProperties.*
+ ServletContext.log() -&gt; Logger.*
+ java.security and javax.crypto -&gt; Encryptor.*
+ java.net.URLEncoder/Decoder -&gt; Encoder.encodeForURL/decodeForURL
+ java.sql.Statement.execute -&gt; PreparedStatement.execute
+ ServletResponse.encodeURL -&gt; HTTPUtilities.safeEncodeURL (better not to use at all)
+ ServletResponse.encodeRedirectURL -&gt; HTTPUtilities.safeEncodeRedirectURL (better not to use at all)
+
+*/
+result = 
+	All.FindByMemberAccess("out.println") +
+	All.FindByMemberAccess("Throwable.printStackTrace") +
+	All.FindByMemberAccess("Runtime.exec") +
+	All.FindByMemberAccess("Reader.readLine") +
+	All.FindByMemberAccess("Session.getId") +
+	All.FindByMemberAccess("ServletRequest.getUserPrincipal") +
+	All.FindByMemberAccess("ServletRequest.isUserInRole") +
+	All.FindByMemberAccess("Session.invalidate") +
+	All.FindByMemberAccess("Math.Random") +
+	All.FindByMemberAccess("File.createTempFile") +
+	All.FindByMemberAccess("ServletResponse.setContentType") +
+	All.FindByMemberAccess("ServletResponse.sendRedirect") +
+	All.FindByMemberAccess("RequestDispatcher.forward") +
+	All.FindByMemberAccess("ServletResponse.addHeader") +
+	All.FindByMemberAccess("ServletResponse.addCookie") +
+	All.FindByMemberAccess("ServletRequest.isSecure") +
+	All.FindByMemberAccess("Properties.*") +
+	All.FindByMemberAccess("ServletContext.log") +
+	All.FindByMemberAccess("java.security") +
+	All.FindByMemberAccess("javax.crypto") +
+	All.FindByMemberAccess("net.URLEncoder") +
+	All.FindByMemberAccess("net.URLDecoder") +
+	All.FindByMemberAccess("Statement.execute") +
+	All.FindByMemberAccess("ServletResponse.encodeURL") +
+	All.FindByMemberAccess("ServletResponse.encodeRedirectURL");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

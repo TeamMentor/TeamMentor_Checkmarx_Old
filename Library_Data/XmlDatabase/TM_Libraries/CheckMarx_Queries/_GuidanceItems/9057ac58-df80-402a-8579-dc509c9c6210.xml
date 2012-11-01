@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9057ac58-df80-402a-8579-dc509c9c6210</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1801 - Potential URL Redirection Attack</Title>
+    <Category>CWE: 10506</Category>
+    <Phase>Apex Low Visibility</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10506</h1>
+  <iframe height="500" src="/content/10506" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1801
+Cwe : 10506
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 5
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList reference = All.FindByShortName("pagereference") + 
+	All.FindByShortName("currentpage");
+reference = All.GetByAncs(reference) - reference;
+
+CxList referencePath = reference + All.FindAllReferences(reference);
+referencePath = All.GetByAncs(referencePath) + referencePath.GetAncOfType(typeof(AssignExpr));
+
+CxList inputs = All * Find_Url_Current_Page() * Find_Interactive_Inputs();
+CxList sanitize = Find_Integers() + Find_Id_Sanitizers() + Find_Test_Code() + Find_NonLeft_Binary(referencePath);
+
+reference -= reference.GetByAncs(Find_Boolean_Conditions());
+
+CxList refInputs = inputs * reference - sanitize;
+sanitize -= reference;
+reference -= Find_NonLeft_Binary(reference) + reference.FindByType(typeof(BinaryExpr));
+result = inputs.InfluencingOnAndNotSanitized(reference, sanitize) + refInputs;
+
+result -= result.DataInfluencedBy(result);
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

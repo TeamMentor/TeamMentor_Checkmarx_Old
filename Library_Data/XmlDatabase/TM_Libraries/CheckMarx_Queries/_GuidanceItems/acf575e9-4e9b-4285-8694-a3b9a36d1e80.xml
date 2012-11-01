@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>acf575e9-4e9b-4285-8694-a3b9a36d1e80</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>407 - Find URL Encode</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 407
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 24
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> //CxList encode = All.FindByMemberAccess("Server.UrlEncode") +
+//	All.FindByMemberAccess("HttpUtility.UrlEncode") +
+//	All.FindByMemberAccess("HttpServerUtility.UrlEncode") + 
+//	All.FindByMemberAccess("AntiXss.UrlEncode");	// AntiXss
+
+CxList encode = Find_Methods().FindByShortName("*URLencode*", false);
+result = encode;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

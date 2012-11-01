@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>843be432-f1d1-46f0-a3ed-303ca8adef07</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1216 - Divide By Zero</Title>
+    <Category>CWE: 369</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  369</h1>
+  <iframe height="500" src="/content/369" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1216
+Cwe : 369
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Direct division by zero
+// Find all zeros. They are inserted to suspiction list 
+// because each zero may be part of x/0 calculation
+CxList zero = All.FindByName("0").FindByType(typeof(IntegerLiteral));
+CxList bin = All.FindByType(typeof(BinaryExpr));
+
+// "call" to any array index, like : a[1]
+CxList indexer = All.FindByType(typeof(IndexerRef));
+
+// The "UnknownReference" type returns the any type of variables, not methods call fro example, or
+// any refference to array, but variables
+CxList unknown = All.FindByType(typeof(UnknownReference));
+
+
+// We can be apply method by following way
+//			for(int i = 0; i nChildren() ; i++) {
+//					SGPropertyNode * acloud = layer_def-&gt;getChild(i);
+// Note, that i has value 0, but method that applied is getChiled(i)
+// so this cases should be removed as well, in order to prevent false positive cases
+// we need to take care very carifully. 
+// One one hand if we will remove ALL methods from suspiction list, we can remove right cases like
+//		int f(int p){
+//			return 0;
+//		}
+//So just methods that there deffinition is not declared will be removed from the list
+
+// find all methods
+CxList methods = Find_Methods();
+
+// find methods defenitins
+CxList metDefinitions = All.FindDefinition(methods);
+// remove from the methods list that will be sanitisers, methods calls that have definitions
+// so just methods appling without difinition is stay in sanitize list
+// reason: we do not know if this method realy returs zero, so in order to avoid false positive
+// we assume that it not returns zero
+methods -= methods.FindAllReferences(metDefinitions);
+
+CxList cond = unknown * Get_Conditions();
+
+
+CxList sanitize = bin + indexer + methods;
+
+// the potential divide by zero is path from zero to variable that not passed throw sanitize plus zero list
+// In general, potentialDiv can include the expression like 0/5, because 0 in the zero list
+// To resolve it, the IF statement below will take just right side in consadiration
+CxList potentialDiv = unknown * unknown.InfluencedByAndNotSanitized(zero, sanitize) + zero;
+
+potentialDiv = potentialDiv.FindByFathers(bin);
+
+// The potential Bin is object of the DOM type "Binary Expression"
+CxList potentialBin = potentialDiv.GetFathers();
+CxList conditions = cond.FindAllReferences(potentialDiv);
+
+foreach (CxList b in potentialBin)
+{
+	try
+	{
+		BinaryExpr g = b.data.GetByIndex(0) as BinaryExpr;
+		if (g != null &amp;&amp; g.Operator == BinaryOperator.Divide)
+		{		
+			Expression right = g.Right;
+			if (right != null)
+			{
+				// We are under BinaryOperator.Divide if statement , just x/y expression took in considiration
+				// where x and y are Expressions type in DOM. In case the binary expression will be in format
+				// x/(a+b) the right side will be a+b. and nodeId of "+" will be returned. In any case 
+				// potential variable below will point to the right side expression NodeId
+				CxList potential = potentialDiv.FindById(right.NodeId);
+					
+				//the if below hanlde x/0 cases
+				if (potential.FindByName("0").Count == 1){
+					result += potential;
+				}
+				else{
+					int len = right.Text.IndexOf(" Inst#");
+					if (len &gt;= 0)
+					{
+						string text = right.Text.Substring(0, len);							
+						text = text.Substring(text.LastIndexOf(".") + 1);
+						CxList d = potentialDiv.FindByFathers(b);
+						if (d.FindByShortName(text).Count == 1)
+						{
+							CxList ifStmtCheck = conditions.FindAllReferences(potential).GetAncOfType(typeof(IfStmt));
+							ifStmtCheck = potential.GetByAncs(ifStmtCheck);
+							if (ifStmtCheck.Count == 0)
+							{								
+								result = result + zero.InfluencingOnAndNotSanitized(potential, sanitize);
+							}
+						}
+					} 
+				}
+			}
+		}
+		
+	}
+	catch
+	{
+		// just in case we haven't found some exception
+	}
+}
+
+// Division by input
+CxList inputs = Find_Interactive_Inputs();
+potentialDiv = unknown * unknown.GetByAncs(bin).DataInfluencedBy(inputs);
+CxList potentialIn = inputs * inputs.DataInfluencingOn(potentialDiv);
+
+potentialBin = All.NewCxList();
+foreach (CxList b in bin)
+{
+	BinaryExpr g = b.data.GetByIndex(0) as BinaryExpr;
+	if (g != null &amp;&amp; g.Operator == BinaryOperator.Divide)
+	{
+		potentialBin += b;
+	}
+}
+potentialDiv = potentialDiv.GetByAncs(potentialBin);
+conditions = cond.FindAllReferences(potentialDiv);
+
+foreach (CxList b in potentialBin)
+{
+	try
+	{
+		BinaryExpr g = b.data.GetByIndex(0) as BinaryExpr;
+		if (g != null &amp;&amp; g.Right != null)
+		{
+			CxList gRight = All.FindById(g.Right.NodeId);
+			CxList div = potentialDiv.GetByAncs(gRight);
+			foreach (CxList d in div)
+			{
+				CxList ifStmtCheck = conditions.FindAllReferences(d).GetAncOfType(typeof(IfStmt));
+				ifStmtCheck = d.GetByAncs(ifStmtCheck);
+				if (ifStmtCheck.Count == 0)
+				{
+					result += potentialIn.InfluencingOn(d).ConcatenateAllSources(d);
+				}
+			}
+		}
+	}
+	catch (Exception ex)
+	{
+		// just in case we haven't found some exception
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

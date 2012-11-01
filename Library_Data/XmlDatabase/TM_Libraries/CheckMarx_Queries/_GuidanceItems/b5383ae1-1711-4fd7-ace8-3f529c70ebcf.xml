@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b5383ae1-1711-4fd7-ace8-3f529c70ebcf</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1921 - R02 05 01 Digraphs</Title>
+    <Category>CWE: 10750</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10750</h1>
+  <iframe height="500" src="/content/10750" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1921
+Cwe : 10750
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 2-5-1
+ ------------------------------
+ This query finds all digraph statements
+ 
+ Digraphs are &lt;% %&gt;, <_3a_ _3a_="">, %: , %:%:
+
+ The Example below shows code with vulnerability:  
+
+   void f(A  *a<_3a_103a_>)        //non-compliant
+   {
+       &lt;% a&lt;:0:&gt;-&gt;f2 &lt; 20 &gt; (); %&gt;   //non-compliant
+       int k;
+       if(k)
+	     &lt;% k = 6;%&gt;                 //non-compliant
+	     f(a);
+   }
+*/
+ 
+result = All.FindByRegex(@"(&lt;%)|(%&gt;)|(<_3a_29_7c_28_3a_>)|(%:)", All.NewCxList());</_3a_29_7c_28_3a_></_3a_103a_></_3a_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

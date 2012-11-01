@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>3ab672f0-f215-4c55-8a7f-7cbe7abc9d9c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1640 - Collapse of Data into Unsafe Value</Title>
+    <Category>CWE: 182</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  182</h1>
+  <iframe height="500" src="/content/182" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1640
+Cwe : 182
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Inputs();
+CxList outputs = Find_XSS_Outputs();
+CxList methods = Find_Methods();
+
+// Find all Replace
+CxList replace = All.FindByShortName("replace*");
+
+// Look at replace that is affected by inputs, and affecting outputs (potential XSS),
+// but does not pass throgh a sanitizer
+CxList sanitize = Find_XSS_Sanitize();
+CxList relevantReplace = replace
+	.InfluencedByAndNotSanitized(inputs, sanitize)
+	.InfluencingOnAndNotSanitized(outputs, sanitize);
+
+// remove replaces in loop statement (which might be a good enough sanitization after all)
+CxList loops = relevantReplace.GetAncOfType(typeof(IterationStmt));
+CxList relevantReplaceInLoop = relevantReplace.GetByAncs(loops);
+
+result = relevantReplace - relevantReplaceInLoop;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

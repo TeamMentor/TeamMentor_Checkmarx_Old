@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6cdd7141-8c43-49e6-bc38-7ca10f397445</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1854 - R15 02 Non Empty Switch Clause Without Break</Title>
+    <Category>CWE: 11042</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11042</h1>
+  <iframe height="500" src="/content/11042" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1854
+Cwe : 11042
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 15-2
+------------------------------
+This query searches for non empty switch clauses (cases) that don't contain a break statement;
+
+	The Example below shows code with vulnerability: 
+
+switch (i)
+{
+      case 1:
+      {
+         i++;
+	  }                     
+	  default:
+      {
+		 i=3;
+		 break;
+      }
+}
+
+*/
+
+// find cases with non case statements inside them
+CxList cases = All.FindByType(typeof(Case));
+CxList nonCases = All - cases;
+CxList nonEmptyCases = nonCases.GetAncOfType(typeof(Case));
+
+// remove those with a break statement directly inside them
+CxList casesWithBreak = cases * All.FindByType(typeof(BreakStmt)).GetFathers().GetFathers();
+//return casesWithBreak;
+result = nonEmptyCases - casesWithBreak;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

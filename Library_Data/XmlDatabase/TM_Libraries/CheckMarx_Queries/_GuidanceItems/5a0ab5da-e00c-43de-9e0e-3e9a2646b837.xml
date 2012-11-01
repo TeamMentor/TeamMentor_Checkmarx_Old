@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5a0ab5da-e00c-43de-9e0e-3e9a2646b837</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1897 - R06 04 06 Non Default Final Clause In Switch Statement</Title>
+    <Category>CWE: 10817</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10817</h1>
+  <iframe height="500" src="/content/10817" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1897
+Cwe : 10817
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA CPP RULE 6-4-6
+--------------------------------
+This query searches switches where the final case is not "default", or if all enum types were called as cases.
+
+
+	The Example below shows code with vulnerability: 
+
+switch ( defaults )
+   {
+      case 1U:
+      {
+         use_uint16 ( defaults );
+         break;
+      }
+      default:                       
+      {
+		 use_uint16(defaults);
+         break;
+      }
+      case 2U:
+      {
+         use_uint16 ( defaults );
+         break;
+      }
+   }
+
+
+*/
+
+CxList enumMembers = All.FindByType(typeof(EnumMemberDecl));
+CxList enumTypes = All.GetClass(enumMembers);
+CxList enumTypeRefs = All.FindByType(typeof(TypeRef)).FindByName(enumTypes);
+CxList enumInst = enumTypeRefs.GetAncOfType(typeof(Declarator));
+
+CxList switches = All.FindByType(typeof(SwitchStmt));
+CxList cases = All.FindByType(typeof(Case));
+CxList conditions = All.FindByFathers(switches) - cases;
+// Get only relevant conditions and their declarators
+conditions = conditions.FindByName(enumInst);
+enumInst = enumInst.FindByName(conditions);
+enumTypeRefs = enumTypeRefs.GetByAncs(enumInst);
+enumTypes = enumTypes.FindByName(enumTypeRefs);
+enumMembers = enumMembers.GetByClass(enumTypes);
+
+CxList enumSwitches = conditions.GetFathers();
+switches -= enumSwitches;
+
+foreach (CxList sw in enumSwitches) {
+	CxList currEnum = enumTypeRefs.GetByAncs(enumInst.FindByName(conditions.FindByFathers(sw)));
+	currEnum = enumMembers.GetByClass(enumTypes.FindByName(currEnum));
+	CxList sonCases = cases.FindByFathers(sw);
+	if (currEnum.Count &gt; sonCases.Count) {
+		switches += sw;
+	}
+}
+
+// go over switches, add switches with no default, or default is a middle case
+foreach (CxList sw in switches){
+	CxList sonCases = cases.FindByFathers(sw);
+	bool foundDefault = false;
+	
+	// search cases until default is found
+	foreach (CxList curCase in sonCases){
+		Case myCase = curCase.data.GetByIndex(0) as Case;
+		if (foundDefault){
+			
+			// A case exists after the default, we want to add this switch
+			foundDefault = false;
+			break;
+		}
+		
+		if (myCase.IsDefault){
+			foundDefault = true;
+		}
+	}
+	
+	if (!foundDefault)
+		result += sw;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

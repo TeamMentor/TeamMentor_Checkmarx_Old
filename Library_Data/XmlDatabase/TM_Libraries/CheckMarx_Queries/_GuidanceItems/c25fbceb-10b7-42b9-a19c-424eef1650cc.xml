@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c25fbceb-10b7-42b9-a19c-424eef1650cc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2018 - Stored XSS</Title>
+    <Category>CWE: 79</Category>
+    <Phase>Perl High Risk</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  79</h1>
+  <iframe height="500" src="/content/79" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2018
+Cwe : 79
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1293
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList db = Find_DB_Out() + Find_Read();
+CxList outputs = Find_Interactive_Outputs(); ///TODO: check if sanitized when running cgi
+
+CxList sanitize = Find_XSS_Sanitize();
+result = db.InfluencingOnAndNotSanitized(outputs, sanitize);
+
+result -= result.DataInfluencingOn(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

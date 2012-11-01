@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0c8819ce-9cd1-456f-800e-5ed62ea3cc79</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1070 - Find DB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VB6</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1070
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1005
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = 	All.FindByMemberAccess("object.open") + 
+			All.FindByMemberAccess(".open") + 
+			All.FindByShortName("openrecordset");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

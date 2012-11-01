@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d9066e83-a206-4170-9d08-9e320e842511</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>107 - Find Member With Target level2</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 107
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 8
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // $ASP
+
+// Usage:
+// Find_Member_With_Target_level2("Scripting.FileSystemObject", "m1", "m2")
+
+// Sample code:
+// Set obj1 = Server.CreateObject("Scripting.FileSystemObject") 
+// Set obj2 = obj1.m1
+// obj2.m2
+
+if (param.Length == 3)
+{
+	string type = param[0] as string;
+	string command = param[1] as string;
+	string m2param = param[2] as string;
+	
+	CxList m1 = Find_Member_With_Target(type, command);	
+	
+	CxList rightSide1 = All.FindByAssignmentSide(CxList.AssignmentSide.Right);
+	CxList rightSide = All.GetByAncs(rightSide1) * m1;
+	
+	CxList leftSide = rightSide.GetAncOfType(typeof(AssignExpr));
+	leftSide = All.GetByAncs(leftSide).FindByAssignmentSide(CxList.AssignmentSide.Left);
+	leftSide = All.FindAllReferences(leftSide);
+	
+	CxList findCommand = leftSide.GetMembersOfTarget().FindByShortName(m2param, false);
+	result = findCommand;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>91652ac2-f284-4076-96a5-f102d4649623</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1480 - Find Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1480
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = Find_Sanitize_DBX() + 
+	Find_Sanitize_MSSQL() + 
+	Find_Sanitize_MYSQL() + 
+	Find_Sanitize_ODBC() + 
+	Find_Sanitize_ORACLE() + 
+	Find_Sanitize_PDO() + 
+	Find_Sanitize_PG();
+
+result += Find_General_Sanitize();
+
+CxList methods = Find_Methods();
+result += methods.FindByShortName("fix_quotes");
+//result += methods.FindByShortName("update_attribute");
+
+
+// Parametrised queries
+CxList db = Find_DB();
+CxList dbFind = 
+	db.FindByShortName("find*") + 
+	db.FindByShortName("first") +
+	db.FindByShortName("last") +
+	db.FindByShortName("all") +
+	db.FindByShortName("execute") +
+	db.FindByShortName("update") +
+	db.FindByShortName("scoped_by_*");
+	
+CxList allParams = All.GetByAncs(All.GetParameters(dbFind));
+CxList conditions = allParams.FindByShortName("conditions");
+conditions = conditions.GetAncOfType(typeof(Param));
+CxList arr = All.GetByAncs(conditions).GetAncOfType(typeof(ArrayInitializer));
+CxList arrayThings = All.FindByFathers(arr);
+
+foreach (CxList oneArr in arr)
+{
+	ArrayInitializer ai = oneArr.data.GetByIndex(0) as ArrayInitializer;
+	CxList leave = arrayThings.FindById(ai.InitialValues[0].NodeId);
+	arrayThings -= leave;
+}
+//allParams -= allParams.GetByAncs(conditions) - allParams.GetByAncs(arrayThings);
+//result += allParams;
+result += arrayThings; // is it enough???
+
+CxList dbNotFind = db - dbFind;
+CxList dbNotFindParams = All.FindByParameters(dbNotFind);
+result += All.GetParameters(dbNotFindParams) - All.GetParameters(dbNotFindParams, 0);
+
+
+// Find by (and alike)
+CxList findBy = 
+	methods.FindByShortName("find_last_by*") +
+	methods.FindByShortName("find_or_initialize_by*") +
+	methods.FindByShortName("find_or_create_by*") +
+	methods.FindByShortName("find_all_by*") +
+	methods.FindByShortName("scoped_by*") +
+	methods.FindByShortName("find_by*");
+findBy -= findBy.FindByShortName("find_by_sql*");
+result += All.GetByAncs(All.GetParameters(findBy));
+
+
+CxList assignString = Find_Strings().GetByAncs(Find_DB()).FindByAssignmentSide(CxList.AssignmentSide.Left);
+assignString -= assignString.FindByShortName("condition", false);
+assignString -= assignString.FindByShortName("cond", false);
+result += All.GetByAncs(assignString.GetFathers());
+
+//result += db - db.FindByShortName("conditions") - db.FindByShortName("find_by_sql");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

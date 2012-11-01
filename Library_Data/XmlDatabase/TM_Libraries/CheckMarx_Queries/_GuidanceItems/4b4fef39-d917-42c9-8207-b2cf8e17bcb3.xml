@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4b4fef39-d917-42c9-8207-b2cf8e17bcb3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>153 - Just One of Equals and Hash code Defined</Title>
+    <Category>CWE: 581</Category>
+    <Phase>ASP Low Visibility</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  581</h1>
+  <iframe height="500" src="/content/581" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 153
+Cwe : 581
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 11
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList equals = All.FindByShortName("equals").FindByType(typeof(MethodDecl));
+equals = equals.FindByFieldAttributes(Modifiers.Override);
+
+CxList getHash = All.FindByShortName("gethashcode").FindByType(typeof(MethodDecl));
+getHash = getHash.FindByFieldAttributes(Modifiers.Override);
+
+result = All.GetClass(equals) - All.GetClass(equals) * All.GetClass(getHash) +
+		 All.GetClass(getHash) - All.GetClass(equals) * All.GetClass(getHash);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

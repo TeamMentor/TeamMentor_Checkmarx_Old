@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>44afe0e4-343b-41d5-893a-c434c6585e36</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1428 - Find DB In</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1428
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = Find_DB_In_DBX() + 
+	Find_DB_In_MYSQL() + 
+	Find_DB_In_MSSQL() + 
+	Find_DB_In_ODBC() + 
+	Find_DB_In_ORACLE() + 
+	Find_DB_In_PDO() + 
+	Find_DB_In_PG() +
+	Find_DB_In_Salesforce() +
+	Find_DB_In_DBI() +
+	Find_DB_In_Postgres() +
+	Find_DB_In_Mongo() +
+	Find_DB_In_ActiveRecord();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

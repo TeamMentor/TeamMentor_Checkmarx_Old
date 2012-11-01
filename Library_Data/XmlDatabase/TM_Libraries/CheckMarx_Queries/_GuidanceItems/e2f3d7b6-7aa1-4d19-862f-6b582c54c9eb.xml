@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e2f3d7b6-7aa1-4d19-862f-6b582c54c9eb</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1013 - Something In Loop</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Apex Force com Code Quality</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1013
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1001
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+This query checks if any of the values in an input CxList appears in any type of loop.
+We do 2 different checks - one for typeof(IterationStmt) and one for typeof(ForEachStmt)
+
+Parameters:
+	param[0] - the input CxList, which we check if it contains members that are in a loop
+	param[1] - a relevant set of objects in which we test ths query
+	param[2] - a flag, ... have to check :)
+*/
+if (param.Length == 3)
+{
+	CxList listToCheck = param[0] as CxList;
+	CxList subset = param[1] as CxList;
+	bool checkForNull = (bool) param[2];
+	
+	CxList bareListToCheck = listToCheck;	// ??
+	
+	// Find apex code
+	CxList apex = Find_Apex_Files();
+	
+	// Calculate all methods calls that contain a member of the listToCheck, up to 5 level deep
+	CxList methods = apex.FindAllReferences(listToCheck.GetAncOfType(typeof(MethodDecl)));
+	int numMeth = 0;
+	for(int i = 0; i  numMeth; i++)
+	{
+		numMeth = methods.Count;
+		methods += apex.FindAllReferences(methods.GetAncOfType(typeof(MethodDecl)));
+	}
+
+	// Add these methods to the list to check, because these methods might also be called in a loop
+	listToCheck += methods;
+	
+	// Leave only results in the defined subset
+	listToCheck *= subset;
+
+	/// Part 1 - IterationStmt
+	CxList iterations = listToCheck.GetAncOfType(typeof(IterationStmt));
+	CxList listToCheckIter = listToCheck.GetByAncs(iterations);
+	CxList somethingInIteration = All.NewCxList();
+	foreach (CxList iteration in iterations)
+	{
+		try
+		{
+			IterationStmt iter = iteration.data.GetByIndex(0) as IterationStmt;
+			if (iter != null)
+			{
+				/*Statement firstInit = null;
+				CxList iter1 = All.NewCxList();
+				if (iter.Test != null)
+				{
+					iter1 = All.FindById(iter.Test.NodeId);
+				}
+				if (iter.Increment != null &amp;&amp; iter.Increment.Count &gt; 0)
+				{
+					firstInit = iter.Increment[0];
+				}
+				else if (iter.Init != null &amp;&amp; iter.Init.Count &gt; 0)
+				{
+					firstInit = iter.Init[0];
+				}
+				if (firstInit != null)
+				{
+					iter1 = apex.GetByAncs(All.FindById(firstInit.NodeId)).FindByType(typeof(UnknownReference));
+					if (iter1.Count &gt; 1)
+					{
+						CSharpGraph cs = iter1.data.GetByIndex(0) as CSharpGraph;
+						iter1 = All.FindById(cs.NodeId);
+					}
+				}*/
+				CxList memberInLoop = listToCheckIter.GetByAncs(iteration);
+
+				if (memberInLoop.Count &gt; 0)
+				{
+					somethingInIteration += iteration.Concatenate(Connect_Loop_To_DB(memberInLoop, bareListToCheck, checkForNull));
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			// just in case there's an unexpected exception
+		}
+	}
+
+	/// Part 2 - ForEachStmt
+
+	// Get things inside a foreach statement
+	CxList forEach = listToCheck.GetAncOfType(typeof(ForEachStmt));
+	
+	// Remove listToCheck values that are the collection of the FOR loop
+	foreach (CxList loop in forEach)
+	{
+		try
+		{
+			ForEachStmt l = loop.data.GetByIndex(0) as ForEachStmt;
+			CxList statementsToRemove = All.FindById(l.Statements[0].NodeId) + All.FindById(l.Collection.NodeId);
+			listToCheck -= listToCheck.GetByAncs(statementsToRemove);
+		}
+		catch (Exception ex)
+		{
+			// just in case there's an unexpected exception
+		}
+	}
+
+	CxList listToCheckInForEach = listToCheck.GetByAncs(forEach);
+
+	CxList somethingInForEach = All.NewCxList();
+	foreach (CxList iteration in forEach)
+	{
+		try
+		{
+		//	ForEachStmt fe = iteration.data.GetByIndex(0) as ForEachStmt;
+		//	if (fe != null)
+		//	{
+				/*CxList fe1 = All.FindById(fe.Statements[0].NodeId);
+				fe1 = apex.GetByAncs(fe1).FindByType(typeof(UnknownReference));
+				if (fe1.Count &gt; 1)
+				{
+					CSharpGraph cs = fe1.data.GetByIndex(1) as CSharpGraph;
+					fe1 = All.FindById(cs.NodeId);
+				}
+				if (fe1.FindByShortName("__cx__").Count &gt; 0)
+				{
+					fe1 = All.FindById(fe.Collection.NodeId);
+				}*/
+
+				CxList memberInLoop = listToCheckInForEach.GetByAncs(iteration);
+				if (memberInLoop.Count &gt; 0)
+				{
+					ForEachStmt l = iteration.data.GetByIndex(0) as ForEachStmt;
+					CxList firstStatement = All.FindById(l.Statements[0].NodeId);
+					CxList start = All.FindById(l.Collection.NodeId) + All.GetByAncs(firstStatement);
+					start -= start.DataInfluencingOn(start);
+				CxList addition = Connect_Loop_To_DB(memberInLoop, bareListToCheck, checkForNull).DataInfluencedBy(start);
+				if (addition.Count == 0)
+				{
+					addition = iteration.Concatenate(Connect_Loop_To_DB(memberInLoop, bareListToCheck, checkForNull));
+				}
+				somethingInForEach += addition;
+			}
+		//	}
+		}
+		catch (Exception ex)
+		{
+		}
+	}
+
+	result = somethingInIteration + somethingInForEach;
+	result -= Find_Test_Code();
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

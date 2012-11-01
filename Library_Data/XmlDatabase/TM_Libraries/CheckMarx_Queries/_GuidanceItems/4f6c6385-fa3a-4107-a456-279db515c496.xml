@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>4f6c6385-fa3a-4107-a456-279db515c496</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1827 - R06 04 Bit Fields Type</Title>
+    <Category>CWE: 11015</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11015</h1>
+  <iframe height="500" src="/content/11015" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1827
+Cwe : 11015
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 6-4
+------------------------------
+This query searches for bit fields of type other than signed/unsigned int
+
+	The Example below shows code with vulnerability: 
+
+int i;
+
+*/
+
+CxList fd = All.FindByType(typeof(FieldDecl));
+CxList tr = All.FindByType(typeof(TypeRef));
+
+
+CxList unrf = All.FindByType(typeof(UnknownReference));
+CxList methodInv = All.FindByType(typeof(MethodInvokeExpr));
+
+CxList typedefs = All.FindByName("CX_TYPEDEF").FindByType(typeof(StringLiteral));
+CxList tdIntegralTypes = tr.GetByAncs(typedefs.GetAncOfType(typeof(FieldDecl)));
+
+tdIntegralTypes = tdIntegralTypes.FindByShortName("int");
+CxList newName = tdIntegralTypes.GetAncOfType(typeof(FieldDecl));
+newName = newName.FindByExtendedType("unsigned") + newName.FindByExtendedType("signed");
+
+CxList potentialBf = fd.FindByRegex(@"[\}|\w]+?\s*?:\s*?\d+?\s*?;", false, false, false);
+potentialBf = tr.FindByFathers(potentialBf);
+
+CxList integral = potentialBf.FindByShortName("int");
+CxList nonIntegral = (potentialBf) - integral;
+
+
+foreach(CxList temp in newName)
+{
+	CxList ok = potentialBf.FindByShortName(temp);
+	nonIntegral -= ok;
+}
+result += nonIntegral;
+CxList fieldDecls = integral.GetFathers() * fd;
+CxList unsigned = fieldDecls.FindByExtendedType("unsigned");
+CxList signed = fieldDecls.FindByExtendedType("signed");
+
+result += fieldDecls - (signed + unsigned);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

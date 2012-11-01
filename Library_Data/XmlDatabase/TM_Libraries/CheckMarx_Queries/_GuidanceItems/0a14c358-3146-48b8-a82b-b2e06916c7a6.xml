@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0a14c358-3146-48b8-a82b-b2e06916c7a6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1657 - Reachable Assertion</Title>
+    <Category>CWE: 617</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  617</h1>
+  <iframe height="500" src="/content/617" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1657
+Cwe : 617
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+// Inputs
+CxList inputs = Find_Inputs();
+// Binary expressions
+CxList bin = All.FindByType(typeof(BinaryExpr));
+// Expression statements, that contain binary expressions
+CxList expr = bin.GetAncOfType(typeof(ExprStmt));
+// Binary that are under these expression statements
+CxList binaryExpr = bin.GetByAncs(expr);
+// Find boolean that might be set previously
+CxList boolean = All.FindByType("bool");
+
+// Since "assert" is currently not parsed, I find all binary expression that come as parameters
+// for it. We will miss cases like "assert X" where X is interesting
+CxList assert = (boolean + binaryExpr).FindByRegex(@"\Wassert\W");
+
+// Add specific junit assert methods
+CxList allAsserts = Find_Methods().FindByShortName("assert*");
+assert += allAsserts.FindByShortName("assertArrayEquals");
+assert += allAsserts.FindByShortName("assertEquals");
+assert += allAsserts.FindByShortName("assertFalse");
+assert += allAsserts.FindByShortName("assertNotNull");
+assert += allAsserts.FindByShortName("assertNotSame");
+assert += allAsserts.FindByShortName("assertNull");
+assert += allAsserts.FindByShortName("assertSame");
+assert += allAsserts.FindByShortName("assertThat");
+assert += allAsserts.FindByShortName("assertTrue");
+
+// All assert influenced by inputs
+result = inputs.DataInfluencingOn(assert);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

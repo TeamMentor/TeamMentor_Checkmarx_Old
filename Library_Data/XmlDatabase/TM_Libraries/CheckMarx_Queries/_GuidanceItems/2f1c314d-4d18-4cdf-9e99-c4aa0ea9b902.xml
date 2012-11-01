@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2f1c314d-4d18-4cdf-9e99-c4aa0ea9b902</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1881 - R20 11 Using Abort Exit Getenv System Functions From Stdlib H</Title>
+    <Category>CWE: 11069</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11069</h1>
+  <iframe height="500" src="/content/11069" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1881
+Cwe : 11069
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 20-11
+------------------------------
+This query searches for usage of the library functions 'abort', 'exit', 'getenv' and 'system' from library <stdlib.h>
+
+	The Example below shows code with vulnerability: 
+
+#include <stdlib.h>
+
+void mc2_2011 ( void )
+{
+  int32_t mc2_2011_status;
+  char_t * mc2_2011_env;
+
+  mc2_2011_env = getenv ( "path" );
+}
+
+*/
+
+// Safety check for the violating h file
+CxList includes = All.FindByType(typeof(StringLiteral)).GetParameters(Find_Methods()
+	.FindByShortName("CX_INCL"));
+CxList hFile = includes.FindByShortName("stdlib.h");
+if (hFile.Count == 0)
+	return result;
+
+// Start with all instances of the functions
+CxList methodInvokes = All.FindByType(typeof(MethodInvokeExpr));
+CxList funcs = methodInvokes.FindByShortName("abort")+
+	methodInvokes.FindByShortName("exit")+
+	methodInvokes.FindByShortName("getenv")+
+	methodInvokes.FindByShortName("system");
+
+// Remove all locally defined instances
+CxList defs = All.FindDefinition(funcs);
+funcs -= funcs.FindAllReferences(defs);
+
+result = funcs;</stdlib.h></stdlib.h></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

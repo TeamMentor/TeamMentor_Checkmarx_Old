@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ca9a90af-33a6-4695-baa4-e851e63a5ebc</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>70 - Empty Catch</Title>
+    <Category>CWE: 390</Category>
+    <Phase>ASP Best Coding Practice</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  390</h1>
+  <iframe height="500" src="/content/390" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 70
+Cwe : 390
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 7
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Catch = All.FindByType(typeof(Catch));
+foreach(CxList curCatch in Catch)
+{
+	Catch ch = curCatch.data.GetByIndex(0) as Catch;
+	if(ch.Statements.Count == 0)
+	{
+		result += curCatch;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

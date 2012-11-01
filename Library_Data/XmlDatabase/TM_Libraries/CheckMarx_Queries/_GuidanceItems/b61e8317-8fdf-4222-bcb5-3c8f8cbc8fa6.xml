@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b61e8317-8fdf-4222-bcb5-3c8f8cbc8fa6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>778 - XPath Injection</Title>
+    <Category>CWE: 91</Category>
+    <Phase>VbNet High Risk</Phase>
+    <Technology>VbNet</Technology>
+    <Type>With Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>TeamMentor page for: XPath Injection</h1>
+  <iframe height="300" src="/html/XPath_Injection" width="100%">
+  </iframe>
+  <h1>Content for CWE ID:  91</h1>
+  <iframe height="500" src="/content/91" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 778
+Cwe : 91
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 45
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList XPath = 	All.FindByMemberAccess("xpathnavigator.compile") +
+				All.FindByMemberAccess("xpathnavigator.select*") + 
+				All.FindByMemberAccess("xpathnavigator.evaluate");
+CxList inputs = Find_Interactive_Inputs();
+CxList sanitized = Find_Sanitize();
+result = XPath.InfluencedByAndNotSanitized(inputs, sanitized);
+//</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

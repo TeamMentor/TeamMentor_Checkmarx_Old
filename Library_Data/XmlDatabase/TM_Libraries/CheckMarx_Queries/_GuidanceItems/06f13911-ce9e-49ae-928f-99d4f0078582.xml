@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>06f13911-ce9e-49ae-928f-99d4f0078582</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>627 - Cross Site History Manipulation</Title>
+    <Category>CWE: 203</Category>
+    <Phase>Java Medium Threat</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  203</h1>
+  <iframe height="500" src="/content/203" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 627
+Cwe : 203
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 37
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList redirect = 
+	methods.FindByMemberAccess("HttpServletResponse.sendRedirect") +
+	methods.FindByMemberAccess("HTTPUtilities.safeSendRedirect"); // ESAPI
+
+CxList rand = All.FindByMemberAccess("Random.Next*", false) + 
+	All.FindByMemberAccess("Math.random", false) +
+	Get_ESAPI().FindByMemberAccess("Randomizer.*"); // ESAPI
+redirect -= redirect.DataInfluencedBy(rand);
+
+CxList ifStmt = All.FindByType(typeof(IfStmt));
+CxList caseStmt = All.FindByType(typeof(Case));
+
+result = redirect.GetByAncs(ifStmt).GetAncOfType(typeof(IfStmt)) + 
+	redirect.GetByAncs(caseStmt).GetAncOfType(typeof(Case));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

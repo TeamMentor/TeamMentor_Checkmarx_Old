@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ee2f8f73-93ba-4180-912b-333e6adcbc6b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1911 - R10 01 01 Find Virtual Base Classes</Title>
+    <Category>CWE: 10795</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10795</h1>
+  <iframe height="500" src="/content/10795" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1911
+Cwe : 10795
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 10-1-1
+ ------------------------------
+ This query searches for classes derived from virtual classes.
+ 
+ The Example below shows code with vulnerability: 
+
+      class Foo
+			{
+			public:
+				void DoSomething() {  }
+			};
+		class Bar : public virtual Foo 			//Non-compliant
+			{
+			public:
+			    void DoSpecific() { }
+			};
+
+*/
+
+CxList classes = All.FindByType(typeof(ClassDecl));
+foreach(CxList curr in classes) {
+
+	ClassDecl currClass = (ClassDecl) curr.data.GetByIndex(0);
+	TypeRefCollection bases = currClass.BaseTypes;
+	foreach (TypeRef currType in bases) {
+		String name = currType.TypeName;
+		if (name.Equals("virtual")) {
+			result += curr;	
+			continue;
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

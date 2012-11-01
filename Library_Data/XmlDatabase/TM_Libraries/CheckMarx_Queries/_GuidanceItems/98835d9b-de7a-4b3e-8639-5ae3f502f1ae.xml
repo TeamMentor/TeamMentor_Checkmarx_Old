@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>98835d9b-de7a-4b3e-8639-5ae3f502f1ae</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2001 - Find Interactive Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2001
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1292
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+// console outputs
+CxList outputs = 
+	methods.FindByShortName("print") +
+	methods.FindByShortName("printf") +
+	methods.FindByShortName("echo") +
+	methods.FindByShortName("say");
+
+// Remove print commands with single parameter that is a string
+CxList singleParam = outputs - outputs.FindByParameters(All.GetParameters(outputs, 1));
+singleParam = All.GetParameters(singleParam);
+
+singleParam = outputs.FindByParameters(singleParam.FindByType(typeof(StringLiteral)));
+outputs -= singleParam;
+
+// return statements in upper level - directly to an http page
+CxList ns = All.FindByType(typeof(NamespaceDecl)).FindByShortName("Namespace_*");
+CxList classes = All.FindByType(typeof(ClassDecl)).FindByShortName("Class_*").GetByAncs(ns);
+CxList methodDecl = All.FindByType(typeof(MethodDecl));
+CxList methods1 = methodDecl.FindByShortName("Method_*").GetByAncs(classes);
+methods1 += methodDecl.FindByShortName("$").GetByAncs(classes);
+methods1 += methodDecl.FindByShortName("").GetByAncs(classes);
+
+CxList ret = All.FindByType(typeof(ReturnStmt)).GetByAncs(methods1);
+
+result = outputs + All.FindByShortName("$*").GetByAncs(ret);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

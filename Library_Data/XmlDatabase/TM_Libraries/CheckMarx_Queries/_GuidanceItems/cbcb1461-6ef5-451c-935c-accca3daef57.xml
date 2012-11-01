@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>cbcb1461-6ef5-451c-935c-accca3daef57</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1867 - R19 01 Non Prepocessor Command Before Include In File</Title>
+    <Category>CWE: 11055</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11055</h1>
+  <iframe height="500" src="/content/11055" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1867
+Cwe : 11055
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 19-1
+------------------------------
+This query searches for non - preprocessor or comments preceding '#include' statements in a file
+
+	The Example below shows code with vulnerability: 
+
+int i;
+
+#include "misra.h"
+
+void main(){
+...
+}
+
+*/
+
+CxList includes = All.FindByType(typeof(MethodDecl)).FindByShortName("INCLUDEREPLACE");
+
+if (includes.Count == 0)
+	return result;
+
+// Removes includes and all associated dom objects except the class decl
+// (we'll remove that later);
+CxList nonPermitted = All - All.GetByAncs(includes);
+
+// initialize first file stats
+MethodDecl firstInc = includes.data.GetByIndex(0) as MethodDecl;
+string lastFileName = firstInc.LinePragma.FileName;
+int furthestIncludeLineInFile = firstInc.LinePragma.Line;
+int furthestIncludeColumnInFile = firstInc.LinePragma.Column;
+
+// go over all includes, finding out the furthest incldue in each file
+foreach (CxList inc in includes){
+	MethodDecl curInc = inc.data.GetByIndex(0) as MethodDecl;
+	string curFileName = curInc.LinePragma.FileName;
+	int curLine =  curInc.LinePragma.Line;
+	int curColumn =  curInc.LinePragma.Column;
+	
+	// if new file started, parse old file
+	if (String.Compare(lastFileName, curFileName) != 0){
+		CxList curFileNonPermitted = nonPermitted.FindByFileName(lastFileName);
+		// for all potential violators, check if they are before the last include in the file
+		foreach (CxList curNonPermitted in curFileNonPermitted){
+			CSharpGraph nonPermittedCommand = curNonPermitted.data.GetByIndex(0) as CSharpGraph;
+			int nonPermLine = nonPermittedCommand.LinePragma.Line;
+			int nonPermColumn = curInc.LinePragma.Column;
+			if (nonPermLine  furthestIncludeLineInFile){
+			furthestIncludeLineInFile = curLine;
+			if (curColumn &gt; furthestIncludeColumnInFile){
+				furthestIncludeColumnInFile = curColumn;
+			}
+		}
+		
+	}
+}
+
+
+// remove all class decls resulting from includes
+foreach (CxList inc in includes){
+	MethodDecl curInc = inc.data.GetByIndex(0) as MethodDecl;
+	string curFileName = curInc.LinePragma.FileName;
+	int curLine = curInc.LinePragma.Line;
+	result -= result.FindByPosition(curFileName, curLine);
+}
+
+// clean result duplicates in same line
+foreach (CxList res in result){
+	CSharpGraph curRes = res.data.GetByIndex(0) as CSharpGraph;
+	string curFileName = curRes.LinePragma.FileName;
+	int curLine = curRes.LinePragma.Line;
+	result -= result.FindByPosition(curFileName, curLine);
+	result += res;
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

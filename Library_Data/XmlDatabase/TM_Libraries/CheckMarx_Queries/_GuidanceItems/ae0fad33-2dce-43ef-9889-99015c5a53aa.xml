@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ae0fad33-2dce-43ef-9889-99015c5a53aa</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2077 - Find Kohana Interactive Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2077
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+This query finds Kohana unique interactive outputs
+*/
+CxList methods = Find_Methods();
+CxList trc = All.FindByType(typeof(TypeRefCollection));
+
+
+//handle Kohana responses
+CxList extend = All.FindByType(typeof(TypeRef)).GetByAncs(trc);
+CxList extendController = extend.FindByShortName("*Controller*");
+
+
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+CxList controllerRequest = 
+	(methods + memberAccess).FindByShortName("body") +  
+	(methods + memberAccess).FindByShortName("cookie") +  
+	(methods + memberAccess).FindByShortName("headers") + 
+	(methods + memberAccess).FindByShortName("send_file") +  
+	(methods + memberAccess).FindByShortName("send_headers") +
+(methods + memberAccess).FindByShortName("__toString");
+
+controllerRequest += 
+	memberAccess.FindByShortName("_body") + 
+	memberAccess.FindByShortName("_cookies") +
+	memberAccess.FindByShortName("_header");
+
+
+//methods that create response instance
+CxList getInst = 
+	All.FindByMemberAccess("Response.factory") +
+	All.FindByMemberAccess("Request.create_response") + 
+	All.FindByMemberAccess("Request.response");
+
+
+
+CxList ur = All.FindByType(typeof(UnknownReference));
+CxList thisR = All.FindByType(typeof(ThisRef));
+CxList myClass = All.FindByType(typeof(ClassDecl));
+
+
+//finds only the invokes from inside a controller class
+foreach(CxList cur in controllerRequest)
+{
+	
+	CxList rf = cur.GetTargetOfMembers();	
+	if (((getInst * rf).Count &gt; 0) || (getInst.DataInfluencingOn(rf).Count &gt; 0)){
+		result += cur;
+	}
+	
+		
+	CxList rightSideOfAsn = methods.DataInfluencingOn(rf);
+	
+	rightSideOfAsn += rf * memberAccess;
+	CxList ma = 
+		rightSideOfAsn.FindByShortName("_response")+
+		rightSideOfAsn.FindByShortName("response")+
+		rightSideOfAsn.FindByShortName("output");//deprecated from Kohana 3.0 onwords
+	
+	
+	CxList getClass = (rf + ma.GetTargetOfMembers()) * thisR;
+	getClass = getClass.FindByShortName("*Controller*");
+	
+	
+	CxList fromAnywhere = (rf + ma.GetTargetOfMembers()) * getInst;
+	CxList directAccess = ur.FindByShortName("*Controller*").FindByFathers(fromAnywhere);
+
+	
+	if(extendController.GetByAncs(trc.FindByFathers(myClass.FindDefinition(getClass))).Count &gt; 0 || directAccess.Count &gt; 0)
+	{
+		result += cur;
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

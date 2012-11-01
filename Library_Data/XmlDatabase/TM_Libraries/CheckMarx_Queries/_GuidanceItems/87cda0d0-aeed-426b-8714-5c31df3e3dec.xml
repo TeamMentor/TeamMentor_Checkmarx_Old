@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>87cda0d0-aeed-426b-8714-5c31df3e3dec</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1955 - Find Execute</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1955
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList struts = All.FindByFileName("*.xml").FindByFileName("*struts*");
+CxList strings = Find_Strings();
+CxList actionMethods = struts.FindByMemberAccess("ACTION.METHOD").GetFathers();
+CxList actionTypes = struts.FindByMemberAccess("ACTION.TYPE").GetFathers();
+actionTypes += struts.FindByMemberAccess("ACTION.CLASS").GetFathers();
+
+actionMethods = strings.GetByAncs(actionMethods);
+actionTypes = strings.GetByAncs(actionTypes);
+
+CxList actions = actionMethods.GetAncOfType(typeof(StatementCollection));
+actionTypes = actionTypes.GetByAncs(actions);
+CxList methodDecl = All.FindByType(typeof(MethodDecl));
+CxList classes = Find_Class_Decl();
+CxList actionClass = Find_Action_Classes();
+CxList executes = methodDecl.FindByShortName("execute") + methodDecl.FindByShortName("perform");
+executes = executes.GetByAncs(actionClass);
+CxList methodsInAction = methodDecl.GetByAncs(actionClass);
+
+if (actionTypes.Count &gt; 0)
+{
+	foreach (CxList actionMethod in actionMethods)
+	{
+		CxList action = actionMethod.GetAncOfType(typeof(StatementCollection));
+		CxList actionType = actionTypes.GetByAncs(action);
+		if (actionType != null)
+		{
+			try
+			{
+				CSharpGraph gType = actionType.data.GetByIndex(0) as CSharpGraph;
+				CxList typeName = actionClass.FindByType(gType.Text.Trim('"'));
+				CSharpGraph gMethod = actionMethod.data.GetByIndex(0) as CSharpGraph;
+				CxList execute = methodsInAction.GetByAncs(typeName).FindByShortName(gMethod.Text.Trim('"'));
+				executes += execute;
+			}
+			catch (Exception ex)
+			{
+				// just in case
+			}
+		}
+	}
+}
+
+result = executes;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

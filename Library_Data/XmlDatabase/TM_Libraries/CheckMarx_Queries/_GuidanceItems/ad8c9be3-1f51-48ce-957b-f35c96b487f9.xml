@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ad8c9be3-1f51-48ce-957b-f35c96b487f9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1600 - Poor Authorization and Authentication</Title>
+    <Category>CWE: 259</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  259</h1>
+  <iframe height="500" src="/content/259" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1600
+Cwe : 259
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Poor_Authorization_and_Authentication (Strong_Authentication_Failure)
+// -----------------------------------
+// Vulnerability: Failure to protect resources with strong authentication 
+// There are following weeknes is detected
+// 1) The user password is kept in application in hardcoded format
+// 2) The system tries to perform loging according Device ID
+// 3) The login to the system according the GSM information is weeknes as well, but it should be handled by
+//    the query Privacy Violation
+
+CxList emptyString = Find_Empty_Strings();
+CxList NULL = All.FindByName("null");
+CxList psw = Find_Passwords();
+
+// Find password in an initialization operation
+CxList psw_in_lSide = psw.FindByAssignmentSide(CxList.AssignmentSide.Left);
+CxList psw_in_lSide_decl = psw_in_lSide.FindByType(typeof(Declarator));
+
+CxList strLiterals = Find_Strings() - emptyString - NULL;
+
+//when the hardcoded string includes a space or dot we believe 
+//it is not a password string
+strLiterals -= strLiterals.FindByName("* *");
+strLiterals -= strLiterals.FindByName("*.*");
+
+CxList lit_in_rSide = strLiterals.FindByAssignmentSide(CxList.AssignmentSide.Right);
+
+CxList initializedPassword = psw_in_lSide_decl.FindByInitialization(lit_in_rSide);
+
+// Find password in an "equals" operation
+CxList eq = All.FindByMemberAccess("String.equals");
+eq *= psw.GetMembersOfTarget();
+CxList equalsPassword = strLiterals.GetByAncs(eq);
+
+eq = All.FindByMemberAccess("String.equals");
+eq *= strLiterals.GetMembersOfTarget();
+equalsPassword += psw.GetByAncs(eq);
+
+// Find password in assignments
+CxList assignPassword = psw_in_lSide.GetAncOfType(typeof(AssignExpr));
+assignPassword = lit_in_rSide.GetByAncs(assignPassword);
+
+result = initializedPassword + equalsPassword + assignPassword;
+
+// Send DeviceID info over network
+CxList http = All.FindByName(@"*http*");
+CxList outInfluencedByHttp = Find_Write() * Find_Write().DataInfluencedBy(http);
+CxList deviceIDInfo = All.FindByMemberAccess("TelephonyManager.getDeviceId");										  
+result += deviceIDInfo.DataInfluencingOn(outInfluencedByHttp);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

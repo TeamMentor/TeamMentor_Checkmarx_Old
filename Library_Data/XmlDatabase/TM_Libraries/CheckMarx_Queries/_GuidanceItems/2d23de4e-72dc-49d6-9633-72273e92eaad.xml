@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2d23de4e-72dc-49d6-9633-72273e92eaad</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1359 - Find DB In</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1359
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList dbMethods = 
+	Find_DB_In_DBX() +
+	Find_DB_In_MYSQL() +
+	Find_DB_In_MSSQL() +
+	Find_DB_In_ODBC() +
+	Find_DB_In_ORACLE() +
+	Find_DB_In_PDO() +	
+	Find_DB_In_PG();
+
+CxList methods = Find_Methods();
+CxList directDbMethods = 
+	methods.FindByShortName("PMA_DBI_query");
+dbMethods += directDbMethods;
+
+// 3 - Find queries and execute method invoke that are members of target named db
+CxList general = methods.FindByShortName("*query*", false) + methods.FindByShortName("*exec*", false);
+general = general.GetTargetOfMembers();
+CxList generalCallToDb = general.FindByShortName("*db*").GetMembersOfTarget();
+generalCallToDb += general.FindByShortName("*DB*").GetMembersOfTarget();
+generalCallToDb += general.FindByShortName("*Db*").GetMembersOfTarget();
+generalCallToDb += general.FindByShortName("*database*", false).GetMembersOfTarget();
+generalCallToDb += general.FindByShortName("*data_base*", false).GetMembersOfTarget();
+
+dbMethods += generalCallToDb;
+
+/* Filter out all methods declared within the code itself */
+
+/* Find all methods declarations */
+CxList method_decls = All.FindByType(typeof(MethodDecl));
+/* Find referances to db methods declared within the code */
+CxList method_ref = dbMethods.FindAllReferences(method_decls);
+
+result = dbMethods - method_ref; // remove references to db methods which declared within the code
+result += Find_Zend_DB_In() + Find_Kohana_DB_In()+Find_Cake_DB_In();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

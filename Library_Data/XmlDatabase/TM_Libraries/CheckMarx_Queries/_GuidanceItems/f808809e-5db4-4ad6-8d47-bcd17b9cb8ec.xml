@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>f808809e-5db4-4ad6-8d47-bcd17b9cb8ec</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2068 - Signifying Inheritence At Runtime</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2068
+Cwe : 0
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList isa = All.FindByShortName("@ISA");
+
+result = isa * isa.DataInfluencedBy(All);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

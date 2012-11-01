@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>15d0cb05-382b-4e52-92ca-997015b93f4a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>389 - Find Interactive Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 389
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 24
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = 	
+	All.FindByMemberAccess("CheckBoxList.SelectedItem") + 
+	All.FindByMemberAccess("CheckBoxList.SelectedValue") + 
+	All.FindByMemberAccess("CommandEventArgs.CommandArgument") +
+	All.FindByMemberAccess("CommandEventArgs.CommandArgument").GetMembersOfTarget() +
+	All.FindByMemberAccess("Console.Read*") +
+	All.FindByMemberAccess("DataRow.Item") + 
+	All.FindByMemberAccess("DropDownList.SelectedItem") + 
+	All.FindByMemberAccess("DropDownList.SelectedValue") + 
+	All.FindByMemberAccess("file.value") +
+	All.FindByMemberAccess("FileUpload.FileName") + 
+	All.FindByMemberAccess("hidden.value") +
+	All.FindByMemberAccess("hidden.Value") +
+	All.FindByMemberAccess("HiddenField.Value") + 
+	All.FindByMemberAccess("HtmlInputFile.Value") + 
+	All.FindByMemberAccess("HtmlInputHidden.Value") + 
+	All.FindByMemberAccess("HtmlInputPassword.Value") + 
+	All.FindByMemberAccess("HtmlInputText.Value") +
+	All.FindByMemberAccess("HtmlSelect.Value") + 
+	All.FindByMemberAccess("HtmlTextArea.Value") +
+	All.FindByMemberAccess("HttpPostedFile.ContentType") + 
+	All.FindByMemberAccess("HttpPostedFile.FileName") + 
+	All.FindByMemberAccess("HttpRequest.*") +
+	All.FindByMemberAccess("ListBox.SelectedItem") + 
+	All.FindByMemberAccess("ListBox.SelectedValue") + 
+	All.FindByMemberAccess("ListControl.SelectedValue") + 
+	All.FindByMemberAccess("ListControl.Text") + 
+	All.FindByMemberAccess("ListItem.Value") + 
+	All.FindByMemberAccess("Panel.GroupingText") +
+	All.FindByMemberAccess("Panel.ID") + 
+	All.FindByMemberAccess("password.ID") +
+	All.FindByMemberAccess("password.value") +
+	All.FindByMemberAccess("password.Value") +
+	All.FindByMemberAccess("RadioButton.GroupName") + 
+	All.FindByMemberAccess("RadioButton.ID") + 
+	All.FindByMemberAccess("radioButton.Text") + 
+	All.FindByMemberAccess("RadioButton.Text") + 
+	All.FindByMemberAccess("RadioButtonList.ID") + 
+	All.FindByMemberAccess("RadioButtonList.Items") + 
+	All.FindByMemberAccess("RadioButtonList.SelectedItem") + 
+	All.FindByMemberAccess("RadioButtonList.SelectedValue") + 
+	All.FindByMemberAccess("Request.BinaryRead") + 
+	All.FindByMemberAccess("Request.BinaryRead").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.Cookies*") + 
+	All.FindByMemberAccess("Request.Cookies*").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.Form*") + 
+	All.FindByMemberAccess("Request.Form*").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.Headers") +
+	All.FindByMemberAccess("Request.Headers").GetMembersOfTarget() +
+	All.FindByMemberAccess("Request.Item") + 
+	All.FindByMemberAccess("Request.Item").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.Params") + 
+	All.FindByMemberAccess("Request.Params").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.QueryString*") + 
+	All.FindByMemberAccess("Request.QueryString*").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.RawUrl") + 
+	All.FindByMemberAccess("Request.RawUrl").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.Url") + 
+	All.FindByMemberAccess("Request.Url").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.UrlReferrer") + 
+	All.FindByMemberAccess("Request.UrlReferrer").GetMembersOfTarget() + 
+	All.FindByMemberAccess("Request.UserLanguages") + 
+	All.FindByMemberAccess("Request.UserLanguages").GetMembersOfTarget() + 
+	All.FindByMemberAccess("RichTextBox.Text") + 
+	All.FindByMemberAccess("select.ID") + 
+	All.FindByMemberAccess("select.value") +
+	All.FindByMemberAccess("Table.Caption") + 
+	All.FindByMemberAccess("Table.ID") + 
+	All.FindByMemberAccess("table.ID") + 
+	All.FindByMemberAccess("TableCell.Text") + 
+	All.FindByMemberAccess("TcpClient.GetStream") +
+	All.FindByMemberAccess("TcpListener.AcceptSocket") + 
+	All.FindByMemberAccess("text.ID") +
+	All.FindByMemberAccess("text.value") +
+	All.FindByMemberAccess("text.Value") +
+	All.FindByMemberAccess("textarea.ID") + 
+	All.FindByMemberAccess("TextBox.ID") + 
+	All.FindByMemberAccess("TextBox.Text") + 
+	All.FindByMemberAccess("Wizard.HeaderText") + 
+	All.FindByMemberAccess("Wizard.ID") + 
+	All.FindByName("Page.Request.ClientCertificate") + 
+	All.FindByName("Page.Request.Cookies*") +
+	All.FindByName("Page.Request.Form") +
+	All.FindByName("Page.Request.Headers") +
+	All.FindByName("Page.Request.Params") +
+	All.FindByName("Page.Request.QueryString*") +
+	All.FindByName("Page.Request.RawUrl") +
+	All.FindByName("Page.Request.Url") +
+	All.FindByName("Page.Request.UrlReferrer") +
+	All.FindByName("Request") + All.FindByName("Page.Request") + 
+	All.FindByName("Request.ClientCertificate") +
+	All.FindByName("Request.Cookies*") + 
+	All.FindByName("Request.Form") +
+	All.FindByName("Request.Headers") +
+	All.FindByName("Request.Params") +
+	All.FindByName("Request.QueryString*") +
+	All.FindByName("Request.RawUrl") +
+	All.FindByName("Request.Url") +
+	All.FindByName("Request.UrlReferrer") +
+	
+	Find_Interactive_Inputs_Components();
+	
+
+CxList The_Right = All.FindByAssignmentSide(CxList.AssignmentSide.Right) + All.FindByType(typeof(ReturnStmt));
+The_Right = All.GetByAncs(The_Right);
+CxList VS_On_The_Right = The_Right.FindByShortName("ViewState_*");
+VS_On_The_Right += The_Right.FindByName("ViewState.Item");
+CxList items = The_Right.FindByType(typeof(UnknownReference)) * The_Right.GetByAncs(All.FindByType(typeof(IndexerRef)));
+VS_On_The_Right += items.FindByType("DataRow");
+
+inputs = inputs + VS_On_The_Right;
+
+if(!All.isWebApplication)
+{
+	inputs += All.GetParameters(All.FindByName("*.Main").FindByType(typeof(MethodDecl))
+		.FindByFieldAttributes(Modifiers.Public | Modifiers.Static));
+}
+
+result = inputs - inputs.FindByAssignmentSide(CxList.AssignmentSide.Left) + 
+	Find_WS_Inputs() + Find_Remoting_Inputs() - Not_Interactive_Inputs() - 
+	All.FindByMemberAccess("Request.*").GetTargetOfMembers();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

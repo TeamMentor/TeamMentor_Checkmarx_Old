@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c134c06e-ef07-42eb-910b-76d2d6750922</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1564 - Inadequate Pointer Validation</Title>
+    <Category>CWE: 633</Category>
+    <Phase>CPP Medium Threat</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  633</h1>
+  <iframe height="500" src="/content/633" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1564
+Cwe : 633
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 21
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Inadequate Pointer Validation 
+// -----------------------------
+// The functions are obsolete and cannot guarantee that a pointer is valid or referenced memory is safe to use.
+
+
+CxList methods = Find_Methods();
+
+result =  methods.FindByShortName("IsBadWritePtr") + 
+		  methods.FindByShortName("IsBadCodePtr")  + 
+		  methods.FindByShortName("IsBadReadPtr")  +
+		  methods.FindByShortName("IsBadStringPtr");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

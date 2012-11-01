@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>12d8dceb-7317-4553-b5f9-dcf335c9abca</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>284 - CGI Stored XSS</Title>
+    <Category>CWE: 79</Category>
+    <Phase>CPP High Risk</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  79</h1>
+  <iframe height="500" src="/content/79" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 284
+Cwe : 79
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 18
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if (CGI().Count &gt; 0) //web application (CGI)
+{
+	CxList sanitize = Find_Sanitize() + All.FindByShortName("encode", false);
+	CxList stored = Find_DB() + Find_Read();
+	result = All.FindXSS(stored, Find_Outputs(), sanitize);
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

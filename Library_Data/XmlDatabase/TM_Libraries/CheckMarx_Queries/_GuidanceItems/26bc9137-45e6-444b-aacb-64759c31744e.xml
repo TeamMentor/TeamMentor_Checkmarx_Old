@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>26bc9137-45e6-444b-aacb-64759c31744e</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>742 - Find Parameters</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 742
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 43
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = All.FindByMemberAccess("sqlcommand.Parameters_*") +
+	All.FindByMemberAccess("oraclecommand.Parameters_*") +
+	All.FindByMemberAccess("odbccommand.Parameters_*") +
+	All.FindByMemberAccess("oledbcommand.Parameters_*") +
+		
+	All.FindByName("*.selectcommand.Parameters_*") + 
+	All.FindByName("*.updatecommand.Parameters_*") + 
+	All.FindByName("*.insertcommand.Parameters_*") +
+	All.FindByName("*.deletecommand.Parameters_*") +
+	
+	// EntLib
+	All.FindByMemberAccess("database.addinparameter") +
+	All.FindByMemberAccess("database.addoutparameter") +
+	All.FindByMemberAccess("database.addparameter") +
+			
+	All.FindByMemberAccess("oracledatabase.addinparameter") +
+	All.FindByMemberAccess("oracledatabase.addoutparameter") +
+	All.FindByMemberAccess("oracledatabase.addparameter") +
+		
+	All.FindByMemberAccess("sqldatabase.addinparameter") +
+	All.FindByMemberAccess("sqldatabase.addoutparameter") +
+	All.FindByMemberAccess("sqldatabase.addparameter") +
+		
+	All.FindByMemberAccess("genericdatabase.addinparameter") +
+	All.FindByMemberAccess("genericdatabase.addoutparameter") +
+	All.FindByMemberAccess("genericdatabase.addparameter");	
+
+result += result.GetAncOfType(typeof(MethodInvokeExpr));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

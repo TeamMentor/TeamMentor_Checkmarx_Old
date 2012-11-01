@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a149d265-23a5-43dd-ad4a-6a1a480222db</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1543 - Use of Hard coded Cryptographic Key</Title>
+    <Category>CWE: 321</Category>
+    <Phase>Ruby Medium Threat</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  321</h1>
+  <iframe height="500" src="/content/321" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1543
+Cwe : 321
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1283
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList emptyString = Find_Empty_Strings();
+CxList NULL = All.FindByName("null");
+CxList keys = All.FindByShortName("*ENC*", false).FindByShortName("*KEY*", false);
+
+CxList key_in_lSide = keys.FindByAssignmentSide(CxList.AssignmentSide.Left);
+CxList strLiterals = All.FindByType(typeof(PrimitiveExpr)) - emptyString - NULL;
+CxList lit_in_rSide = strLiterals.FindByAssignmentSide(CxList.AssignmentSide.Right);
+
+result = key_in_lSide.FindByFathers(key_in_lSide.GetFathers() * lit_in_rSide.GetFathers());
+CxList key_in_Field = All.GetByAncs(All.FindByType(typeof(FieldDecl)) + All.FindByType(typeof(ConstantDecl)))*keys;
+result += key_in_Field.DataInfluencedBy(strLiterals);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

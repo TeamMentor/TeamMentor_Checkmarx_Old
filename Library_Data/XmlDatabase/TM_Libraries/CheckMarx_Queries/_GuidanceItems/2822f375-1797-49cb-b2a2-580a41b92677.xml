@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2822f375-1797-49cb-b2a2-580a41b92677</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1669 - Using Referer Field for Authentication</Title>
+    <Category>CWE: 293</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  293</h1>
+  <iframe height="500" src="/content/293" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1669
+Cwe : 293
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> ///
+CxList Referer = All.FindByName("\"Referer\"");
+CxList header = All.FindByMemberAccess("request.getHeader");
+header = header.DataInfluencedBy(Referer);
+
+CxList ifStmt = All.FindByType(typeof(IfStmt));
+
+ifStmt = All.DataInfluencedBy(header).GetFathers() * ifStmt;
+
+CxList setSessionAttribute = All.FindByMemberAccess("getSession.setAttribute");
+setSessionAttribute = setSessionAttribute.GetByAncs(ifStmt);
+
+result = setSessionAttribute;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

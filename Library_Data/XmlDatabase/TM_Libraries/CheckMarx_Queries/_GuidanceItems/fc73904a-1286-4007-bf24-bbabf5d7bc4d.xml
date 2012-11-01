@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>fc73904a-1286-4007-bf24-bbabf5d7bc4d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1714 - Find Action Classes</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1714
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList classes = Find_Class_Decl();
+
+result =
+	classes.InheritsFrom("Action") + 
+	classes.InheritsFrom("DispatchActionSupport") + 
+	classes.InheritsFrom("ModelDriven") + 
+	classes.InheritsFrom("ActionSupport") + 
+	classes.InheritsFrom("LookupDispatchActionSupport") + 
+	classes.InheritsFrom("MappingDispatchActionSupport");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

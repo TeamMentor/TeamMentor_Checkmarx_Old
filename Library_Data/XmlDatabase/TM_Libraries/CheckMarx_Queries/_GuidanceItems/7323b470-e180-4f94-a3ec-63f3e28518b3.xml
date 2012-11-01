@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7323b470-e180-4f94-a3ec-63f3e28518b3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1863 - R16 07 Parameter Pointer To Const Where Not Modified</Title>
+    <Category>CWE: 11051</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11051</h1>
+  <iframe height="500" src="/content/11051" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1863
+Cwe : 11051
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 16-7
+------------------------------
+This query searches for aramaters in function definitions where param is pointer and not const pointer,
+ but the pointer target is not modified within the function body
+
+	The Example below shows code with vulnerability: 
+
+bool_t foo(int *i) 
+{
+	*i = *i * 2;
+	return 0;
+}
+
+*/
+
+// ignore function declarations and main
+CxList functionDefinitions = All.FindByType(typeof(StatementCollection)).GetFathers().FindByType(typeof(MethodDecl));
+functionDefinitions -= functionDefinitions.FindByShortName("main");
+// start with all pointer paramaters
+CxList definitionParams = All.FindByType(typeof(ParamDecl)).FindByFathers(All.FindByFathers(functionDefinitions));
+CxList pointerParams = definitionParams.FindByRegex(@"\w\s*?\*",false,false,false);
+
+// remove pointers to const
+pointerParams -= pointerParams.FindByRegex(@"(?:const(\s*\w+)?\s*\*)\w", false, false, false);
+
+// now only keep those whose data is changed
+CxList changedPointerDataRef = All.NewCxList();
+CxList pointerParamDataRef = All.FindAllReferences(pointerParams).GetFathers().FindByType(typeof(UnaryExpr)).FindByName("Pointer");
+
+// data ref direct assigments
+changedPointerDataRef += pointerParamDataRef.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+// data ref postfix/prefix increment/decrement
+CxList preIncDec = All.NewCxList();
+foreach (CxList cur in All.FindByType(typeof(UnaryExpr))){
+	UnaryOperator curOp = ((UnaryExpr) cur.data.GetByIndex(0)).Operator;
+	if ((curOp == UnaryOperator.Increment) || (curOp == UnaryOperator.Decrement)){
+		preIncDec += All.FindById(((UnaryExpr) cur.data.GetByIndex(0)).Right.NodeId);
+	}
+}
+CxList postIncDec = All.NewCxList();
+foreach (CxList cur in All.FindByType(typeof(PostfixExpr))){
+	PostfixOperator curOp = ((PostfixExpr) cur.data.GetByIndex(0)).Operator;
+	if ((curOp == PostfixOperator.Increment) || (curOp == PostfixOperator.Decrement)){
+		if (((PostfixExpr) cur.data.GetByIndex(0)).Left != null){
+			postIncDec += All.FindById(((PostfixExpr) cur.data.GetByIndex(0)).Left.NodeId);
+		}
+	}
+}
+
+// note cahnged paramaters
+changedPointerDataRef += pointerParamDataRef * (preIncDec + postIncDec);
+changedPointerDataRef += pointerParamDataRef * (preIncDec + postIncDec).GetFathers();
+
+// data ref passed by ref to function
+CxList adressObjs = All.FindByType(typeof(UnaryExpr)).FindByShortName("Address");
+changedPointerDataRef += pointerParamDataRef.FindByFathers(adressObjs.FindByFathers(All.FindByType(typeof(Param))));
+
+// remove all param decls who have an instance changed
+pointerParams -= pointerParams.FindDefinition(All.FindByFathers(changedPointerDataRef));
+
+// param itself passed by value to function
+pointerParams -= pointerParams.FindDefinition(All.FindAllReferences(pointerParams).FindByFathers(All.FindByType(typeof(Param))));
+
+// remove changes through array access
+CxList arrays = All.FindByType(typeof(IndexerRef)).FindAllReferences(pointerParams);
+arrays = arrays.FindByAssignmentSide(CxList.AssignmentSide.Left);
+arrays += All.FindByName(arrays).FindByFathers(arrays);
+pointerParams -= pointerParams.FindDefinition(arrays);
+
+result = pointerParams;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

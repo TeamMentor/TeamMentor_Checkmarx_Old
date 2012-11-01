@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b2d2e4a0-57a1-4cce-b33c-72fe346d2d9b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1673 - Multiple Binds to the Same Port</Title>
+    <Category>CWE: 605</Category>
+    <Phase>Java Medium Threat</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  605</h1>
+  <iframe height="500" src="/content/605" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1673
+Cwe : 605
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 37
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList bind = All.FindByMemberAccess("ServerSocket.bind");
+CxList socketAddress = All.FindByType("InetSocketAddress");
+CxList ports = All.GetParameters(socketAddress).FindByType(typeof(IntegerLiteral));
+CxList portsMethods = All.GetMethod(ports);
+
+foreach (CxList method in portsMethods)
+{
+	CxList methodPorts = ports.GetByAncs(method);
+	SortedList portNumbers = new SortedList();
+	foreach(CxList port in methodPorts)
+	{
+		IntegerLiteral g = port.data.GetByIndex(0) as IntegerLiteral;
+		int portNumber = -1;
+		if (int.TryParse(g.ShortName, out portNumber))
+		{
+			if (portNumbers.ContainsValue(portNumber))
+			{
+				result += port;
+				break;
+			}
+			else
+			{
+				portNumbers[portNumber] = portNumber;
+			}
+		}
+	}
+}</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

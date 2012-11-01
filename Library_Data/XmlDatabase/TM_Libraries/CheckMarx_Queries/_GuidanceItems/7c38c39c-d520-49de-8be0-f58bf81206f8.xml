@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7c38c39c-d520-49de-8be0-f58bf81206f8</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1666 - Unsynchronized Access To Shared Data</Title>
+    <Category>CWE: 567</Category>
+    <Phase>Java Low Visibility</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  567</h1>
+  <iframe height="500" src="/content/567" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1666
+Cwe : 567
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 36
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList logs = All.FindByType("Log") +
+	All.FindByType("Logger");
+
+CxList no_logs = All - logs;
+CxList statics = no_logs.FindAllReferences(no_logs.FindByFieldAttributes(Modifiers.Static) - 
+	no_logs.FindByFieldAttributes(Modifiers.Sealed) - 
+	no_logs.FindByFieldAttributes(Modifiers.Readonly));
+
+statics -= Find_Methods();
+			
+CxList inputs = Find_Interactive_Inputs() + All.FindByMemberAccess("ServerRequest.getAttribute");
+CxList threadSafetyIssue = inputs.DataInfluencingOn(statics);
+
+CxList Servlet = All.FindByName("*HttpServletRequest");
+CxList ServletClasses = All.GetClass(Servlet);
+
+CxList StaticFields = All.FindByType(typeof(FieldDecl)).FindByFieldAttributes(Checkmarx.Dom.Modifiers.Static);
+StaticFields = All.FindAllReferences(StaticFields) - StaticFields;
+StaticFields = StaticFields.GetByAncs(ServletClasses);
+
+
+CxList Locks = All.FindByType(typeof(LockStmt));
+StaticFields = StaticFields - StaticFields.GetByAncs(Locks);
+
+CxList nullLiteral = All.FindByType(typeof(NullLiteral));
+nullLiteral -= nullLiteral.FindByRegex("null");
+CxList nonNull = All - nullLiteral - StaticFields - StaticFields.GetMembersOfTarget();
+StaticFields = All * StaticFields.DataInfluencingOn(nonNull).DataInfluencedBy(nonNull)
+	+ StaticFields.GetByAncs(All.FindByType(typeof(PostfixExpr)).GetFathers());
+
+CxList StaticFieldsDef = All.FindDefinition(StaticFields);
+StaticFields -= StaticFieldsDef;
+
+result = threadSafetyIssue + StaticFields;
+/*
+foreach (CxList sf in StaticFields)
+{
+	CxList sfDef = StaticFieldsDef.FindDefinition(sf);
+	result += sfDef.Concatenate(sf);
+}
+*/</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

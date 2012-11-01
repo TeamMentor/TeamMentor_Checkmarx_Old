@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8876878c-5a9a-452a-a08f-3c6fde68426c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1441 - Find DB Methods</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1441
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList dbMethods = Find_DB_In();
+dbMethods += Find_DB_Out();
+//dbMethods += Find_Sanitize();
+
+dbMethods +=
+	methods.FindByShortName("mysql_*") +
+	methods.FindByShortName("mysqli*") +
+	methods.FindByShortName("pg_*") +
+	methods.FindByShortName("mssql_*") +
+	methods.FindByShortName("oci*") + 
+	methods.FindByShortName("dbx_*") +
+	methods.FindByShortName("odbc_*") +
+	methods.FindByShortName("dba_*");
+
+/* Filter out all methods declared within the code itself */
+
+/* Find all methods declarations */
+CxList method_decls = All.FindByType(typeof(MethodDecl));
+/* Find referances to db methods declared within the code */
+CxList method_ref = dbMethods.FindAllReferences(method_decls);
+
+result = dbMethods - method_ref; // remove references to db methods which declared within the code</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

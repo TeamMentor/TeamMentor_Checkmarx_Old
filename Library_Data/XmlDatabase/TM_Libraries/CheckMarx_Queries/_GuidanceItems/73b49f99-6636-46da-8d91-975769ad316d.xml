@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>73b49f99-6636-46da-8d91-975769ad316d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2075 - Find Kohana DB Out</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2075
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1271
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList createExp = All.FindByType(typeof(ObjectCreateExpr));
+CxList memberAccess = All.FindByType(typeof(MemberAccess));
+
+//Kohana_Database
+CxList suspectedDbMethods =(methods + memberAccess).FindByShortName("query");//sql injection is possible 
+CxList references = All.FindAllReferences(suspectedDbMethods.GetTargetOfMembers());
+
+CxList dbInstance = 
+	All.FindByMemberAccess("Database.instance") + 
+	All.FindByMemberAccess("Database_MySQL.instance") + 
+	All.FindByMemberAccess("Database_PDO.instance");
+
+
+
+dbInstance += createExp.FindByShortName("*Database*") + createExp.FindByShortName("*db*");
+
+
+CxList directDbMethods = new CxList();
+	
+//finds only the invokes of a Kohana Database
+foreach(CxList cur in suspectedDbMethods)
+{
+	CxList rf = cur.GetTargetOfMembers();		
+	CxList refer = references * rf;	
+	if (((dbInstance * rf).Count &gt; 0) || (dbInstance.DataInfluencingOn(rf).Count &gt; 0)){
+		directDbMethods += cur;
+	}
+}
+
+//query method invoke from inside a class which exteds Model_Database
+CxList trc = All.FindByType(typeof(TypeRefCollection));
+CxList extend = All.FindByType(typeof(TypeRef)).GetByAncs(trc);
+CxList extendModel = extend.FindByShortName("Model_Database*");
+CxList classDecModel = extendModel.GetAncOfType(typeof(ClassDecl));
+CxList model = All.FindByMemberAccess("_db.query*");
+
+result += model.GetByAncs(classDecModel);
+
+
+
+//handling Kohana Result
+CxList suspectedResult = 
+	(methods + memberAccess).FindByShortName("as_array") +
+	(methods + memberAccess).FindByShortName("get") +
+	(methods + memberAccess).FindByShortName("offsetGet");
+
+references = All.FindAllReferences(suspectedResult.GetTargetOfMembers());
+CxList Resultinstance = 
+	createExp.FindByShortName("Database_Result") +
+	createExp.FindByShortName("Database_MySQL_Result") +
+	createExp.FindByShortName("Database_Result_Cached");
+
+Resultinstance += (methods + memberAccess).FindByShortName("execute");
+Resultinstance += directDbMethods;//query method of Kohana_Database
+
+CxList directResultmethods = new CxList();
+	
+//finds only the invokes of a Kohana ORM methods
+foreach(CxList cur in suspectedResult)
+{
+	CxList rf = cur.GetTargetOfMembers();		
+	CxList refer = references * rf;	
+	if (((Resultinstance * rf).Count &gt; 0) || (Resultinstance.DataInfluencingOn(rf).Count &gt; 0)){
+		directResultmethods += cur;
+	}
+}
+
+//Kohana_Database
+directDbMethods +=  
+	(methods + memberAccess).FindByShortName("list_columns") + 
+	(methods + memberAccess).FindByShortName("list_tables");
+
+
+//Kohana_Database + KOhana_Query_Builder
+directDbMethods += (methods + memberAccess).FindByShortName("execute");
+
+
+//handling Kohana ORM 
+CxList suspectedORM = 
+	(methods + memberAccess).FindByShortName("as_array") +
+	(methods + memberAccess).FindByShortName("find") +
+	(methods + memberAccess).FindByShortName("find_all") + 
+	(methods + memberAccess).FindByShortName("list_columns") +
+	(methods + memberAccess).FindByShortName("save");
+
+references = All.FindAllReferences(suspectedORM.GetTargetOfMembers());
+CxList ORMinstance = All.FindByMemberAccess("ORM.factory");
+ORMinstance += createExp.FindByShortName("Model_*");
+
+CxList directORMmethods = new CxList();
+	
+//finds only the invokes of a Kohana ORM methods
+foreach(CxList cur in suspectedORM)
+{
+	CxList rf = cur.GetTargetOfMembers();		
+	CxList refer = references * rf;	
+	if (((ORMinstance * rf).Count &gt; 0) || (ORMinstance.DataInfluencingOn(rf).Count &gt; 0)){
+		directORMmethods += cur;
+	}
+}
+
+result += directDbMethods + directORMmethods + directResultmethods;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

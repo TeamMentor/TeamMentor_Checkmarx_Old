@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>71f386a6-ae3a-41ee-9467-29f1c56c3947</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>514 - Leftover Debug Code</Title>
+    <Category>CWE: 489</Category>
+    <Phase>Java Best Coding Practice</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  489</h1>
+  <iframe height="500" src="/content/489" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 514
+Cwe : 489
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 31
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> if(All.isWebApplication)
+{
+	result = All.FindByName("*.main").FindByType(typeof(MethodDecl))
+			.FindByFieldAttributes(Modifiers.Public | Modifiers.Static);
+}
+
+result += All.FindByType(typeof(StringLiteral)).FindByName("*DEBUG*", false);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

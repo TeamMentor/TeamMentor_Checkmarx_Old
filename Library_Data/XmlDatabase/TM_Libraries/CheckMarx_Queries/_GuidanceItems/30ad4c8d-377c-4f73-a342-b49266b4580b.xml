@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>30ad4c8d-377c-4f73-a342-b49266b4580b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>857 - Find Outputs XSRF</Title>
+    <Category>CWE: 0</Category>
+    <Phase>VbScript Vulnerabilities</Phase>
+    <Technology>VbScript</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 857
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 51
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList Alll = AllVbs();
+CxList methods = Alll.FindByType(typeof(MethodInvokeExpr));
+
+result = 
+	Alll.FindByShortName("action") + 
+	Alll.FindByShortName("src") +
+	
+	Alll.FindByMemberAccess("document.url") +
+	Alll.FindByMemberAccess("document.urlunencoded") +
+	methods.FindByMemberAccess("document.open") +
+	Alll.FindByMemberAccess("location.href") + 
+	
+	Alll.FindByMemberAccess("window.location") +
+	methods.FindByMemberAccess("window.open") +
+	methods.FindByMemberAccess("window.navigate") +
+	Alll.FindByMemberAccess("navigate.href");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

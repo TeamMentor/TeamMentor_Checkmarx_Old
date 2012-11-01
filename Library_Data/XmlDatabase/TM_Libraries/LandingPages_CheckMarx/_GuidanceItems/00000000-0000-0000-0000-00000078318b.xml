@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000078318b</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Cookieless Authentication</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>ASP.NET 4</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Cookieless Authentication</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Most web applications use cookies to keep track of session state. Some applications use other mechanisms to keep track of authenticated sessions and these custom authentication schemes are usually vulnerable to session hijacking vulnerabilities. An attacker exploiting cookieless authentication schemes may gain elevated privileges by tampering with user-mutable parameters or hijack an authenticated session by intercepting it using some form of a man-in-the-middle attack. Use platform-provided session management, use SSL to protect authentication, set HTTP-Only and Secure flags on session cookies and send session cookies only over SSL to prevent this type of problem. To check your application for cookieless authentication flaws, examine the authentication mechanism and determine whether the application uses session cookies to keep track of authenticated users.
+
+==Impact==
+
+Using cookieless authentication often allows an attacker to hijack user sessions. Once the attacker has hijacked a user's session, he can do anything that the user is allowed to do by the application. This usually allows the attacker to access and modify the user's data. If the attacker hijacks an administrator's session, he may be able to take full control of the application.
+
+==Countermeasures==
+
+Use platform-provided session management:
+
+Use SSL for authentication:
+
+Set HTTP-Only and Secure flags on session cookies:
+
+Send session cookies only over SSL:
+
+==Checklists==
+
+Platform-provided session management is used:
+
+SSL is used for authentication:
+
+HTTP-Only and Secure flags are set on session cookies:
+
+Session cookies are sent only over SSL:
+
+==Additional Resources==]]></Data>
+  </Content>
+</TeamMentor_Article>

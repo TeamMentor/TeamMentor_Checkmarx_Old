@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c799d0ee-340e-4799-8359-de2da76a9097</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>773 - Resource Injection</Title>
+    <Category>CWE: 99</Category>
+    <Phase>VbNet High Risk</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  99</h1>
+  <iframe height="500" src="/content/99" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 773
+Cwe : 99
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 45
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList socket = All.FindByType(typeof(ObjectCreateExpr)).FindByShortName("tcplistener");
+result = Find_Interactive_Inputs().DataInfluencingOn(All.GetByAncs(socket));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

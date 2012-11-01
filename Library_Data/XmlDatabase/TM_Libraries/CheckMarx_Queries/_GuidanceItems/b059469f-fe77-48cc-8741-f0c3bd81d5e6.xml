@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b059469f-fe77-48cc-8741-f0c3bd81d5e6</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>439 - Cleansing Canonicalization and Comparison Errors</Title>
+    <Category>CWE: 171</Category>
+    <Phase>CSharp Low Visibility</Phase>
+    <Technology>CSharp</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  171</h1>
+  <iframe height="500" src="/content/171" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 439
+Cwe : 171
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 27
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Interactive_Inputs();
+CxList obj = All.FindByType(typeof(UnknownReference)) + All.FindByType(typeof(Declarator));
+CxList files = 	
+	obj.FindByType("FileStream") + 
+	obj.FindByType("FileInfo") +	
+	obj.FindByType("*.FileStream") + 
+	obj.FindByType("*.FileInfo") +	
+	All.FindByName("*File.*") +
+	All.FindByName("*.File.*");
+
+CxList filesMethods = files.GetMembersOfTarget();;
+filesMethods = filesMethods.FindByShortName("Close") + filesMethods.FindByShortName("Dispose");
+files -= filesMethods.GetTargetOfMembers();
+
+CxList sanitize = All.FindByName("*Server.MapPath") + All.FindByName("*Request.MapPath"); 
+result = files.InfluencedByAndNotSanitized(inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

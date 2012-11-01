@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>97f7dbcf-32d5-4ee8-84d4-ce91ac3a2680</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1636 - Integer  Flow</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1636
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Find integer overflow and underflow, based on an input parameter
+
+if (param.Length == 1)
+{
+	CxList inputs = param[0] as CxList;
+
+	// All integers
+	CxList integers = All.FindByType("int");
+	// Only integers in the left side of an assignment
+	integers = integers.FindByAssignmentSide(CxList.AssignmentSide.Left);
+
+	// All binary expressions
+	CxList bin = All.FindByType(typeof(BinaryExpr));
+	// ... +,-,*,/ do not have short names, but ==, &amp;&amp;, != etc. do have, which makes life a little simpler
+	bin = bin.FindByShortName("");
+	// If statements containint the potential vulnerable integer
+	CxList ifWithInt = integers.GetAncOfType(typeof(IfStmt));
+
+	// All condition expressions' contents of the relevant "if" statements. Will be used to check (even if heuristically)
+	// if the right thing is checked
+	CxList conditions = All.GetByAncs(Find_Conditions().GetByAncs(ifWithInt));
+
+	// The assign expression of the integer (could be a declarator)
+	CxList intAssign = integers.GetFathers() + integers.GetAncOfType(typeof(Declarator));
+
+	// (relevant) Binary expression under the assign-int statement
+	CxList binInAssign = bin.GetByAncs(intAssign);
+
+	// Unknown references in the binary expression assign statement
+	CxList unknownUnderBinary = All.FindByType(typeof(UnknownReference));
+	unknownUnderBinary = unknownUnderBinary.GetByAncs(binInAssign);
+
+	// Now pass on al the relevant binary expressions (in the assign statements) and see if it is well-checked
+	// for an overflow
+	CxList relevantAssign = All.NewCxList();
+	foreach (CxList b in binInAssign)
+	{
+		// Find the unknown references under a binary expression; this is needed to see if there are any
+		// references of them in the relevant if statement condition
+		CxList binaryContent = unknownUnderBinary.GetByAncs(b);
+	
+		// Get the if statement around the current binary expression
+		CxList relevantIf = b.GetAncOfType(typeof(IfStmt));
+	
+		// Find the references of the binary contents in the relevant condition statement
+		CxList cond = conditions.GetByAncs(relevantIf);
+		cond = cond.FindAllReferences(binaryContent);
+	
+		// If the number of references is at least as the number of the unknown references under the binary
+		// expression, then most likely all the unknown references are covered in the condition. It's only a
+		// heuristic check, in order not to need another foreach loop, and it looks strong enough for this
+		// type of query, which is relatively not very tight
+		if (cond.Count </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

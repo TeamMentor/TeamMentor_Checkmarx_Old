@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>fa927d9b-88b1-4129-98ad-40f45c226e16</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1956 - Find Plain DB</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1956
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList db = 
+	methods.FindByMemberAccess("Statement.execute*") +
+	methods.FindByMemberAccess("PreparedStatement.execute*") +
+	methods.FindByMemberAccess("CallableStatement.execute*") + 
+	methods.FindByMemberAccess("JdbcTemplate.query*") + 
+	methods.FindByMemberAccess("JdbcTemplate.insert") + 
+	methods.FindByMemberAccess("JdbcTemplate.update") + 
+	methods.FindByMemberAccess("JdbcTemplate.delete") + 
+	methods.FindByMemberAccess("JdbcTemplate.execute") +
+	//methods.FindByMemberAccess("Session.createQuery") + // removed, we do not consider "create" as a DB
+	//methods.FindByMemberAccess("Session.createSQLQuery") +
+	//methods.FindByMemberAccess("Session.createFilter") +
+	methods.FindByMemberAccess("SoapBindingStub.query") + 
+	methods.FindByMemberAccess("SoapBindingStub.queryAll") + 
+	methods.FindByMemberAccess("SoapBindingStub.search") + 
+	// qSql
+	methods.FindByMemberAccess("QSqlQuery.exec") +
+	methods.FindByMemberAccess("QSqlQuery.execBatch") +
+	// Query
+	methods.FindByMemberAccess("Query.getSingleResult") +
+	methods.FindByMemberAccess("Query.getResultList") +
+	methods.FindByMemberAccess("Query.executeUpdate") +
+	// Salesforce 	
+	methods.FindByMemberAccess("SforceService.query") + 
+	methods.FindByMemberAccess("SforceService.queryAll") + 
+	methods.FindByMemberAccess("SforceService.search") +
+	//// public interface EntityManager // removed, we do not consider "create" as a DB
+	//methods.FindByShortName("createQuery") + 
+	//methods.FindByShortName("createNamedQuery") + 
+	//methods.FindByShortName("createNativeQuery") +
+	// spring Hibernate
+	methods.FindByShortName("executeFind") +
+	// Hibernate Query
+	methods.FindByMemberAccess("Query.iterate") +
+	methods.FindByMemberAccess("Query.list") +
+	methods.FindByMemberAccess("Query.scroll") +
+	methods.FindByMemberAccess("Query.uniqueResult");
+
+CxList ibatis = Ibatis();
+
+/* Hibernate */
+CxList hibernateTemplate = Find_Methods().FindByShortName("getHibernateTemplate");
+CxList dbCommands = methods.FindByShortName("find") +
+	methods.FindByShortName("findByNamedParam") + 
+	methods.FindByShortName("findByValueBean") +
+	methods.FindByShortName("bulkUpdate") +
+	methods.FindByShortName("iterate");
+CxList hibernate = dbCommands.DataInfluencedBy(hibernateTemplate);
+hibernate += methods.FindByMemberAccess("HibernateTemplate.find") +
+	methods.FindByMemberAccess("HibernateTemplate.findByNamedParam") + 
+	methods.FindByMemberAccess("HibernateTemplate.findByValueBean") +
+	methods.FindByMemberAccess("HibernateTemplate.bulkUpdate") +
+	methods.FindByMemberAccess("HibernateTemplate.iterate");
+
+hibernate = All.GetParameters(hibernate, 0);
+// Hibernate session
+hibernate += All.FindByMemberAccess("session.load") + All.FindByMemberAccess("session.get") +
+	All.FindByMemberAccess("session.iterate") + All.FindByMemberAccess("session.find");
+//hibernate += All.FindByMemberAccess("SessionFactory.openSession");
+
+/* end Hibernate */
+
+// Add DAL_DB
+CxList DAL = Find_DAL_DB();
+
+result = db + ibatis + hibernate + DAL;
+
+// Add GetAttribute fields that their setter is affected by DB
+result += Add_Get_Attribute(result);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

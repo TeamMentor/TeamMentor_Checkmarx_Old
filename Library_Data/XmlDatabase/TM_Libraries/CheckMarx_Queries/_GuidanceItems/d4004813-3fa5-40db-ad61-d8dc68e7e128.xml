@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>d4004813-3fa5-40db-ad61-d8dc68e7e128</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>183 - Integer Overflow</Title>
+    <Category>CWE: 190</Category>
+    <Phase>ASP Medium Threat</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  190</h1>
+  <iframe height="500" src="/content/190" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 183
+Cwe : 190
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 12
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> return result;
+
+CxList check = All.FindByType(typeof(CheckedStmt));
+CxList num = All.FindByType("int");
+
+CxList Integers_Inside_Check = All.GetByAncs(check) * num;
+CxList Integers_Not_Iinside_Check = num - Integers_Inside_Check;
+CxList inputs = Find_Interactive_Inputs() - num;
+
+CxList sanitized = All.FindByMemberAccess(".parse") + 
+					All.FindByName("convert.toint*") +
+					All.FindByName(".*convert.toint*") + 
+					All.FindByName("*indexof") +
+					All.FindByName("*length")+ All.FindByType(typeof(IndexerRef)) +
+					Find_DB();
+
+result = Integers_Not_Iinside_Check.InfluencedByAndNotSanitized(inputs, sanitized);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

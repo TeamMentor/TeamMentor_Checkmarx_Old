@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a671aa25-ef76-4704-a1de-24f427cee01c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1478 - Find Remoting Inputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1478
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList RemotingClasses = All.InheritsFrom("MarshalByRefObject").FindByType(typeof(ClassDecl));
+CxList RemotingMethods = All.FindByType(typeof(MethodDecl)).GetByClass(RemotingClasses);
+CxList PublicRemotingMethods = RemotingMethods.FindByFieldAttributes(Modifiers.Public);
+
+result = All.FindByFathers(All.FindByFathers(PublicRemotingMethods)).FindByType(typeof(ParamDecl));</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

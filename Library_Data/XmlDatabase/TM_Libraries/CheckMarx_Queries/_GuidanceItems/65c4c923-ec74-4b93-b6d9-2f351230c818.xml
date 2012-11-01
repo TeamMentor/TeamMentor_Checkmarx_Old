@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>65c4c923-ec74-4b93-b6d9-2f351230c818</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1511 - Blind SQL Injections</Title>
+    <Category>CWE: 89</Category>
+    <Phase>Ruby Low Visibility</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  89</h1>
+  <iframe height="500" src="/content/89" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1511
+Cwe : 89
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1282
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList db = Find_DB();
+CxList db_not_in_try = Improper_Exception_Handling(db);
+CxList db_in_try = db - db_not_in_try;
+
+CxList inputs = Find_Interactive_Inputs();
+CxList sanitized = Find_Sanitize();
+
+result = All.FindSQLInjections(inputs, db_in_try, sanitized);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

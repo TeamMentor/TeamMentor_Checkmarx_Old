@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>029f6a54-f5f9-4403-9922-263ccb8108d3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>749 - Find Sanitize</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>VbNet</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 749
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 1
+PackageId : 43
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+CxList ibatis = methods.FindByMemberAccess("sqlmapper.queryforobject") + 
+				methods.FindByMemberAccess("sqlmapper.queryforlist") + 
+				methods.FindByMemberAccess("sqlmapper.querywithrowhandler") + 
+				methods.FindByMemberAccess("sqlmapper.queryforpaginatedlist") + 
+				methods.FindByMemberAccess("sqlmapper.queryformap") + 
+				methods.FindByMemberAccess("sqlmapper.insert") + 
+				methods.FindByMemberAccess("sqlmapper.update") + 
+				methods.FindByMemberAccess("sqlmapper.delete");
+
+CxList qSQL1 = methods.FindByMemberAccess("qsqlquery.bindvalue");
+CxList qSQL2 = methods.FindByMemberAccess("qsqlquery.addbindvalue");
+
+CxList repl = Find_Methods().FindByMemberAccess("string.replace") +
+	Find_Methods().FindByMemberAccess("stringbuilder.replace");
+repl = All.GetByAncs(All.GetParameters(repl, 0));
+
+result = Find_Replace() + 
+	Find_Parameters() + 
+	Find_Integers() + 
+	All.FindByType("bool") +
+	All.GetParameters(ibatis, 1) +
+	All.GetParameters(qSQL1, 1) +
+	All.GetParameters(qSQL2, 0) +
+	repl + Find_DB_Linq() + Find_DB_EF();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

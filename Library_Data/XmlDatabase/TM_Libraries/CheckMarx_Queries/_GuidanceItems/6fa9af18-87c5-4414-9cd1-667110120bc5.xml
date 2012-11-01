@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6fa9af18-87c5-4414-9cd1-667110120bc5</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2069 - Use of Deprecated or Obsolete Functions</Title>
+    <Category>CWE: 477</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  477</h1>
+  <iframe height="500" src="/content/477" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2069
+Cwe : 477
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+Deprecated		Preferred
+----------		---------
+die()			Carp::croak()
+warn()	 		Carp::carp()
+format()		Template, Perl6::Form
+realpath()		CWD::abs_path
+*/
+
+CxList methods = Find_Methods();
+
+result = 
+	methods.FindByShortName("die") +
+	methods.FindByShortName("warn") +
+	methods.FindByShortName("format") +
+	methods.FindByShortName("realpath");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

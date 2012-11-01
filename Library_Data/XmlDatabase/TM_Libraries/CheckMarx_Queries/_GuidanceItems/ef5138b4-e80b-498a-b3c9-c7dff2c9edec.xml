@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ef5138b4-e80b-498a-b3c9-c7dff2c9edec</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1035 - XSRF With VF Call</Title>
+    <Category>CWE: 10503</Category>
+    <Phase>Apex Force com Serious Security Risk</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10503</h1>
+  <iframe height="500" src="/content/10503" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1035
+Cwe : 10503
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1003
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // This query returns, in addition to the XSRF itself, also the place(s) in the VF pages where this method
+// is called.
+// It gives for every problem 2 results, so it's possible to track the problem.
+CxList methods = Find_Methods();
+
+CxList pageCalls = Find_VF_Pages() * methods;
+CxList apexFilesContent = Find_Apex_Files();
+
+CxList actions = pageCalls
+	- pageCalls.FindByShortName("get*")
+	- pageCalls.FindByShortName("set*")
+	- pageCalls.FindByName("JSContainer_*");
+
+// Remove actions with XSRF token
+actions -= Find_Anti_XSRF_Actions();
+
+// Find the actions in the apex files
+actions = All.FindDefinition(actions) * apexFilesContent;
+
+CxList allInputs = Find_Interactive_Inputs();
+CxList actionsInputs = allInputs.GetByMethod(actions);
+
+CxList db = Find_DB_Active() * apexFilesContent;
+
+CxList xsrf = actionsInputs.InfluencingOnAndNotSanitized(db, Find_Test_Code() + Find_Anti_XSRF_Actions());
+
+// Add the initializers that automatically fire a delete
+CxList initializers = methods.GetByAncs(Find_VF_Pages().FindByName("*.apex.page.action"));
+CxList initDeletes = apexFilesContent.FindDefinition(initializers);
+CxList sObjectsInApex = Find_sObjects() * apexFilesContent;
+
+xsrf += db.GetByAncs(initDeletes);
+
+CxList source = Find_VF_Pages().FindAllReferences(All.GetMethod(xsrf));
+CxList sourceMethod = source.GetAncOfType(typeof(MethodDecl)).FindByShortName("__*");
+source -= source.GetByAncs(sourceMethod);
+
+result = xsrf + source;
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

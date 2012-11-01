@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>e77cc353-fd80-434e-b2e7-48fd679b71c9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2053 - Find Methods With Return Value</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2053
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1292
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods() + All.FindByType(typeof(MemberAccess));
+
+result = 
+	methods.FindByShortName("begin_work") +
+	methods.FindByShortName("bunzip2") +
+	methods.FindByShortName("close") +
+	methods.FindByShortName("commit") +
+	methods.FindByShortName("connect") +
+	methods.FindByShortName("connect_cached") +
+	methods.FindByShortName("cwd") +
+	methods.FindByShortName("deflate") +
+	methods.FindByShortName("delete") +
+	methods.FindByShortName("dircopy") +
+	methods.FindByShortName("dirmove") +
+	methods.FindByShortName("disconnect") +
+	methods.FindByShortName("do") +
+	methods.FindByShortName("eval") +
+	methods.FindByShortName("execute") +
+	methods.FindByShortName("execute_array") +
+	methods.FindByShortName("extract") +
+	methods.FindByShortName("fcopy") +
+	methods.FindByShortName("fetch") +
+	methods.FindByShortName("fmove") +
+	methods.FindByShortName("func") +
+	methods.FindByShortName("gunzip") +
+	methods.FindByShortName("gzip") +
+	methods.FindByShortName("init_db") +
+	methods.FindByShortName("login") +
+	methods.FindByShortName("mkdir") +
+	methods.FindByShortName("open") +
+	methods.FindByShortName("parse_dsn") +
+	methods.FindByShortName("pathempty") +
+	methods.FindByShortName("pathmk") +
+	methods.FindByShortName("pathrm") +
+	methods.FindByShortName("prepare") +
+	methods.FindByShortName("put") +
+	methods.FindByShortName("rcopy") +
+	methods.FindByShortName("require") +
+	methods.FindByShortName("rmdir") +
+	methods.FindByShortName("rmove") +
+	methods.FindByShortName("rollback") +
+	methods.FindByShortName("save") +
+	methods.FindByShortName("send") +
+	methods.FindByShortName("shift");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

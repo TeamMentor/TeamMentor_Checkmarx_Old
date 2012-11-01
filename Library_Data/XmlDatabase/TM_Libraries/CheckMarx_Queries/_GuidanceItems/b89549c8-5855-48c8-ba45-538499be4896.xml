@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>b89549c8-5855-48c8-ba45-538499be4896</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1432 - Find DB In Mongo</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1432
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList dbAll = Find_MongoDB_Def();
+dbAll += All.GetByAncs(dbAll.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+dbAll += All.FindAllReferences(dbAll);
+dbAll += All.FindByType(typeof(UnknownReference)).InfluencedByAndNotSanitized(dbAll, All.FindByType(typeof(AssignExpr)) + All.FindByType(typeof(BinaryExpr)));
+
+CxList dbBasicCommands = dbAll.GetMembersOfTarget();
+CxList dbCollections = 
+	dbBasicCommands.FindByShortName("collection") + 
+	dbAll.FindByType(typeof(IndexerRef));
+
+dbCollections += All.FindByName("*collection.*");
+dbCollections = All.GetByAncs(dbCollections.GetAncOfType(typeof(AssignExpr))).FindByAssignmentSide(CxList.AssignmentSide.Left);
+dbCollections += All.FindAllReferences(dbCollections);
+
+CxList dbCommands = dbCollections.GetMembersOfTarget();
+dbCommands += All.FindByName("*collection.*");
+dbCommands += dbBasicCommands.GetMembersOfTarget();
+dbCommands += dbCommands.GetMembersOfTarget();
+dbCommands += dbCommands.GetMembersOfTarget();
+dbCommands += All.FindByShortName("order_by").GetMembersOfTarget();
+
+string[] dbCommandsList = new string[] {
+	"insert", // output only...
+	"update",
+	"save",
+	"find_one",
+	"find",
+	"group",
+	"runCommand",
+	"remove"
+	};
+
+foreach (string s in dbCommandsList)
+{
+	result += dbCommands.FindByShortName(s);
+}
+	
+result += Add_Second_Order_DB(result, dbCommandsList);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

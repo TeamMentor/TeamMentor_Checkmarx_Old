@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>536e6096-a1b6-4416-a495-08b9a6504eb7</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1993 - Find Conditions</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1993
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1292
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList ifStmt = All.FindByType(typeof(IfStmt));
+CxList iteration = All.FindByType(typeof(IterationStmt));
+
+CxList conditions = All.NewCxList();
+foreach (CxList singleIf in ifStmt)
+{
+	try
+	{
+		IfStmt stmt = singleIf.data.GetByIndex(0) as IfStmt;
+		if (stmt.Condition != null)
+		{
+			conditions += All.FindById(stmt.Condition.NodeId);
+		}
+	}
+	catch (Exception ex)
+	{
+		CxDebug(ex);
+	}
+}
+
+foreach (CxList iter in iteration)
+{
+	try
+	{
+		IterationStmt stmt = iter.data.GetByIndex(0) as IterationStmt;
+		if (stmt.Test != null)
+		{
+			conditions += All.FindById(stmt.Test.NodeId);
+		}
+	}
+	catch (Exception ex)
+	{
+		CxDebug(ex);
+	}
+}
+
+// When we have $_ it means we added something artificially to $_,
+// so we take the right hand side of the artificial assign expression
+CxList children = All.FindByFathers(conditions);
+CxList _ = children.FindByShortName("$_");
+CxList fathers = _.GetFathers();
+conditions += All.FindByFathers(fathers).FindByAssignmentSide(CxList.AssignmentSide.Right);
+
+result = conditions;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

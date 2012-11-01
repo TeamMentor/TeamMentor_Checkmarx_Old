@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-0000007f6a6d</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>HTTP Response Splitting</Title>
+    <Category />
+    <Phase />
+    <Technology>Java</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>HTTP Response Splitting</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+HTTP response splitting occurs when an attacker is able to inject arbitrary data into the headers of HTTP responses. This vulnerability allows the attacker to force HTTP responses that contain HTML of the attacker's choosing. HTTP response splitting applies to web applications that place user input in HTTP response headers. To prevent this vulnerability, validate all input and URL-encode data in HTTP response headers. To check for this vulnerability, find all code that outputs custom HTTP response headers and make sure that this code does not include unvalidated, unencoded user data in the headers.
+
+==Impact==
+
+HTTP response splitting gives the attacker full control over the HTTP response. The attacker can use this control to conduct phishing and cross-site scripting attacks. The attacker may create a fake login page and make it appear to be a part of your application by using HTTP response splitting. That fake login page can be used by the attacker to collect the passwords of the users. The attacker may also inject arbitrary JavaScript into pages that are served by the application using HTTP response splitting. These scripts may redirect the application's users to a malicious site, steal their session cookies, or record users' keystrokes. Either through phishing or through cross-site scripting, the attacker may leverage HTTP response splitting to take over an administrator's account and gain full control of the application.
+
+==Countermeasures==
+
+Validate all input:
+
+URL-encode data in HTTP response headers:
+
+==Checklists==
+
+All input is validated:
+
+Data in HTTP response headers is URL-encoded:
+
+==Additional Resources==
+
+http://en.wikipedia.org/wiki/HTTP_response_splitting
+
+http://cwe.mitre.org/data/definitions/113.html]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>3eda9853-ee7f-4cfd-b71c-a86dccd28307</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>249 - Find Methods With Return Value</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 249
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+result += methods.FindByShortName("calloc");
+result += methods.FindByShortName("chown");
+result += methods.FindByShortName("gets");
+result += methods.FindByShortName("getpwuid");
+result += methods.FindByShortName("malloc");
+result += methods.FindByShortName("memalign");
+result += methods.FindByShortName("mkstemp");
+result += methods.FindByShortName("readlink");
+result += methods.FindByShortName("realloc");
+result += methods.FindByShortName("RegOpenKey");
+result += methods.FindByShortName("RegQueryValue");
+result += methods.FindByShortName("sprintf");
+result += methods.FindByShortName("strtok");
+result += methods.FindByShortName("tmpnam");
+result += methods.FindByShortName("tmpnam_r");
+result += methods.FindByShortName("tmpfile");
+result += methods.FindByShortName("remove");
+result += methods.FindByShortName("width") - methods.FindByMemberAccess("cin.width");
+result += methods.FindByShortName("valloc");
+
+result += methods.FindByShortName("__wcserror_s");
+result += methods.FindByShortName("_cgets_s");
+result += methods.FindByShortName("_cgetws_s");
+result += methods.FindByShortName("_chsize_s");
+result += methods.FindByShortName("_controlfp_s");
+result += methods.FindByShortName("_cprintf_s");
+result += methods.FindByShortName("_cscanf_s");
+result += methods.FindByShortName("_cscanf_s_l");
+result += methods.FindByShortName("_ctime32_s");
+result += methods.FindByShortName("_ctime64_s");
+result += methods.FindByShortName("_cwscanf_s");
+result += methods.FindByShortName("_cwscanf_s_l");
+result += methods.FindByShortName("_ecvt_s");
+result += methods.FindByShortName("_fcvt_s");
+result += methods.FindByShortName("_fscanf_s_l");
+result += methods.FindByShortName("_fwscanf_s_l");
+result += methods.FindByShortName("_gcvt_s");
+result += methods.FindByShortName("_getws_s");
+result += methods.FindByShortName("_gmtime_s");
+result += methods.FindByShortName("_gmtime32_s");
+result += methods.FindByShortName("_gmtime64_s");
+result += methods.FindByShortName("_i64toa_s");
+result += methods.FindByShortName("_i64tow_s");
+result += methods.FindByShortName("_itoa_s");
+result += methods.FindByShortName("_itow_s");
+result += methods.FindByShortName("_lfind_s");
+result += methods.FindByShortName("_localtime_s");
+result += methods.FindByShortName("_localtime32_s");
+result += methods.FindByShortName("_localtime64_s");
+result += methods.FindByShortName("_lsearch_s");
+result += methods.FindByShortName("_ltoa_s");
+result += methods.FindByShortName("_ltow_s");
+result += methods.FindByShortName("_mbccpy_s");
+result += methods.FindByShortName("_mbccpy_s_l");
+result += methods.FindByShortName("_mbscat_s");
+result += methods.FindByShortName("_mbscpy_s");
+result += methods.FindByShortName("_mbslwr_s");
+result += methods.FindByShortName("_mbslwr_s_l");
+result += methods.FindByShortName("_mbsnbcat_s");
+result += methods.FindByShortName("_mbsnbcat_s_l");
+result += methods.FindByShortName("_mbsnbcpy_s");
+result += methods.FindByShortName("_mbsnbcpy_s_l");
+result += methods.FindByShortName("_mbsnbset_s");
+result += methods.FindByShortName("_mbsnbset_s_l");
+result += methods.FindByShortName("_mbsncat_s");
+result += methods.FindByShortName("_mbsncat_s_l");
+result += methods.FindByShortName("_mbsncpy_s");
+result += methods.FindByShortName("_mbsncpy_s_l");
+result += methods.FindByShortName("_mbsnset_s");
+result += methods.FindByShortName("_mbsnset_s_l");
+result += methods.FindByShortName("_mbsset_s");
+result += methods.FindByShortName("_mbsset_s_l");
+result += methods.FindByShortName("_mbstok_s");
+result += methods.FindByShortName("_mbstok_s_l");
+result += methods.FindByShortName("_mbstowcs_s_l");
+result += methods.FindByShortName("_mbsupr_s");
+result += methods.FindByShortName("_mbsupr_s_l");
+result += methods.FindByShortName("_mktemp_s");
+result += methods.FindByShortName("_putenv_s");
+result += methods.FindByShortName("_scanf_s_l");
+result += methods.FindByShortName("_searchenv_s");
+result += methods.FindByShortName("_snprintf_s");
+result += methods.FindByShortName("_snprintf");
+result += methods.FindByShortName("_snprintf_s_l");
+result += methods.FindByShortName("_snscanf_s");
+result += methods.FindByShortName("_snscanf_s_l");
+result += methods.FindByShortName("_snwprintf_s");
+result += methods.FindByShortName("_snwprintf_s_l");
+result += methods.FindByShortName("_snwscanf_s");
+result += methods.FindByShortName("_snwscanf_s_l");
+result += methods.FindByShortName("_sopen_s");
+result += methods.FindByShortName("_splitpath_s");
+result += methods.FindByShortName("_sprintf_s_l");
+result += methods.FindByShortName("_sscanf_s_l");
+result += methods.FindByShortName("_strdate_s");
+result += methods.FindByShortName("_strerror_s");
+result += methods.FindByShortName("_strlwr_s");
+result += methods.FindByShortName("_strlwr_s_l");
+result += methods.FindByShortName("_strncat_s_l");
+result += methods.FindByShortName("_strncpy_s_l");
+result += methods.FindByShortName("_strnset_s");
+result += methods.FindByShortName("_strnset_s_l");
+result += methods.FindByShortName("_strset_s");
+result += methods.FindByShortName("_strset_s_l");
+result += methods.FindByShortName("_strtime_s");
+result += methods.FindByShortName("_strtok_s_l");
+result += methods.FindByShortName("_strupr_s");
+result += methods.FindByShortName("_strupr_s_l");
+result += methods.FindByShortName("_swprintf_s_l");
+result += methods.FindByShortName("_swscanf_s_l");
+result += methods.FindByShortName("_ui64toa_s");
+result += methods.FindByShortName("_ui64tow_s");
+result += methods.FindByShortName("_ultoa_s");
+result += methods.FindByShortName("_ultow_s");
+result += methods.FindByShortName("_umask_s");
+result += methods.FindByShortName("_vsnprintf_s");
+result += methods.FindByShortName("_vsnprintf_s_l");
+result += methods.FindByShortName("_vsnwprintf_s");
+result += methods.FindByShortName("_vsnwprintf_s_l");
+result += methods.FindByShortName("_vsprintf_s_l");
+result += methods.FindByShortName("_vswprintf_s_l");
+result += methods.FindByShortName("_wasctime_s");
+result += methods.FindByShortName("_wcserror_s");
+result += methods.FindByShortName("_wcslwr_s");
+result += methods.FindByShortName("_wcslwr_s_l");
+result += methods.FindByShortName("_wcsncat_s_l");
+result += methods.FindByShortName("_wcsncpy_s_l");
+result += methods.FindByShortName("_wcsnset_s");
+result += methods.FindByShortName("_wcsnset_s_l");
+result += methods.FindByShortName("_wcsset_s");
+result += methods.FindByShortName("_wcsset_s_l");
+result += methods.FindByShortName("_wcstok_s_l");
+result += methods.FindByShortName("_wcstombs_s_l");
+result += methods.FindByShortName("_wcsupr_s");
+result += methods.FindByShortName("_wcsupr_s_l");
+result += methods.FindByShortName("_wctime_s");
+result += methods.FindByShortName("_wctime32_s");
+result += methods.FindByShortName("_wctime64_s");
+result += methods.FindByShortName("_wctomb_s_l");
+result += methods.FindByShortName("_wfopen_s");
+result += methods.FindByShortName("_wfreopen_s");
+result += methods.FindByShortName("_wgetenv_s");
+result += methods.FindByShortName("_wmktemp_s");
+result += methods.FindByShortName("_wscanf_s");
+result += methods.FindByShortName("_wscanf_s_l");
+result += methods.FindByShortName("_wsearchenv_s");
+result += methods.FindByShortName("_wsopen_s");
+result += methods.FindByShortName("_wsplitpath_s");
+result += methods.FindByShortName("_wstrdate_s");
+result += methods.FindByShortName("_wstrtime_s");
+result += methods.FindByShortName("_wtmpnam_s");
+result += methods.FindByShortName("asctime_s");
+result += methods.FindByShortName("ctime_s");
+result += methods.FindByShortName("fopen_s");
+result += methods.FindByShortName("freopen_s");
+result += methods.FindByShortName("fscanf_s");
+result += methods.FindByShortName("fwscanf_s");
+result += methods.FindByShortName("getenv_s");
+result += methods.FindByShortName("gets_s");
+result += methods.FindByShortName("HeapAlloc");
+result += methods.FindByShortName("HeapCreate");
+result += methods.FindByShortName("HeapFree");
+result += methods.FindByShortName("HeapReAlloc");
+result += methods.FindByShortName("mbsrtowcs_s");
+result += methods.FindByShortName("mbstowcs_s");
+result += methods.FindByShortName("memcpy_s");
+result += methods.FindByShortName("memmove_s");
+result += methods.FindByShortName("scanf_s");
+result += methods.FindByShortName("snprintf");
+result += methods.FindByShortName("sprintf_s");
+result += methods.FindByShortName("sscanf_s");
+result += methods.FindByShortName("strcat_s");
+result += methods.FindByShortName("strcpy_s");
+result += methods.FindByShortName("strerror_s");
+result += methods.FindByShortName("strncat_s");
+result += methods.FindByShortName("strncpy_s");
+result += methods.FindByShortName("strtok_s");
+result += methods.FindByShortName("swprintf_s");
+result += methods.FindByShortName("swscanf_s");
+result += methods.FindByShortName("tmpfile_s");
+result += methods.FindByShortName("vsnprintf_s");
+result += methods.FindByShortName("vsprintf_s");
+result += methods.FindByShortName("vswprintf_s");
+result += methods.FindByShortName("wcrtomb_s");
+result += methods.FindByShortName("wcscat_s");
+result += methods.FindByShortName("wcscpy_s");
+result += methods.FindByShortName("wcsncat_s");
+result += methods.FindByShortName("wcsncpy_s");
+result += methods.FindByShortName("wcsrtombs_s");
+result += methods.FindByShortName("wcstok_s");
+result += methods.FindByShortName("wcstombs_s");
+result += methods.FindByShortName("wctomb_s");
+result += methods.FindByShortName("wmemcpy_s");
+result += methods.FindByShortName("wmemmove_s");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

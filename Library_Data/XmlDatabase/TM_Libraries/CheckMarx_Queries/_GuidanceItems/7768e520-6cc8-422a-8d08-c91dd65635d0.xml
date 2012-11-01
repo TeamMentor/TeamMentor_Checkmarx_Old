@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7768e520-6cc8-422a-8d08-c91dd65635d0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1032 - Sharing With Controller</Title>
+    <Category>CWE: 10505</Category>
+    <Phase>Apex Force com Serious Security Risk</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10505</h1>
+  <iframe height="500" src="/content/10505" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1032
+Cwe : 10505
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1003
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // This query returns, in addition to the problematic appex page, also the controller.
+// It gives for every problem 2 results, with the same source/destination name, so it's easier to track
+// the problem.
+CxList VFData = Find_VF_Pages();
+CxList apexData = Find_Apex_Files();
+
+CxList dbCalls = All.NewCxList();
+CxList additionalDB = Find_DB();
+int counter = 0;
+while (additionalDB.Count &gt; 0 &amp;&amp; counter++  0)
+	{
+		noSharing += ac;
+	}
+}
+
+// We remove results that are in the header of a foreach statement, because these are copied in preprocessing
+// to the begining of the foreach block. When the preprocesing is changed, also this fix should be removed.
+CxList inForEachHeader = All.FindByFathers(All.FindByType(typeof(ForEachStmt)));
+
+// 1. global classes
+CxList globals = noSharing.FindByFieldAttributes(Modifiers.Global);
+CxList inGlobals = apexData.GetByAncs(globals);
+CxList methodCalls = All.NewCxList();
+CxList create = All.FindByType(typeof(ObjectCreateExpr));
+CxList apexNotForeach = apexData - inForEachHeader;
+foreach (CxList glob in globals)
+{
+	CxList inGlob = inGlobals.GetByAncs(glob);
+	CxList allReferences = (apexNotForeach - inGlob).FindAllReferences(glob);
+	methodCalls += allReferences.GetMembersOfTarget().FindByType(typeof(MethodInvokeExpr));
+	methodCalls += allReferences.GetByAncs(create);
+}
+
+result = methodCalls + apexData.FindDefinition(methodCalls);
+
+// 2. classes called by VF pages
+CxList vfProblems = VFData.FindAllReferences(noSharing);
+CxList sourceVF = vfProblems.GetAncOfType(typeof(MethodDecl)).FindByShortName("__*");
+vfProblems -= vfProblems.GetByAncs(sourceVF);
+
+CxList accessControl = vfProblems.GetAncOfType(typeof(ObjectCreateExpr));
+CxList actions = accessControl.GetAncOfType(typeof(MethodInvokeExpr));
+accessControl -= accessControl.GetByAncs(actions);
+
+CxList webServices = apexData.FindByType(typeof(MethodDecl)).FindByFieldAttributes(Modifiers.WebService);
+webServices = apexData.GetByAncs(webServices);
+CxList wsProblems = webServices.FindAllReferences(noSharing);
+accessControl += wsProblems;
+
+result += accessControl 
+	+ apexData.FindDefinition(VFData.FindByFathers(accessControl))
+	+ apexData.FindDefinition(apexData * accessControl);
+
+result -= Find_Test_Code();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

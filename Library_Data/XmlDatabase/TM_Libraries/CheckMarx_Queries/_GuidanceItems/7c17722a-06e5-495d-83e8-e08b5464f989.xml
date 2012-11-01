@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7c17722a-06e5-495d-83e8-e08b5464f989</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2067 - Prohibit Indirect Object Call Syntax</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Perl Low Visibility</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2067
+Cwe : 0
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1294
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+see: https://www.securecoding.cert.org/confluence/display/perl/OOP32-PL.+Prohibit+indirect+object+call+syntax
+
+The 'indirect object call syntax' is a grammatical mechanism used by Perl to parse method calls.
+It is commonly used to emulate other language syntax. For instance, if a class Class has a constructor
+named new, then both of these statements invoke this constructor:
+  my $obj1 = Class-&gt;new; # 'object-oriented' syntax
+  my $obj = new Class; # 'indirect object' syntax
+The [perlobj manpage] states the following:
+   The -&gt; notation suffers from neither of these disturbing ambiguities, so we recommend you use it exclusively.
+   However, you may still end up having to read code using the indirect object notation, so it's important to be
+   familiar with it.
+
+Consequently, indirect object syntax shall not be used.
+*/
+
+result = All.FindByType(typeof(Declarator)).FindByRegex(@"=\s*new\s+\$?\w");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

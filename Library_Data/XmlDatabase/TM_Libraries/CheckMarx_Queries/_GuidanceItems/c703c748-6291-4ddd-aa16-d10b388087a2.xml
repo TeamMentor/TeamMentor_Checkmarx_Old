@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>c703c748-6291-4ddd-aa16-d10b388087a2</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1836 - R12 05 AND OR Operands Not As Primary Expressions</Title>
+    <Category>CWE: 11024</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11024</h1>
+  <iframe height="500" src="/content/11024" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1836
+Cwe : 11024
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 12-5
+------------------------------
+This query searches for operands of &amp;&amp; or || that are not primary expressions (atomic exp, or surrounded by brackets).
+except for chains of same operator
+
+	The Example below shows code with vulnerability: 
+
+use_uint64 ( 9223372036854775808 );
+use_uint32 ( 0x80000000 );
+
+*/
+
+// \|\|[\w\s]*[^\)\(\w\s\|] - || followed by illeagal symbol before it sees a bracket - ex. "|| b &gt; 5"
+// \|\|[^\)\(]*[^\)\(\s][^\)\(]*\( - || followed by a non space symbol before "("
+// we check for the reverse order of the above cases
+// and overall check for both binary ops
+
+return All.GetByBinaryOperator(BinaryOperator.BooleanOr).FindByRegex(
+	@"\|\|[\w\s]*[^\)\(\w\s\|]|\|\|[^\)\(]*[^\)\(\s][^\)\(]*\(|[^\)\(\w\s\|][\w\s]*\|\||\)[^\)\(]*[^\)\(\s][^\)\(]*\|\|",
+	false, false, false) +
+	All.GetByBinaryOperator(BinaryOperator.BooleanAnd).FindByRegex(
+	@"\&amp;\&amp;[\w\s]*[^\)\(\w\s\&amp;]|\&amp;\&amp;[^\)\(]*[^\)\(\s][^\)\(]*\(|[^\)\(\w\s\&amp;][\w\s]*\&amp;\&amp;|\)[^\)\(]*[^\)\(\s][^\)\(]*\&amp;\&amp;",
+	false, false, false);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

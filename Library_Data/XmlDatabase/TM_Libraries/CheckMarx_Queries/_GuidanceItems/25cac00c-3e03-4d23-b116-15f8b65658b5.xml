@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>25cac00c-3e03-4d23-b116-15f8b65658b5</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>115 - Find Read</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 115
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 8
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // $ASP
+
+CxList read =
+	// Read, ReadAll, ReadLine
+	Find_Member_With_Target_level2("Scripting.FileSystemObject", "OpenTextFile", "Read*") +
+	Find_Member_With_Target_level2("Scripting.FileSystemObject", "CreateTextFile", "Read*") +
+
+	// Read, ReadText
+	Find_Member_With_Target("ADODB.Stream", "Read*");
+
+CxList ldap = Find_LDAP().FindByShortName("attrvalue", false);
+
+result = read + Find_SP_Inputs() + ldap;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

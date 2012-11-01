@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2a831ee5-7637-4df3-aa35-01810d586850</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1002 - Bulkify Apex Methods Using Collections In Methods</Title>
+    <Category>CWE: 10536</Category>
+    <Phase>Apex Force com Code Quality</Phase>
+    <Technology>Apex</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10536</h1>
+  <iframe height="500" src="/content/10536" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1002
+Cwe : 10536
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1001
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList apex = Find_Apex_Files();
+CxList apexObjects = apex * Find_sObjects();
+ 
+// Find db parameters
+CxList db = Find_DB_Output();
+CxList bareDB = db;
+
+CxList meth = All.FindAllReferences(db.GetAncOfType(typeof(MethodDecl)));
+
+int numMeth = 0;
+for(int i = 0; i  numMeth; i++)
+{
+	numMeth = meth.Count;
+	meth += All.FindAllReferences(meth.GetAncOfType(typeof(MethodDecl)));
+}
+db += meth;
+CxList updateWhat = apexObjects.GetByAncs(apex.GetParameters(bareDB));
+CxList updateParams = apexObjects.GetByAncs(apex.GetParameters(db));
+
+// Find Method parameters
+CxList methods = apex.GetMethod(meth);
+CxList methodsParams = apexObjects.GetParameters(methods);
+methodsParams -= methodsParams.FindByRegex(@"([lL]ist|[Ss]et)\s*<_5c_w2b_5c_s2a_>") 
+	+ methodsParams.FindByRegex(@"\[\s*\]") 
+	+ methodsParams.FindByType("map");
+
+result = methodsParams.FindAllReferences(updateParams).DataInfluencingOn(updateWhat);
+
+// Add cases where we have flow problem
+updateParams = apexObjects.GetMembersOfTarget().GetByAncs(apex.GetParameters(db));
+CxList membersParams = updateParams * All.FindAllReferences(methodsParams).GetMembersOfTarget();
+result += (methodsParams-result).FindDefinition(membersParams.GetTargetOfMembers());
+
+result -= result.DataInfluencedBy(result);
+result -= Find_Test_Code();</_5c_w2b_5c_s2a_></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

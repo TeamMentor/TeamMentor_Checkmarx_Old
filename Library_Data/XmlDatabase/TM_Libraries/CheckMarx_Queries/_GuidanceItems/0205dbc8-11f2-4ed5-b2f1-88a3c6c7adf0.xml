@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0205dbc8-11f2-4ed5-b2f1-88a3c6c7adf0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2036 - Find Perl Commands</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2036
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1292
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList subGroup = All.FindByShortName("A*", false);	
+	
+result += subGroup.FindByShortName("AUTOLOAD");
+result += subGroup.FindByShortName("abs");
+result += subGroup.FindByShortName("accept");
+result += subGroup.FindByShortName("alarm");
+result += subGroup.FindByShortName("and");
+result += subGroup.FindByShortName("atan2");
+	
+subGroup = All.FindByShortName("B*", false);	
+	
+result += subGroup.FindByShortName("BEGIN");
+result += subGroup.FindByShortName("bind");
+result += subGroup.FindByShortName("binmode");
+result += subGroup.FindByShortName("bless");
+result += subGroup.FindByShortName("break");
+	
+subGroup = All.FindByShortName("C*", false);	
+	
+result += subGroup.FindByShortName("CHECK");
+result += subGroup.FindByShortName("caller");
+result += subGroup.FindByShortName("chdir");
+result += subGroup.FindByShortName("chmod");
+result += subGroup.FindByShortName("chomp");
+result += subGroup.FindByShortName("chop");
+result += subGroup.FindByShortName("chown");
+result += subGroup.FindByShortName("chr");
+result += subGroup.FindByShortName("chroot");
+result += subGroup.FindByShortName("close");
+result += subGroup.FindByShortName("closedir");
+result += subGroup.FindByShortName("cmp");
+result += subGroup.FindByShortName("connect");
+result += subGroup.FindByShortName("continue");
+result += subGroup.FindByShortName("cos");
+result += subGroup.FindByShortName("crypt");
+	
+subGroup = All.FindByShortName("D*", false);	
+	
+result += subGroup.FindByShortName("DESTROY");
+result += subGroup.FindByShortName("__DATA__");
+result += subGroup.FindByShortName("dbmclose");
+result += subGroup.FindByShortName("dbmopen");
+result += subGroup.FindByShortName("default");
+result += subGroup.FindByShortName("defined");
+result += subGroup.FindByShortName("delete");
+result += subGroup.FindByShortName("die");
+result += subGroup.FindByShortName("do");
+result += subGroup.FindByShortName("dump");
+	
+subGroup = All.FindByShortName("E*", false);	
+	
+result += subGroup.FindByShortName("END");
+result += subGroup.FindByShortName("__END__");
+result += subGroup.FindByShortName("each");
+result += subGroup.FindByShortName("else");
+result += subGroup.FindByShortName("elseif");
+result += subGroup.FindByShortName("elsif");
+result += subGroup.FindByShortName("endgrent");
+result += subGroup.FindByShortName("endhostent");
+result += subGroup.FindByShortName("endnetent");
+result += subGroup.FindByShortName("endprotoent");
+result += subGroup.FindByShortName("endpwent");
+result += subGroup.FindByShortName("endservent");
+result += subGroup.FindByShortName("eof");
+result += subGroup.FindByShortName("eq");
+result += subGroup.FindByShortName("eval");
+result += subGroup.FindByShortName("evalbytes");
+result += subGroup.FindByShortName("exec");
+result += subGroup.FindByShortName("exists");
+result += subGroup.FindByShortName("exit");
+result += subGroup.FindByShortName("exp");
+	
+subGroup = All.FindByShortName("F*", false);	
+	
+result += subGroup.FindByShortName("__FILE__");
+result += subGroup.FindByShortName("fc");
+result += subGroup.FindByShortName("fcntl");
+result += subGroup.FindByShortName("fileno");
+result += subGroup.FindByShortName("flock");
+result += subGroup.FindByShortName("for");
+result += subGroup.FindByShortName("foreach");
+result += subGroup.FindByShortName("fork");
+result += subGroup.FindByShortName("format");
+result += subGroup.FindByShortName("formline");
+	
+subGroup = All.FindByShortName("G*", false);	
+	
+result += subGroup.FindByShortName("ge");
+result += subGroup.FindByShortName("getc");
+result += subGroup.FindByShortName("getgrent");
+result += subGroup.FindByShortName("getgrgid");
+result += subGroup.FindByShortName("getgrnam");
+result += subGroup.FindByShortName("gethostbyaddr");
+result += subGroup.FindByShortName("gethostbyname");
+result += subGroup.FindByShortName("gethostent");
+result += subGroup.FindByShortName("getlogin");
+result += subGroup.FindByShortName("getnetbyaddr");
+result += subGroup.FindByShortName("getnetbyname");
+result += subGroup.FindByShortName("getnetent");
+result += subGroup.FindByShortName("getpeername");
+result += subGroup.FindByShortName("getpgrp");
+result += subGroup.FindByShortName("getppid");
+result += subGroup.FindByShortName("getpriority");
+result += subGroup.FindByShortName("getprotobyname");
+result += subGroup.FindByShortName("getprotobynumber");
+result += subGroup.FindByShortName("getprotoent");
+result += subGroup.FindByShortName("getpwent");
+result += subGroup.FindByShortName("getpwnam");
+result += subGroup.FindByShortName("getpwuid");
+result += subGroup.FindByShortName("getservbyname");
+result += subGroup.FindByShortName("getservbyport");
+result += subGroup.FindByShortName("getservent");
+result += subGroup.FindByShortName("getsockname");
+result += subGroup.FindByShortName("getsockopt");
+result += subGroup.FindByShortName("given");
+result += subGroup.FindByShortName("glob");
+result += subGroup.FindByShortName("gmtime");
+result += subGroup.FindByShortName("goto");
+result += subGroup.FindByShortName("grep");
+result += subGroup.FindByShortName("gt");
+	
+subGroup = All.FindByShortName("H*", false);	
+	
+result += subGroup.FindByShortName("hex");
+	
+subGroup = All.FindByShortName("I*", false);	
+	
+result += subGroup.FindByShortName("INIT");
+result += subGroup.FindByShortName("if");
+result += subGroup.FindByShortName("import");
+result += subGroup.FindByShortName("index");
+result += subGroup.FindByShortName("int");
+result += subGroup.FindByShortName("ioctl");
+	
+subGroup = All.FindByShortName("J*", false);	
+	
+result += subGroup.FindByShortName("join");
+	
+subGroup = All.FindByShortName("K*", false);	
+	
+result += subGroup.FindByShortName("keys");
+result += subGroup.FindByShortName("kill");
+	
+subGroup = All.FindByShortName("L*", false);	
+	
+result += subGroup.FindByShortName("__LINE__");
+result += subGroup.FindByShortName("last");
+result += subGroup.FindByShortName("lc");
+result += subGroup.FindByShortName("lcfirst");
+result += subGroup.FindByShortName("le");
+result += subGroup.FindByShortName("length");
+result += subGroup.FindByShortName("link");
+result += subGroup.FindByShortName("listen");
+result += subGroup.FindByShortName("local");
+result += subGroup.FindByShortName("localtime");
+result += subGroup.FindByShortName("lock");
+result += subGroup.FindByShortName("log");
+result += subGroup.FindByShortName("lstat");
+result += subGroup.FindByShortName("lt");
+	
+subGroup = All.FindByShortName("M*", false);	
+	
+result += subGroup.FindByShortName("m");
+result += subGroup.FindByShortName("map");
+result += subGroup.FindByShortName("mkdir");
+result += subGroup.FindByShortName("msgctl");
+result += subGroup.FindByShortName("msgget");
+result += subGroup.FindByShortName("msgrcv");
+result += subGroup.FindByShortName("msgsnd");
+result += subGroup.FindByShortName("my");
+	
+subGroup = All.FindByShortName("N*", false);	
+	
+result += subGroup.FindByShortName("ne");
+result += subGroup.FindByShortName("next");
+result += subGroup.FindByShortName("no");
+result += subGroup.FindByShortName("not");
+	
+subGroup = All.FindByShortName("O*", false);	
+	
+result += subGroup.FindByShortName("oct");
+result += subGroup.FindByShortName("open");
+result += subGroup.FindByShortName("opendir");
+result += subGroup.FindByShortName("or");
+result += subGroup.FindByShortName("ord");
+result += subGroup.FindByShortName("our");
+	
+subGroup = All.FindByShortName("P*", false);	
+	
+result += subGroup.FindByShortName("__PACKAGE__");
+result += subGroup.FindByShortName("pack");
+result += subGroup.FindByShortName("package");
+result += subGroup.FindByShortName("pipe");
+result += subGroup.FindByShortName("pop");
+result += subGroup.FindByShortName("pos");
+result += subGroup.FindByShortName("print");
+result += subGroup.FindByShortName("printf");
+result += subGroup.FindByShortName("prototype");
+result += subGroup.FindByShortName("push");
+	
+subGroup = All.FindByShortName("Q*", false);	
+	
+result += subGroup.FindByShortName("q");
+result += subGroup.FindByShortName("qq");
+result += subGroup.FindByShortName("qr");
+result += subGroup.FindByShortName("quotemeta");
+result += subGroup.FindByShortName("qw");
+result += subGroup.FindByShortName("qx");
+	
+subGroup = All.FindByShortName("R*", false);	
+	
+result += subGroup.FindByShortName("rand");
+result += subGroup.FindByShortName("read");
+result += subGroup.FindByShortName("readdir");
+result += subGroup.FindByShortName("readline");
+result += subGroup.FindByShortName("readlink");
+result += subGroup.FindByShortName("readpipe");
+result += subGroup.FindByShortName("recv");
+result += subGroup.FindByShortName("redo");
+result += subGroup.FindByShortName("ref");
+result += subGroup.FindByShortName("rename");
+result += subGroup.FindByShortName("require");
+result += subGroup.FindByShortName("reset");
+result += subGroup.FindByShortName("return");
+result += subGroup.FindByShortName("reverse");
+result += subGroup.FindByShortName("rewinddir");
+result += subGroup.FindByShortName("rindex");
+result += subGroup.FindByShortName("rmdir");
+	
+subGroup = All.FindByShortName("S*", false);	
+	
+result += subGroup.FindByShortName("__SUB__");
+result += subGroup.FindByShortName("s");
+result += subGroup.FindByShortName("say");
+result += subGroup.FindByShortName("scalar");
+result += subGroup.FindByShortName("seek");
+result += subGroup.FindByShortName("seekdir");
+result += subGroup.FindByShortName("select");
+result += subGroup.FindByShortName("semctl");
+result += subGroup.FindByShortName("semget");
+result += subGroup.FindByShortName("semop");
+result += subGroup.FindByShortName("send");
+result += subGroup.FindByShortName("setgrent");
+result += subGroup.FindByShortName("sethostent");
+result += subGroup.FindByShortName("setnetent");
+result += subGroup.FindByShortName("setpgrp");
+result += subGroup.FindByShortName("setpriority");
+result += subGroup.FindByShortName("setprotoent");
+result += subGroup.FindByShortName("setpwent");
+result += subGroup.FindByShortName("setservent");
+result += subGroup.FindByShortName("setsockopt");
+result += subGroup.FindByShortName("shift");
+result += subGroup.FindByShortName("shmctl");
+result += subGroup.FindByShortName("shmget");
+result += subGroup.FindByShortName("shmread");
+result += subGroup.FindByShortName("shmwrite");
+result += subGroup.FindByShortName("shutdown");
+result += subGroup.FindByShortName("sin");
+result += subGroup.FindByShortName("sleep");
+result += subGroup.FindByShortName("socket");
+result += subGroup.FindByShortName("socketpair");
+result += subGroup.FindByShortName("sort");
+result += subGroup.FindByShortName("splice");
+result += subGroup.FindByShortName("split");
+result += subGroup.FindByShortName("sprintf");
+result += subGroup.FindByShortName("sqrt");
+result += subGroup.FindByShortName("srand");
+result += subGroup.FindByShortName("stat");
+result += subGroup.FindByShortName("state");
+result += subGroup.FindByShortName("study");
+result += subGroup.FindByShortName("sub");
+result += subGroup.FindByShortName("substr");
+result += subGroup.FindByShortName("symlink");
+result += subGroup.FindByShortName("syscall");
+result += subGroup.FindByShortName("sysopen");
+result += subGroup.FindByShortName("sysread");
+result += subGroup.FindByShortName("sysseek");
+result += subGroup.FindByShortName("system");
+result += subGroup.FindByShortName("syswrite");
+	
+subGroup = All.FindByShortName("T*", false);	
+	
+result += subGroup.FindByShortName("tell");
+result += subGroup.FindByShortName("telldir");
+result += subGroup.FindByShortName("tie");
+result += subGroup.FindByShortName("tied");
+result += subGroup.FindByShortName("time");
+result += subGroup.FindByShortName("times");
+result += subGroup.FindByShortName("tr");
+result += subGroup.FindByShortName("truncate");
+	
+subGroup = All.FindByShortName("U*", false);	
+	
+result += subGroup.FindByShortName("UNITCHECK");
+result += subGroup.FindByShortName("uc");
+result += subGroup.FindByShortName("ucfirst");
+result += subGroup.FindByShortName("umask");
+result += subGroup.FindByShortName("undef");
+result += subGroup.FindByShortName("unless");
+result += subGroup.FindByShortName("unlink");
+result += subGroup.FindByShortName("unpack");
+result += subGroup.FindByShortName("unshift");
+result += subGroup.FindByShortName("untie");
+result += subGroup.FindByShortName("until");
+result += subGroup.FindByShortName("use");
+result += subGroup.FindByShortName("utime");
+	
+subGroup = All.FindByShortName("V*", false);	
+	
+result += subGroup.FindByShortName("values");
+result += subGroup.FindByShortName("vec");
+	
+subGroup = All.FindByShortName("W*", false);	
+	
+result += subGroup.FindByShortName("wait");
+result += subGroup.FindByShortName("waitpid");
+result += subGroup.FindByShortName("wantarray");
+result += subGroup.FindByShortName("warn");
+result += subGroup.FindByShortName("when");
+result += subGroup.FindByShortName("while");
+result += subGroup.FindByShortName("write");
+	
+subGroup = All.FindByShortName("X*", false);	
+	
+	
+result += subGroup.FindByShortName("x");
+result += subGroup.FindByShortName("xor");
+	
+subGroup = All.FindByShortName("Y*", false);	
+	
+result += subGroup.FindByShortName("y");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7dbdda75-3911-45cf-a734-58f8f55be69c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1938 - R15 00 03 Goto Label Inside TryCatch</Title>
+    <Category>CWE: 10763</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10763</h1>
+  <iframe height="500" src="/content/10763" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1938
+Cwe : 10763
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 15-0-3
+ ------------------------------
+ This query checks if there is a goto label inside a try catch statement
+
+ The Example below shows code with vulnerability: 
+
+      
+       void f()
+       {   
+             goto Label1;
+             try
+             {
+                  Label1:       //non-compliant
+                  some code
+             }
+             catch(...)
+             {
+               some code 				
+             }
+       }
+       
+*/
+
+
+//finds all declarations
+CxList decl= All.FindByType(typeof(Declarator));
+//finds goto
+CxList  allGoTos=All.FindByFathers(decl).FindByName("goto");
+CxList labels=allGoTos.GetFathers();
+CxList labelCalls = All.FindByType(typeof(LabeledStmt));
+CxList goToLabel = All.NewCxList();
+foreach (CxList cur in labels)
+{	
+	foreach(CxList lab in labelCalls)
+	{
+		
+		LabeledStmt ls = lab.data.GetByIndex(0) as LabeledStmt;
+		Declarator d = cur.data.GetByIndex(0) as Declarator;
+		if(ls != null &amp;&amp; d != null)
+		{
+			if((ls.Label) == (d.Name))
+			{
+				goToLabel += All.FindById(ls.NodeId);
+			}
+		}
+	}	
+}
+CxList tryStmt = goToLabel.GetAncOfType(typeof(TryCatchFinallyStmt));
+CxList inTryCatch = All.GetByAncs(tryStmt).FindByType(typeof(LabeledStmt));
+result+=inTryCatch;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

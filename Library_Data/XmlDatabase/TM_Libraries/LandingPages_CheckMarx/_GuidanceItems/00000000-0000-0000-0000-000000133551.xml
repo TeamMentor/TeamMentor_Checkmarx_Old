@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-000000133551</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Use of Hard-coded Password</Title>
+    <Category />
+    <Phase />
+    <Technology>Java</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Use of Hard-coded Password</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Applications that use authentication need a method for storing passwords. One of the simplest ways to store the passwords is to hard-code them into the application. This approach is not secure, because anyone with access to the application code is able to recover these passwords. Once an attacker has recovered the passwords, he can use them to authenticate with the application. To prevent this vulnerability, provide a secure admin interface that allows changing passwords and store passwords securely. To check for this vulnerability, examine all code that uses authentication and find where it stores the passwords.
+
+
+==Impact==
+
+Once the attacker has recovered the hard-coded password, he can use it to access the application. Usually, administrative passwords are the ones that are hard-coded. In that case, the attacker gains full access to the application. The attacker may be able to leverage this access to take full control of the application server.
+
+==Countermeasures==
+
+Provide a secure administrative interface that allows changing passwords:
+
+Store passwords securely:
+
+==Checklists==
+
+A secure administrative interface that allows changing passwords is provided:
+
+Passwords are stored securely:
+
+==Additional Resources==
+
+* For more information about the Use of Hard-coded Password vulnerability, see https://www.owasp.org/index.php/Use_of_hard-coded_password]]></Data>
+  </Content>
+</TeamMentor_Article>

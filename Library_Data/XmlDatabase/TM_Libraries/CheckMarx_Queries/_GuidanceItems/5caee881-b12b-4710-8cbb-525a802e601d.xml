@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5caee881-b12b-4710-8cbb-525a802e601d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2046 - Use of Broken or Risky Cryptographic Algorithm</Title>
+    <Category>CWE: 327</Category>
+    <Phase>Perl Medium Threat</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  327</h1>
+  <iframe height="500" src="/content/327" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2046
+Cwe : 327
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1295
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+Do note that DES only uses 8 byte keys and only works on 8 byte data blocks.
+If you're intending to encrypt larger blocks or entire files, please use Crypt::CBC in conjunction with this module.
+See the Crypt::CBC documentation for proper syntax and use.
+
+Also note that the DES algorithm is, by today's standard, weak encryption.
+Crypt::Blowfish is highly recommended if you're interested in using strong encryption and a faster algorithm.
+*/
+
+CxList methods = Find_Methods();
+
+result = methods.FindByShortName("Crypt::DES");
+
+
+// Add LDAP that are not initialized to use HIGH ciphers
+// (see: http://search.cpan.org/~marschap/perl-ldap-0.44/lib/Net/LDAP.pod)
+// (see: http://www.nntp.perl.org/group/perl.ldap/2008/08/msg2922.html)
+
+CxList newLDAP = All.FindByMemberAccess("Net::LDAP.new");
+CxList HIGH = All.GetParameters(newLDAP).FindByShortName("HIGH");
+CxList ciphers = All.GetParameters(newLDAP).FindByShortName("ciphers");
+result += newLDAP - newLDAP.FindByParameters(HIGH) * newLDAP.FindByParameters(ciphers);
+
+// And the most basic - rand and srand
+result += methods.FindByShortName("rand") + methods.FindByShortName("srand");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

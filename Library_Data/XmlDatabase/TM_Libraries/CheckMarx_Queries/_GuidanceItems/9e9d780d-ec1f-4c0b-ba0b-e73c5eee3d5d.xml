@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9e9d780d-ec1f-4c0b-ba0b-e73c5eee3d5d</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1853 - R15 01 Case Not Enclosed By Compound Switch</Title>
+    <Category>CWE: 11041</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11041</h1>
+  <iframe height="500" src="/content/11041" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1853
+Cwe : 11041
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 15-1
+------------------------------
+This query searches for instances of case not directly wrapped by a compound switch
+
+	The Example below shows code with vulnerability: 
+
+switch (i)
+   {
+      case 1:
+      {
+         case 2:                              
+         {
+            break;
+         }
+         break;        
+      }
+   }
+
+*/ 
+	
+CxList switches = All.FindByType(typeof(SwitchStmt));
+
+// switches with compound statements
+CxList properSwitches = switches.FindByRegex(@"\Wswitch\s*\([^\)]*?\)[^;\{]*?\{", false, false, false);
+
+// return cases which belong to a non compound switch
+CxList cases = All.FindByType(typeof(Case));
+
+result = All.FindByRegex(@"\Wcase\W", false, false, false, new CxList()) - cases.FindByFathers(properSwitches);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

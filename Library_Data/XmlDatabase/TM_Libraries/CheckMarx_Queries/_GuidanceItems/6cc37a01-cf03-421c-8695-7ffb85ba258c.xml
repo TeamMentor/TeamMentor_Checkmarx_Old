@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>6cc37a01-cf03-421c-8695-7ffb85ba258c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1205 - CGI</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1205
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 16
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList getenv = methods.FindByShortName("getenv")
+	+ methods.FindByShortName("getenv_s")
+	+ methods.FindByShortName("_wgetenv")
+	+ methods.FindByShortName("_wgetenv_s");
+
+CxList queryString = Find_Strings().GetParameters(getenv).FindByShortName(@"QUERY_STRING");
+CxList contentType = Find_Strings().FindByShortName("*Content-type*", false);
+
+result = queryString + contentType;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

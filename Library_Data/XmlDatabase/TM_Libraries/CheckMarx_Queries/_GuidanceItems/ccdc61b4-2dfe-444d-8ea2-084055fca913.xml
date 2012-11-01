@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ccdc61b4-2dfe-444d-8ea2-084055fca913</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1946 - R16 00 04 Function Like Macros Shall Not Be Defined</Title>
+    <Category>CWE: 10771</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10771</h1>
+  <iframe height="500" src="/content/10771" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1946
+Cwe : 10771
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /* MISRA CPP RULE 16-0-4
+ ------------------------------
+ This query checks if there are function-like macros defined in the code.
+ 
+ The Example below shows code with vulnerability: 
+
+      #define  FUNC_MACRO(X) X*X  non-compliant
+           
+*/
+
+
+// finds all function- like macros that are not string and commented out by double slash 
+result = All.FindByRegex(@"#define\s+\w+\s*[(](\w*\,?)*[)]", All.NewCxList());</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

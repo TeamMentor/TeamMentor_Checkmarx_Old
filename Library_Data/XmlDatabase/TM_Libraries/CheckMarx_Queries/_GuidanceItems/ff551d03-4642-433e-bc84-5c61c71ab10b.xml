@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>ff551d03-4642-433e-bc84-5c61c71ab10b</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1596 - Insecure Data Storage</Title>
+    <Category>CWE: 285</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  285</h1>
+  <iframe height="500" src="/content/285" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1596
+Cwe : 285
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query - Insecure Data Storage
+// -----------------------------
+// This risk addresses the obvious concern of sensitive data being stored on mobile devices
+// Code example:
+// 			String outFilename = "/sdcard/file.txt";
+// How to Resolve:
+// 			String outFilename = "/data/data/file.txt";
+//
+
+// The purpose of the query is to detect any attempt to write information to external storage
+// The encrypted information that stored on externel storage will be detected as well
+// vulnerability
+
+
+CxList sd = All.FindByName(@"*/sdcard/*") + All.FindByMemberAccess("Environment.getExternalStorageDirectory");
+result = Find_Write().DataInfluencedBy(sd);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

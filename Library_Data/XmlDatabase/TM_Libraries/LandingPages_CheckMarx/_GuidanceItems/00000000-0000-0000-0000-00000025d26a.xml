@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>00000000-0000-0000-0000-00000025d26a</Id>
+    <Library_Id>c037d0d2-0617-44f3-b846-21dc3d02c4f8</Library_Id>
+    <Title>Open Redirect</Title>
+    <Category>Input and Data Validation</Category>
+    <Phase>Implementation</Phase>
+    <Technology>PHP</Technology>
+    <Type>Landing Page</Type>
+    <DirectLink>Open Redirect</DirectLink>
+    <Author />
+    <Priority />
+    <Status />
+  </Metadata>
+  <Content Sanitized="false" DataType="wikitext">
+    <Data><![CDATA[==Description==
+
+Many web applications use URL redirection as a feature to direct a user to another site or page on the same site. Some web sites make it possible to manipulate the destination of the URL redirection. An attacker may be able to abuse this functionality to trick users into entering sensitive information into a malicious website while seemingly navigating within a trusted website. This vulnerability applies to all applications that use URL redirection. To prevent this problem, validate destinations of redirects, use reference maps to limit possible destinations, and avoid redirection based on user input if possible. To check your code for this problem, identify all URL redirects and check whether data used to determine destinations is sufficiently validated.
+
+==Impact==
+
+Open redirects allow an attacker to send users to a malicious site via a legitimate-looking URL. Many users are tricked by the legitimate-looking URL into thinking that they are browsing a trusted site. The malicious site may have an authentic looking login page tempting unsuspecting users into entering their usernames and passwords into it. When personal information is entered into the malicious login page, it is recorded for the attacker's use. Once the attacker has valid user credentials, he can access or modify users' data in the application. If the attacker is able to take over an administrative account, he may gain full control of the application.
+
+==Countermeasures==
+
+Don't use redirects if possible:
+* [[9dd99e67-7f4b-4c3b-b355-253edd7b29a3|Don't Use Redirects Or Forwards If Possible]]
+
+Calculate destinations of redirects without user input:
+* [[6daf44c7-fe2c-45f6-8854-7aa1e3a1030f|Calculate Destinations of Redirects And Forwards Without User Input]]
+
+Use mapping values when redirecting on user input:
+* [[d718d5f2-247e-4299-a6ca-bfeaaac67eea|Use Mapping Values When Redirecting on User Input]]
+
+Validate destinations of redirects:
+* [[f86bc5a9-e545-461b-9ba5-c6659841250e|Validate Destinations of Redirects And Forwards]]
+
+==Checklists==
+
+Redirects are not used unless necessary:
+* [[af8c3ff3-490d-40fe-bed3-eca342fdba4e|Redirects And Forwards Are Not Used Unless Necessary]]
+
+Destinations of redirects are calculated without user input:
+* [[a1061c45-7a6e-4257-ab36-f3a693d45ad3|Destinations of Redirects And Forwards Are Calculated Without User Input]]
+
+Mapping values are used for redirects:
+* [[ff0f750a-308b-4c78-8602-3c6d603e406d|Mapping Values Are Used for Redirects And Forwards]]
+
+Destinations of redirects are validated:
+* [[f87f29d2-388b-4d5f-bab5-bdf7b17eff85|Destinations of Redirects And Forwards Are Validated]]
+
+==Additional Resources==
+* For more information about open redirect vulnerabilities, please see https://www.owasp.org/index.php/Open_redirect]]></Data>
+  </Content>
+</TeamMentor_Article>

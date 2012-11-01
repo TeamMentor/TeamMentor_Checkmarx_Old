@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>dcdd0d40-b97f-473b-b768-5274ef7f869a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1857 - R16 01 Function With Variable Number Of Arguments</Title>
+    <Category>CWE: 11045</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11045</h1>
+  <iframe height="500" src="/content/11045" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1857
+Cwe : 11045
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 16-1
+------------------------------
+This query searches for functions declared or defined to have variable number of arguments
+
+	The Example below shows code with vulnerability: 
+
+void foo(int arg1, ... );
+
+*/
+
+// find instances of the "..." operation
+CxList varArgs = All.FindByRegex(@"\.\.\.", false, false, false, All.NewCxList());
+
+result += varArgs.GetAncOfType(typeof(ParamDeclCollection)).GetAncOfType(typeof(MethodDecl));
+
+// Safety check for the violating h file
+// (it is also a violation in itself)
+CxList includes = All.FindByType(typeof(StringLiteral)).GetParameters(Find_Methods()
+	.FindByShortName("CX_INCL"));
+CxList hFile = includes.FindByShortName("stdarg.h");
+if (hFile.Count == 0)
+	return result;
+
+// Non compliant functions;
+result += hFile + 
+	All.FindByType(typeof(MethodInvokeExpr)).FindByShortName("va_arg") +
+	All.FindByType(typeof(MethodInvokeExpr)).FindByShortName("va_start") +
+	All.FindByType(typeof(MethodInvokeExpr)).FindByShortName("va_end");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

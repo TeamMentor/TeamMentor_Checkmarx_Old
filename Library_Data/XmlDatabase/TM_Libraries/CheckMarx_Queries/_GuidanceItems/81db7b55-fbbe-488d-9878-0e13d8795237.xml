@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>81db7b55-fbbe-488d-9878-0e13d8795237</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1889 - R02 13 04 Literal Suffix Uppercase</Title>
+    <Category>CWE: 10780</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10780</h1>
+  <iframe height="500" src="/content/10780" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1889
+Cwe : 10780
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 2-13-4
+ ------------------------------
+ This query searches for literal suffixes in undercase.
+ 
+ The Example below shows code with vulnerability: 
+
+      int main() 
+		{
+			int a = 0U;
+			a = 0u;     //Non-compliant
+			a = 0L;
+			a = 0l;     //Non-compliant
+			a = 0UL;
+			a = 0Ul;    //Non-compliant
+			a = 0uL;    //Non-compliant
+			a = 0x12bU;
+			a = 0x12bu; //Non-compliant
+			float b = 1.2F;
+			b = 2.4f;   //Non-compliant
+			b = 1.2L;
+			b = 2.4l;   //Non-compliant
+		};
+
+*/
+
+CxList findInts = All.FindByRegex(@"\d+[b]?[UL]?[ul][UL]?\W", false, false,false);
+findInts = findInts.FindByType(typeof(IntegerLiteral));
+CxList findFloats = All.FindByRegex(@"\d+\.?\d*[fl]\W", false, false,false);
+findFloats = findFloats.FindByType(typeof(RealLiteral));
+result = findFloats + findInts;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>77e4e804-5b9f-4fe3-9d3f-ef7f1634a87a</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>570 - Find Web Outputs</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 570
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 32
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+CxList classes = Find_Class_Decl();
+
+CxList getOutputStream = All.FindByMemberAccess("Socket.getOutputStream");
+CxList outputStreamCommands = getOutputStream.GetMembersOfTarget();
+outputStreamCommands = 
+	outputStreamCommands.FindByShortName("print*") +
+	outputStreamCommands.FindByShortName("write*");
+
+CxList output = 
+	All.FindByName("response.*", false) +
+	All.FindByMemberAccess("HttpServletResponse.*") +
+				
+	All.FindByMemberAccess("JspWriter.print*") +
+				
+	outputStreamCommands +
+
+	All.FindByMemberAccess("Text.setText") + 	
+	All.FindByMemberAccess("TextComponent.setText") +
+	All.FindByMemberAccess("TextArea.setText") +
+	All.FindByMemberAccess("TextField.setText") + 
+	All.FindByMemberAccess("Label.setText*") +
+	All.FindByMemberAccess("JTextPane.set*") + 
+	All.FindByShortName("printStackTrace") + 
+
+	All.FindByMemberAccess("ZipOutputStream.*") +
+ 
+	All.FindByName("out.*");
+
+getOutputStream = output.FindByShortName("getOutputStream");
+outputStreamCommands = getOutputStream.GetMembersOfTarget();
+outputStreamCommands = 
+	outputStreamCommands.FindByShortName("print*") +
+	outputStreamCommands.FindByShortName("write*");
+
+output -= getOutputStream;
+output += outputStreamCommands;
+
+CxList strWriter = All.FindByType("StringWriter");
+CxList prnWriter = All.FindByMemberAccess("PrintWriter.print*");
+prnWriter += All.FindByMemberAccess("ServletOutputStream.print*");
+prnWriter = prnWriter - prnWriter.DataInfluencedBy(strWriter);
+
+CxList ResponseWriter = All.FindByMemberAccess("ServletResponse.getWriter").
+	GetMembersOfTarget().FindByType(typeof(MethodInvokeExpr));
+	
+ResponseWriter = ResponseWriter.FindByShortName("write*") + ResponseWriter.FindByShortName("print*");
+
+	/* struts */
+/*
+//CxList saves = Find_Methods().FindByShortName("saveMessages") + 
+//	Find_Methods().FindByShortName("saveErrors");
+CxList classes = Find_Class_Decl();
+CxList actionClass = classes.InheritsFrom("Action");
+//saves = saves.GetByAncs(actionClass);
+CxList inActionClass = All.GetByAncs(actionClass);
+CxList setAtt = inActionClass.FindByMemberAccess("request.setAttribute");
+setAtt += inActionClass.FindByMemberAccess("request.getSession").GetMembersOfTarget().FindByShortName("setAttribute");
+setAtt = All.GetParameters(setAtt, 1);
+*/
+	/* end struts */
+
+/* struts 2 */
+CxList jspTags = Find_Output_Tags();
+CxList jspOutputs = 
+	jspTags.FindByMemberAccess("_checkbox.label_", false)
+	+ jspTags.FindByMemberAccess("_checkbox.name_", false)
+	+ jspTags.FindByMemberAccess("_checkboxlist.name_", false) 
+	+ jspTags.FindByMemberAccess("_combobox.name_", false) 
+	+ jspTags.FindByMemberAccess("_doubleselect.name_", false) 
+	+ jspTags.FindByMemberAccess("_elseif.test_", false)
+	+ jspTags.FindByMemberAccess("_file.name_", false) 
+	+ jspTags.FindByMemberAccess("_form.action_", false)
+	+ jspTags.FindByMemberAccess("_hidden.name_", false) 
+	+ jspTags.FindByMemberAccess("_hidden.value_", false)
+	+ jspTags.FindByMemberAccess("_if.test_", false)
+	+ jspTags.FindByMemberAccess("_include.value_", false)
+	+ jspTags.FindByMemberAccess("_label.key_", false)
+	+ jspTags.FindByMemberAccess("_label.value_", false)
+	+ jspTags.FindByMemberAccess("_optiontransferselect.name_", false) 
+	+ jspTags.FindByMemberAccess("_param.name_", false) 
+	+ jspTags.FindByMemberAccess("_param.value_", false) 
+	+ jspTags.FindByMemberAccess("_password.label_", false) 
+	+ jspTags.FindByMemberAccess("_password.name_", false) 
+	+ jspTags.FindByMemberAccess("_property.default_", false)
+	+ jspTags.FindByMemberAccess("_property.value_", false)
+	+ jspTags.FindByMemberAccess("_radio.label_", false)
+	+ jspTags.FindByMemberAccess("_radio.list_", false)
+	+ jspTags.FindByMemberAccess("_radio.name_", false) 
+	+ jspTags.FindByMemberAccess("_select.label_", false)
+	+ jspTags.FindByMemberAccess("_select.name_", false) 
+	+ jspTags.FindByMemberAccess("_set.value_", false)
+	+ jspTags.FindByMemberAccess("_submit.key_", false)
+	+ jspTags.FindByMemberAccess("_submit.name_", false) 
+	+ jspTags.FindByMemberAccess("_text.name_", false)
+	+ jspTags.FindByMemberAccess("_textarea.label_", false)
+	+ jspTags.FindByMemberAccess("_textarea.name_", false)
+	+ jspTags.FindByMemberAccess("_textfield.label_", false) 
+	+ jspTags.FindByMemberAccess("_textfield.name_", false) 
+	+ jspTags.FindByMemberAccess("_updownselect.name_", false)
+	+ jspTags.FindByMemberAccess("_url.value_", false);
+
+CxList struts2Outputs = jspOutputs;//.GetMembersOfTarget();
+
+CxList jspCode = Find_Jsp_Code(); 
+struts2Outputs +=
+	jspCode.FindByShortName("actionmessage")
+	+ jspCode.FindByShortName("actionerror")
+	+ jspCode.FindByShortName("fielderror");
+struts2Outputs = All.GetByAncs(struts2Outputs); // too many false positives - the problem is the text.
+/* end struts 2 */
+
+/* spring */
+CxList mav2 = jspCode.FindByMemberAccess("response.write");
+CxList mav = All.GetByAncs(mav2) - mav2;
+//output -= output.FindByParameters(mav);
+mav -= mav.GetByAncs(output);
+
+/*
+CxList springAnnotations = Find_Request_Mapping_Params();
+springAnnotations -= All.FindByCustomAttribute("ModelAttribute").GetFathers();
+springAnnotations = All.FindAllReferences(springAnnotations);
+CxList nextStage = All.NewCxList();
+CxList addition = springAnnotations;
+while (addition.Count &gt; 0)
+{
+	CxList paramDecl = All.FindByType(typeof(ParamDecl)).DataInfluencedBy(addition.GetParameters(All));
+	paramDecl -= paramDecl.DataInfluencedBy(paramDecl);
+	addition = All.FindAllReferences(paramDecl);
+	springAnnotations += addition;
+}
+springAnnotations = springAnnotations.GetMembersOfTarget().FindByShortName("set*");
+
+CxList modelAttrMethods = All.FindByCustomAttribute("ModelAttribute").GetFathers().FindByType(typeof(MethodDecl));
+CxList modelAttrReturn = All.FindByType(typeof(ReturnStmt)).GetByAncs(modelAttrMethods);
+springAnnotations += All.GetByAncs(modelAttrReturn) - modelAttrReturn;
+*/
+//CxList mav = All.GetParameters(mav2);
+/* end spring */
+
+
+/// SaveMessages in Action classes (struts)
+ 
+CxList saves = 
+	methods.FindByShortName("saveMessages") + 
+	methods.FindByShortName("saveErrors");
+//CxList actionClass = classes.InheritsFrom("Action");
+CxList actionClass = Find_Action_Classes();
+saves = saves.GetByAncs(actionClass);
+
+result = output + 
+	prnWriter + 
+	ResponseWriter + 
+	//saves + 
+	struts2Outputs + 
+	//setAtt + 
+	mav +
+	saves;//+
+//	springAnnotations;
+
+result -= result.FindByShortName("sendRedirect");
+result -= result.FindByShortName("safeSendRedirect"); // ESAPI
+result -= result.FindByMemberAccess("Response.ok");
+result -= Find_Dead_Code_Contents();</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

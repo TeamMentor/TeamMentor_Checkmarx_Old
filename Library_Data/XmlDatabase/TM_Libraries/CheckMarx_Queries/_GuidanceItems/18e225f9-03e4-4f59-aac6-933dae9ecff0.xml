@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>18e225f9-03e4-4f59-aac6-933dae9ecff0</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1315 - Remote File Inclusion</Title>
+    <Category>CWE: 98</Category>
+    <Phase>PHP High Risk</Phase>
+    <Technology>PHP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  98</h1>
+  <iframe height="500" src="/content/98" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1315
+Cwe : 98
+IsExecutable : true
+IsEncrypted : false
+Severity : 3
+PackageId : 1272
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Interactive_Inputs();
+
+CxList methods = Find_Methods();
+CxList include = methods.FindByShortName("include", false) + 
+	methods.FindByShortName("include_once", false) +
+	methods.FindByShortName("require", false) + 
+	methods.FindByShortName("require_once", false);
+
+CxList numberSanitizer = methods.FindByShortName("round", false) + methods.FindByShortName("doubleval", false) +
+	methods.FindByShortName("strlen", false);
+
+result = include.InfluencedByAndNotSanitized(inputs, Find_Integers() +  numberSanitizer);
+//result = include.DataInfluencedBy(Find_Interactive_Inputs());</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

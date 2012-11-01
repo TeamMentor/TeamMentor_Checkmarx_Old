@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>5a886d69-ddce-47b9-84b6-f805dafeeb8c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1113 - Hardcoded Absolute Path</Title>
+    <Category>CWE: 426</Category>
+    <Phase>VB6 Low Visibility</Phase>
+    <Technology>VB6</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  426</h1>
+  <iframe height="500" src="/content/426" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1113
+Cwe : 426
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1008
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> result = 	All.FindByName("c:\\*") + 
+			All.FindByName("d:\\*");</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

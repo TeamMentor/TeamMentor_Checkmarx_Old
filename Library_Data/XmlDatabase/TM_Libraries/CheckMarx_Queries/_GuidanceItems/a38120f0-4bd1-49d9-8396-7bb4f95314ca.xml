@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>a38120f0-4bd1-49d9-8396-7bb4f95314ca</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>662 - Struts Form Does Not Extend Validation Class</Title>
+    <Category>CWE: 104</Category>
+    <Phase>Java Struts</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  104</h1>
+  <iframe height="500" src="/content/104" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 662
+Cwe : 104
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 39
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList forms_without_validators = 	All.InheritsFrom("ActionForm") + 
+									All.InheritsFrom("DynaActionForm");
+
+result = forms_without_validators;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

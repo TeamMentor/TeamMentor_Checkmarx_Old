@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>7663c2a9-32be-4871-9062-f8acc437d769</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>154 - Cleansing Canonicalization and Comparison Errors</Title>
+    <Category>CWE: 171</Category>
+    <Phase>ASP Low Visibility</Phase>
+    <Technology>ASP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  171</h1>
+  <iframe height="500" src="/content/171" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 154
+Cwe : 171
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 11
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList inputs = Find_Interactive_Inputs();
+CxList obj = All.FindByType(typeof(UnknownReference)) + All.FindByType(typeof(Declarator));
+CxList files = 	obj.FindByType("*filestream") + 
+				obj.FindByType("*fileinfo") +	
+				All.FindByName("*.file.*");
+
+CxList sanitize = All.FindByName("*server.mappath") + All.FindByName("*request.mappath"); 
+result = files.InfluencedByAndNotSanitized(inputs, sanitize);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

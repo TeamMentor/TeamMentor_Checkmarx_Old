@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>22c0ef85-fd95-43da-9fe8-2ef0203ebbf5</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1435 - Find DB In ODBC</Title>
+    <Category>CWE: 0</Category>
+    <Phase>General</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1435
+Cwe : 0
+IsExecutable : false
+IsEncrypted : false
+Severity : 0
+PackageId : 1280
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList methods = Find_Methods();
+
+// 1 - Explicite DB function names
+CxList directDbMethods =
+	methods.FindByShortName("odbc_do") + 
+	methods.FindByShortName("odbc_exec") + 
+	methods.FindByShortName("odbc_execute"); 
+	
+result += directDbMethods;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

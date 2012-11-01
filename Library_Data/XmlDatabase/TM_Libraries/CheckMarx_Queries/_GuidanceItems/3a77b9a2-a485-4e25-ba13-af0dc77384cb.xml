@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>3a77b9a2-a485-4e25-ba13-af0dc77384cb</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1563 - Unreleased Resource Leak</Title>
+    <Category>CWE: 411</Category>
+    <Phase>CPP Low Visibility</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  411</h1>
+  <iframe height="500" src="/content/411" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1563
+Cwe : 411
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 20
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Unreleased_Resource_Synchronization
+// -----------------------------------
+
+// There are some Linux methods that can reserve system resources, and if this resources
+// will not be released it may cause to resources leak 
+// http://www.yolinux.com/TUTORIALS/LinuxTutorialPosixThreads.html
+// http://publib.boulder.ibm.com/infocenter/iseries/v7r1m0/index.jsp?topic=%2Fapis%2Fusers_75.htm
+CxList methods = Find_Methods();
+
+CxList resourceInit = methods.FindByShortName("pthread_cond_init")      + 
+					  methods.FindByShortName("pthread_mutex_lock")     + 
+					  methods.FindByShortName("pthread_condattr_init")  + 
+	    			  methods.FindByShortName("pthread_attr_init")      + 
+					  methods.FindByShortName("pthread_mutexattr_init") + 
+					  methods.FindByShortName("pthread_mutex_init");
+CxList reserveTokens = All.GetParameters(resourceInit, 0);
+CxList reserveTokensVar = All.GetByAncs(reserveTokens).FindByType(typeof(UnknownReference));
+
+CxList resourceRelease = methods.FindByShortName("pthread_cond_destroy") + 
+						 methods.FindByShortName("pthread_mutex_unlock")+
+						 methods.FindByShortName("pthread_condattr_destroy")+
+						 methods.FindByShortName("pthread_attr_destroy")+
+	                     methods.FindByShortName("pthread_mutexattr_destroy")+
+	                     methods.FindByShortName("pthread_mutex_destroy")	;
+CxList releaseTokens = All.GetParameters(resourceRelease, 0);
+CxList releaseTokensVar = All.GetByAncs(releaseTokens).FindByType(typeof(UnknownReference));
+
+result = reserveTokensVar - reserveTokensVar.DataInfluencingOn(releaseTokensVar);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

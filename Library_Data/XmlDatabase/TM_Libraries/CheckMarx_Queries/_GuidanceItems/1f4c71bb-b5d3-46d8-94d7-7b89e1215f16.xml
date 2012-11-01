@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>1f4c71bb-b5d3-46d8-94d7-7b89e1215f16</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1549 - Short Session Key</Title>
+    <Category>CWE: 326</Category>
+    <Phase>Ruby Medium Threat</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  326</h1>
+  <iframe height="500" src="/content/326" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1549
+Cwe : 326
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1283
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList session = All.FindByShortName("session");
+CxList assignSession = session.GetAncOfType(typeof(AssignExpr));
+
+CxList secret = All.FindByShortName("secret").FindByType(typeof(UnknownReference));
+secret = secret.GetByAncs(assignSession);
+CxList assignSecret = secret.GetAncOfType(typeof(AssignExpr));
+
+CxList assignStrings = Find_Strings().GetByAncs(assignSecret);
+CxList relevantSecrets = assignStrings.DataInfluencingOn(secret);
+
+foreach (CxList secretName in relevantSecrets)
+{
+	StringLiteral s = secretName.data.GetByIndex(0) as StringLiteral;
+	if (s != null)
+	{
+		string name = s.ShortName;
+		if (name.Length </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

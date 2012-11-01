@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>dbe60e9e-eef0-4ba5-838e-b93322250b32</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1591 - Use of Native Language</Title>
+    <Category>CWE: 111</Category>
+    <Phase>Java Android</Phase>
+    <Technology>Java</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  111</h1>
+  <iframe height="500" src="/content/111" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1591
+Cwe : 111
+IsExecutable : true
+IsEncrypted : false
+Severity : 1
+PackageId : 1285
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // Query Buffer Overflow
+// ---------------------
+// The pure java application is protected from data overflow
+// The overflow may appear when native language, like C++ is used
+// The purpose of the query to find if application used native language
+//
+// Starting from June, 2009 Google stars supporting native language in android 
+// Based on NDK (Native Language Kit).
+// http://arstechnica.com/open-source/news/2009/06/android-goes-beyond-java-gains-native-cc-dev-kit.ars
+// The buffer overflow in this situation can break SandBox secuirity approach
+
+
+CxList methodsLoadLib = All.FindByMemberAccess("*System.loadLibrary");
+CxList nativelib = All.FindByShortName("\"nativelib\"");
+result =  methodsLoadLib.FindByParameters(nativelib);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

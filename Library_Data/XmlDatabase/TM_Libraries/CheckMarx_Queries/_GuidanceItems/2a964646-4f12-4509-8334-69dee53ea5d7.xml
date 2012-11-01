@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>2a964646-4f12-4509-8334-69dee53ea5d7</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1876 - R20 06 Using Offsetof Macro From Stddef H</Title>
+    <Category>CWE: 11064</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11064</h1>
+  <iframe height="500" src="/content/11064" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1876
+Cwe : 11064
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 20-6
+------------------------------
+This query searches for usage of the macro 'offsetof', in library <stddef.h>
+
+	The Example below shows code with vulnerability: 
+
+#include <stddef.h>
+
+void mc2_2006 ( void )
+{
+	struct mc2_2006_s { int16_t mc2_2006_a; int16_t mc2_2006_b; };
+  	uint32_t mc2_2006_offset;
+}
+
+*/
+
+// Safety check for the violating h file
+CxList includes = All.FindByType(typeof(StringLiteral)).GetParameters(Find_Methods()
+	.FindByShortName("CX_INCL"));
+CxList hFile = includes.FindByShortName("stddef.h");
+if (hFile.Count == 0)
+	return result;
+
+// Start with all instances of offsetof
+CxList offsetofs = All.FindByRegex("offsetof");
+
+result = offsetofs;</stddef.h></stddef.h></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

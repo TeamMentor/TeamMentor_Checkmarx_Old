@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>cd154438-1338-4064-ac7b-fcd986612fc4</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1417 - Global Variables Without Meaningful Name</Title>
+    <Category>CWE: 10715</Category>
+    <Phase>Ruby Best Coding Practice</Phase>
+    <Technology>Ruby</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10715</h1>
+  <iframe height="500" src="/content/10715" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1417
+Cwe : 10715
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1279
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> CxList allGlobals = Get_All_Global_Variables();
+
+// Get only variables with short name
+foreach (CxList gl in allGlobals)
+{
+	CSharpGraph gr = gl.data.GetByIndex(0) as CSharpGraph;
+	if (gr.ShortName.Length </pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

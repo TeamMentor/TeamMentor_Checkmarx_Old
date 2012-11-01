@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>9afb2f81-2fca-48ee-8337-c79c84b9b34c</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>2047 - Use of Two Argument Form of Open</Title>
+    <Category>CWE: 0</Category>
+    <Phase>Perl Medium Threat</Phase>
+    <Technology>Perl</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 2047
+Cwe : 0
+IsExecutable : true
+IsEncrypted : false
+Severity : 2
+PackageId : 1295
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> // See : https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=76775519
+
+// Find plain use of a 2 parameter open methods
+CxList methods = Find_Methods();
+CxList open = methods.FindByShortName("open");
+CxList open2 = open.FindByParameters(All.GetParameters(open, 1));
+CxList open3 = open.FindByParameters(All.GetParameters(open, 2));
+
+result = (open2 - open3).DataInfluencedBy(Find_Inputs());
+
+// Also <argv> and  are using a 2 parameters open
+result += methods.FindByShortName("").FindByParameters(All.FindByShortName("ARGV"));</argv></pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>0579c4a9-c978-4574-a9c3-8fb4b2b465e3</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1870 - R19 05 Using Define Or Undef Directive In Block</Title>
+    <Category>CWE: 11058</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11058</h1>
+  <iframe height="500" src="/content/11058" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1870
+Cwe : 11058
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 19-5
+------------------------------
+This query searches for usage of uses of #define or #undef in block
+
+	The Example below shows code with vulnerability: 
+
+int foo ( void )
+{
+	int i = 5;
+
+	#define size_macro 6
+
+	i = size_acro;
+	#undef size_macro
+	return i;
+}
+
+*/
+
+// search for open brackets, followed by #define or #undef
+result = All.FindByRegex(@"{[^}]*?#define [^{]*?}|{[^}]*?#undef [^{]*?}", false, false, false, All.NewCxList());</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

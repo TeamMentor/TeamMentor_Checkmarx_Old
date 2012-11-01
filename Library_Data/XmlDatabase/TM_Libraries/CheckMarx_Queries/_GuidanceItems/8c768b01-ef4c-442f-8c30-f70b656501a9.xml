@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>8c768b01-ef4c-442f-8c30-f70b656501a9</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1859 - R16 03 Function Prototype Without Identifiers</Title>
+    <Category>CWE: 11047</Category>
+    <Phase>CPP MISRA C</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  11047</h1>
+  <iframe height="500" src="/content/11047" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1859
+Cwe : 11047
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1288
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+MISRA C RULE 16-3
+------------------------------
+This query searches for prototypes (such as function declarations) without - identifiers for all paramaters
+
+	The Example below shows code with vulnerability: 
+
+short sum (int, int);
+
+*/
+
+CxList methodDefs = All.FindByType(typeof(StatementCollection)).GetFathers().FindByType(typeof(MethodDecl));
+CxList methodPrototypes = All.FindByType(typeof(MethodDecl)) - methodDefs;
+CxList typeRef = All.FindByType(typeof(TypeRef));
+CxList emptyTypeParamaters = typeRef.FindByShortName("").GetAncOfType(typeof(ParamDecl));
+CxList voidTypeParamaters = typeRef.FindByShortName("void").GetAncOfType(typeof(ParamDecl));
+
+// we only concerned with prototype (not definition) paramaters
+CxList emptyIdentParamaters = All.FindByType(typeof(ParamDecl)).FindByShortName("").
+	GetByAncs(methodPrototypes);
+
+// Almost all paramaters with empty name are empty identifiers and should be addes
+result += emptyIdentParamaters;
+
+// except "..." type paramaters, which are supposed to have no name
+result -= emptyTypeParamaters;
+
+// and "void" paramaters, which aren't supposed to have a name
+result -= voidTypeParamaters;</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>

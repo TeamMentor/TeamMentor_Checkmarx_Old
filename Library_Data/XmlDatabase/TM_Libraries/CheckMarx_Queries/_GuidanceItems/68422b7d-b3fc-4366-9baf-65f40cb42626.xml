@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TeamMentor_Article Metadata_Hash="0" Content_Hash="0">
+  <Metadata>
+    <Id>68422b7d-b3fc-4366-9baf-65f40cb42626</Id>
+    <Library_Id>cdfef7b5-715e-4199-91cd-d9c380eb7e6b</Library_Id>
+    <Title>1917 - R17 00 02 Standard Library Macros Reuse</Title>
+    <Category>CWE: 10803</Category>
+    <Phase>CPP MISRA CPP</Phase>
+    <Technology>CPP</Technology>
+    <Type>No Landing Page</Type>
+  </Metadata>
+  <Content Sanitized="false" DataType="html">
+    <Data><![CDATA[<h1>Content for CWE ID:  10803</h1>
+  <iframe height="500" src="/content/10803" width="100%">
+  </iframe>
+  <h1>Checkmarx Rule</h1>
+  <div style="padding:10px">
+    <pre>QueryId : 1917
+Cwe : 10803
+IsExecutable : true
+IsEncrypted : false
+Severity : 0
+PackageId : 1289
+Status : Original
+Type : Regular
+</pre>
+  </div>
+  <h3>Source</h3>
+  <div style="padding:10px">
+    <pre> /*
+ MISRA CPP RULE 17-0-2
+ ------------------
+  The names of standard library macros and objects shall not be reused
+
+  The Example below shows code with vulnerability: 
+
+  			#define NULL 2 //Non-compliant
+
+
+*/
+
+//Macros from http://www.cplusplus.com/reference/clibrary/cstdio :
+
+result = All.FindByRegex(@"#\s*define\s+NULL\s+", null)+ 
+	All.FindByRegex(@"#\s*define\s+EOF\s+", null) +
+	All.FindByRegex(@"#\s*define\s+FILENAME_MAX\s+", null) +
+	All.FindByRegex(@"#\s*define\s+TMP_MAX\s+", null);</pre>
+  </div>]]></Data>
+  </Content>
+</TeamMentor_Article>
