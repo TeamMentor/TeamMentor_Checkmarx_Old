@@ -1,5 +1,4 @@
 #TM specific
-/Library_Data/XmlDatabase
 o2.config
 TmUsers.xml
 webEditorSecretData.config
@@ -14,5 +13,5 @@ Web Applications/TM_Website/bin/*.xml
 
 Web Applications/TeamMentor.CoreLib/bin/Debug/TeamMentor.CoreLib.dll
 
-/Library_Data/XmlDatabase/TM_Libraries
+
 /Web Applications/TM_Website/App_Data
