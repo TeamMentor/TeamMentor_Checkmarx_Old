@@ -645,6 +645,7 @@ public class CxPortalWebService_Wrapper
 	public CxWSResponseQueryDescription GetQueryDescription(string sessionId, int cweId)
 	{
 		CxWSResponseQueryDescription result = _web_Service.GetQueryDescription(sessionId, cweId);
+	    result.IsSuccesfull = true;
         new CxTeamMentor().TMFilterFor_CxWSResponseQueryDescription(cweId,result);
 		return result;
 	}

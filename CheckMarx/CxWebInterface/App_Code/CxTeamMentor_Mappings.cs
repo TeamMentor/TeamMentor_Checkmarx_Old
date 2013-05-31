@@ -16,6 +16,7 @@ public class CxTeamMentor_Mappings
 
     static CxTeamMentor_Mappings()
     {
+        Tm_QueryId_Mappings =new Dictionary<int, string>();
         LoadData();
     }
 
@@ -23,16 +24,17 @@ public class CxTeamMentor_Mappings
     public static void LoadData()
     {
         HtmlRedirectTemplate = "<html><head><meta http-equiv=\"refresh\" content=\"0;" +
-                               "url=https://vulnerabilities.teammentor.net/article/{0} \"></head></html>";
+                               "url=https://vulnerabilities.teammentor.net/article/{0}\"></head></html>";
 
-        var file = HostingEnvironment.MapPath(@"/App_Code/CheckMarxMapping.xml");
+        //var file = HostingEnvironment.MapPath(@"/App_Code/CheckMarxMapping.xml");
+        var file = AppDomain.CurrentDomain.BaseDirectory + @"App_Code\CheckMarxMapping.xml";
 
         string xmlResult;
         xmlResult = string.Empty;
         using (var fs = new FileStream(file, FileMode.Open))
         {
             var sw = new StreamReader(fs);
-            xmlResult = sw.ReadLine();
+            xmlResult = sw.ReadToEnd();
         }
         var checkMarxDataMapping = new CheckMarxDataMapping();
         var serializer = new XmlSerializer(typeof(CheckMarxDataMapping));

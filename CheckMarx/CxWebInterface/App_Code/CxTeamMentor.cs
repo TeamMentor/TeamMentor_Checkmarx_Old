@@ -16,7 +16,7 @@ public class CxTeamMentor
                                          select query;
 
 
-        foreach (CxWSQuery query in queries)
+        foreach (var query in queries)
         {
             query.Cwe = -query.QueryId; // set the Cwe value to the negative of the QueryId
             query.Name += "_TM"; // Temp query name minor change
@@ -37,23 +37,14 @@ public class CxTeamMentor
     }
 
 
-    public void TMFilterFor_CxWSResponseQueryDescription(int cweId,
-                                                         CxWSResponseQueryDescription cxWsResponseQueryDescription)
+    public void TMFilterFor_CxWSResponseQueryDescription(int cweId,CxWSResponseQueryDescription cxWsResponseQueryDescription)
     {
-        if (cxWsResponseQueryDescription.IsSuccesfull)
+        if (cxWsResponseQueryDescription.IsSuccesfull && cweId < 0)
         {
-            if (cweId < 0)
-            {
-                if (CxTeamMentor_Mappings.Tm_QueryId_Mappings.ContainsKey(cweId))
-
-                {
-                    cxWsResponseQueryDescription.QueryDescription =String.Format(CxTeamMentor_Mappings.HtmlRedirectTemplate,CxTeamMentor_Mappings.Tm_QueryId_Mappings[cweId]);
-                }
-
-                else
-                    cxWsResponseQueryDescription.QueryDescription =
-                        String.Format("The TeamMentor article with Id {0} could not be found", cweId);
-            }
+            cxWsResponseQueryDescription.QueryDescription =
+                !CxTeamMentor_Mappings.Tm_QueryId_Mappings.ContainsKey(cweId)
+                    ? String.Format("The TeamMentor article with Id {0} could not be found",cweId)
+                    : String.Format(CxTeamMentor_Mappings.HtmlRedirectTemplate, CxTeamMentor_Mappings.Tm_QueryId_Mappings[cweId]);
         }
     }
 }
