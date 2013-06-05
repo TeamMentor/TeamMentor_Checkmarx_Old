@@ -9,6 +9,8 @@ public class CxTeamMentor
 
 
 {
+    private static readonly long TeamMentorIdentifier = 1000000;
+
     public void TMFilterFor_CxQueryCollectionResponse(CxQueryCollectionResponse cxQueryCollectionResponse)
     {
         IEnumerable<CxWSQuery> queries = from queryGroup in cxQueryCollectionResponse.QueryGroups
@@ -18,7 +20,7 @@ public class CxTeamMentor
 
         foreach (var query in queries)
         {
-            query.Cwe = -query.QueryId; // set the Cwe value to the negative of the QueryId
+            query.Cwe = TeamMentorIdentifier + query.QueryId; // set the Cwe value to the negative of the QueryId
             query.Name += "_TM"; // Temp query name minor change
         }
     }
@@ -31,7 +33,7 @@ public class CxTeamMentor
 
         foreach (AuditScanResult result in results)
         {
-            result.CWE = -result.QueryId; // set the Cwe value to the negative of the QueryId
+            result.CWE = TeamMentorIdentifier+ result.QueryId; // set the Cwe value to the negative of the QueryId
             result.QueryName += "_TM"; // Temp query name minor change
         }
     }
@@ -39,7 +41,7 @@ public class CxTeamMentor
 
     public void TMFilterFor_CxWSResponseQueryDescription(int cweId,CxWSResponseQueryDescription cxWsResponseQueryDescription)
     {
-        if (cxWsResponseQueryDescription.IsSuccesfull && cweId < 0)
+        if (cxWsResponseQueryDescription.IsSuccesfull && cweId > TeamMentorIdentifier)
         {
             cxWsResponseQueryDescription.QueryDescription =
                 !CxTeamMentor_Mappings.Tm_QueryId_Mappings.ContainsKey(cweId)
