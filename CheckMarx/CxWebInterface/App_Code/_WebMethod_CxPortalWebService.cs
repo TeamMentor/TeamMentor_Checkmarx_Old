@@ -13,6 +13,7 @@ public class CxPortalWebService_Wrapper
 	public CxQueryCollectionResponse GetQueryCollection(string sessionId)
 	{
 		CxQueryCollectionResponse result = _web_Service.GetQueryCollection(sessionId);
+        new CxTeamMentor().TMFilterFor_CxQueryCollectionResponse(result);
 		return result;
 	}
 	[WebMethod()]
