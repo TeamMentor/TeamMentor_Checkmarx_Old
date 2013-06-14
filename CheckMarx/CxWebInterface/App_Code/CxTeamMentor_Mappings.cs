@@ -24,7 +24,7 @@ public class CxTeamMentor_Mappings
     public static void LoadData()
     {
         HtmlRedirectTemplate = "<html><head><meta http-equiv=\"refresh\" content=\"0;" +
-                               "url=https://vulnerabilities.teammentor.net/article/{0}\"></head></html>";
+                               "url=http://localhost:8005/article/{0}\"></head></html>";
 
         //var file = HostingEnvironment.MapPath(@"/App_Code/CheckMarxMapping.xml");
         var file = AppDomain.CurrentDomain.BaseDirectory + @"App_Code\CheckMarxMapping.xml";
