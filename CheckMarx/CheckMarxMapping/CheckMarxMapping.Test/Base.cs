@@ -52,6 +52,7 @@ namespace CheckMarxMapping.Test
                     new DataItem {QueryId = -430, Guid = "bc7538f2-9ef5-4ee2-86b8-ed3ca83fd971"},
                     new DataItem {QueryId = -427, Guid = "937f2173-5e39-48b6-bb3a-ecfd8f052bb0"},
                     new DataItem {QueryId = -431, Guid = "df8905a5-7e58-4c42-a39d-8123601477d7"},
+                    new DataItem {QueryId = -432, Guid = "df8905a5-7e58-4c42-a39d-8123601477d7"},
                     new DataItem {QueryId = -429, Guid = "bc7538f2-9ef5-4ee2-86b8-ed3ca83fd971"},
                     new DataItem {QueryId = -433, Guid = "9da2fccb-d20c-4e74-9f59-349d799e25cf"},
                     new DataItem {QueryId = -468, Guid = "ee22e5e0-0953-4276-b0e6-955becda5ee8"},
