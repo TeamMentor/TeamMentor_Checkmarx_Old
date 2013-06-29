@@ -46,9 +46,7 @@
     <Compile Include="App_Data\CxPortalWebService.cs" />
     <Compile Include="App_Data\CxTeamMentor.cs" />
     <Compile Include="App_Data\CxTeamMentor_Mappings.cs" />
-    <Compile Include="App_Data\_WebMethod_CxPortalWebService.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="App_Data\_WebMethod_CxPortalWebService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

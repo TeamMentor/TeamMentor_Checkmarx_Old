@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckmarxMapping", "CheckmarxMapping\CheckmarxMapping.csproj", "{DFD26A0A-D9E0-47E1-B43F-5FC54150411A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CxWebInterface.Test", "..\..\TeamMentor\CheckMarx_Integration\TeamMentor_Checkmarx\CxWebInterface.Test\CxWebInterface.Test.csproj", "{D4581D4F-E142-4679-91EF-45D90A0EF109}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{DFD26A0A-D9E0-47E1-B43F-5FC54150411A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFD26A0A-D9E0-47E1-B43F-5FC54150411A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFD26A0A-D9E0-47E1-B43F-5FC54150411A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4581D4F-E142-4679-91EF-45D90A0EF109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4581D4F-E142-4679-91EF-45D90A0EF109}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4581D4F-E142-4679-91EF-45D90A0EF109}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4581D4F-E142-4679-91EF-45D90A0EF109}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

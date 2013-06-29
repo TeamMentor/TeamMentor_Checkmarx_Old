@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using log4net;
 
 /// <summary>
 /// Summary description for CxTeamMentor_Mappings
@@ -11,7 +12,7 @@ public class CxTeamMentor_Mappings
     #region static variables 
     public static Dictionary<int, string> Tm_QueryId_Mappings { get; set; }
     public static string HtmlRedirectTemplate { get; set; }
-
+    private static ILog log = LogManager.GetLogger(typeof (CxTeamMentor_Mappings));
     #endregion
 
     #region class contructor
@@ -31,23 +32,35 @@ public class CxTeamMentor_Mappings
 
         //var file = HostingEnvironment.MapPath(@"/App_Code/CheckMarxMapping.xml");
         var file = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\CheckMarxMapping.xml";
-
+        if (log.IsDebugEnabled)
+        {
+            log.Debug("Loading XML File. Trying to load >" + file);
+        }
         string xmlResult;
         
-        using (var fs = new FileStream(file, FileMode.Open))
+        
+        try
         {
-            var sw = new StreamReader(fs);
-            xmlResult = sw.ReadToEnd();
-        }
-        CheckMarxDataMapping checkMarxDataMapping;
+            using (var fs = new FileStream(file, FileMode.Open))
+            {
+                var sw = new StreamReader(fs);
+                xmlResult = sw.ReadToEnd();
+            }
+            CheckMarxDataMapping checkMarxDataMapping;
 
-        var serializer = new XmlSerializer(typeof(CheckMarxDataMapping));
-        using (var reader = new StringReader(xmlResult))
-            checkMarxDataMapping = (CheckMarxDataMapping) serializer.Deserialize(reader);
-        //Loading a Dictionary
-        if (checkMarxDataMapping != null)
-            checkMarxDataMapping.Mapping
-                                 .ForEach(x => Tm_QueryId_Mappings.Add(x.QueryId, x.Guid));
+            var serializer = new XmlSerializer(typeof(CheckMarxDataMapping));
+            using (var reader = new StringReader(xmlResult))
+                checkMarxDataMapping = (CheckMarxDataMapping) serializer.Deserialize(reader);
+            //Loading a Dictionary
+            if (checkMarxDataMapping != null)
+                checkMarxDataMapping.Mapping
+                                    .ForEach(x => Tm_QueryId_Mappings.Add(x.QueryId, x.Guid));
+        }
+        catch
+        (Exception EX_NAME)
+        {
+            log.Error(EX_NAME.ToString());
+        }
 
     }
 
