@@ -1,1 +1,0 @@
-<%@ WebService Language="c#" Class="CxPortalWebService_Wrapper" %>
