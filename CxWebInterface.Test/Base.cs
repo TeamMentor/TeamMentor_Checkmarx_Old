@@ -12,7 +12,7 @@ namespace CheckMarxMapping.Test
                                                             "url=http://checkmarx.teammentor.net/article/{0}\"></head></html>";
         protected List<DataItem> GetData()
         {
-            const string ResourceName = "CxWebInterface.Test.Resources.CheckMarxMapping.xml";
+            const string ResourceName = "CxWebInterface.Test.App_Data.CheckMarxMapping.xml";
             CheckMarxDataMapping Mapping = null;
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(ResourceName))

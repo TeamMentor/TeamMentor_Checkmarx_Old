@@ -20,6 +20,16 @@ namespace CxWebInterface.Test
             Assert.IsTrue(DataMapping.Mapping!=null);
 
             Assert.IsTrue(DataMapping.Mapping.Count == 114);
+            IOrderedEnumerable<DataItem> orderedEnumerable = DataMapping.Mapping.OrderBy(item => item.QueryId);
+
+            var minQueryId = orderedEnumerable.Min(x => x.QueryId);
+            var maxQueryId = orderedEnumerable.Max(x => x.QueryId);
+
+            var firstOrDefault = orderedEnumerable.FirstOrDefault();
+            Assert.IsTrue(firstOrDefault != null && minQueryId ==firstOrDefault.QueryId);
+            var lastOrDefault = orderedEnumerable.LastOrDefault();
+            Assert.IsTrue(lastOrDefault != null && maxQueryId ==lastOrDefault.QueryId);
+
         }
 
         [Test]
@@ -36,6 +46,7 @@ namespace CxWebInterface.Test
                                          .Where(group => group.Count() > 1)
                                          .Select(group => group.Key).Count();
 
+            
             //FilteredResults equals 0 means that there are not duplicated
             Assert.IsTrue(condition: true);
             Assert.IsTrue(filteredResults == 0);
@@ -60,7 +71,7 @@ namespace CxWebInterface.Test
             List<IGrouping<int, DataItem>> results = mapping.GroupBy(x => x.QueryId)
                                                             .Where(group => group.Count() > 1)
                                                             .Select(x => x).ToList();
-
+           
             Assert.IsTrue(results!=null);
             Assert.IsTrue(results.Count == 0);
         }

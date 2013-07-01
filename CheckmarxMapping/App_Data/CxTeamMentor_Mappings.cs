@@ -31,7 +31,14 @@ public class CxTeamMentor_Mappings
                                "url=http://checkmarx.teammentor.net/article/{0}\"></head></html>";
 
         //var file = HostingEnvironment.MapPath(@"/App_Code/CheckMarxMapping.xml");
-        var file = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\CheckMarxMapping.xml";
+        string file;
+        if (AppDomain.CurrentDomain.BaseDirectory.EndsWith(@"\"))
+        {
+            file = AppDomain.CurrentDomain.BaseDirectory + @"App_Data\CheckMarxMapping.xml";
+        }
+        else
+            file = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\CheckMarxMapping.xml";
+
         if (log.IsDebugEnabled)
         {
             log.Debug("Loading XML File. Trying to load >" + file);
