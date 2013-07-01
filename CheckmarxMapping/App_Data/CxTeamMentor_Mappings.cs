@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using log4net;
@@ -40,12 +41,9 @@ public class CxTeamMentor_Mappings
             file = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\CheckMarxMapping.xml";
 
         if (log.IsDebugEnabled)
-        {
-            log.Debug("Loading XML File. Trying to load >" + file);
-        }
+            log.Debug("Loading XML File : " + file);
+
         string xmlResult;
-        
-        
         try
         {
             using (var fs = new FileStream(file, FileMode.Open))
@@ -59,15 +57,19 @@ public class CxTeamMentor_Mappings
             using (var reader = new StringReader(xmlResult))
                 checkMarxDataMapping = (CheckMarxDataMapping) serializer.Deserialize(reader);
             //Loading a Dictionary
-            if (checkMarxDataMapping != null)
-                checkMarxDataMapping.Mapping
-                                    .ForEach(x => Tm_QueryId_Mappings.Add(x.QueryId, x.Guid));
+            if (checkMarxDataMapping != null && checkMarxDataMapping.Mapping !=null)
+            {
+                checkMarxDataMapping.Mapping.ForEach(x => Tm_QueryId_Mappings.Add(x.QueryId, x.Guid));
+            }
         }
         catch
         (Exception EX_NAME)
         {
             log.Error(EX_NAME.ToString());
         }
+        if (log.IsDebugEnabled)
+            log.Debug(String.Format("[LoadData] {0} mapping elements found", Tm_QueryId_Mappings.Count));
+
 
     }
 

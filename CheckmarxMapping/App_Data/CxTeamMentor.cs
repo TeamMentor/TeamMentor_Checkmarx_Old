@@ -16,6 +16,8 @@ public class CxTeamMentor
 
     public void TMFilterFor_CxQueryCollectionResponse(CxQueryCollectionResponse cxQueryCollectionResponse)
     {
+        log.Debug("Inside TMFilterFor_CxQueryCollectionResponse method...");
+
         IEnumerable<CxWSQuery> queries = from queryGroup in cxQueryCollectionResponse.QueryGroups
                                          from query in queryGroup.Queries
                                          select query;
@@ -32,6 +34,8 @@ public class CxTeamMentor
     public void TMFilterFor_CxWSResponseResultCollection(CxWSResponseResultCollection cxWsResponseResultCollection)
 
     {
+        log.Debug("Inside TMFilterFor_CxWSResponseResultCollection method...");
+
         AuditScanResult[] results = cxWsResponseResultCollection.ResultCollection.Results;
 
         foreach (AuditScanResult result in results)
@@ -46,7 +50,10 @@ public class CxTeamMentor
     {
         XmlConfigurator.Configure();
 
-        log.Debug(String.Format("Getting QueryDescription for CWE",cweId));
+        log.Debug("Inside TMFilterFor_CxWSResponseQueryDescription method...");
+
+        log.Debug(String.Format("Getting QueryDescription for CWE {0} ",cweId));
+
         if (cxWsResponseQueryDescription.IsSuccesfull && cweId > TeamMentorIdentifier)
         {
             cxWsResponseQueryDescription.QueryDescription =
